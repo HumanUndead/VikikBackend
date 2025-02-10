@@ -1,0 +1,792 @@
+﻿@model IEnumerable<CMS.Interfaces.IMenuItem>
+@using CMS;
+@{
+    var Cart = CMS.Helpers.CartHelper.CurrentCart;
+    List<Category> Categories = ViewBag.Categories as List<Category>;
+    List<Category> AllCategories = ViewBag.AllCategories as List<Category>;
+
+}
+<style>
+    .float-right {
+        float: right;
+    }
+
+    .fa {
+        font-size: .8em;
+        line-height: 22px !important;
+    }
+
+    dropdown {
+        display: inline-block;
+        /*margin: 20px 50px;*/
+        width: 100%
+    }
+
+        dropdown label, dropdown ul li {
+            display: block;
+            /*width: 200px;*/
+            /*background: #ECF0F1;*/
+            padding: 15px 20px;
+        }
+
+            dropdown label:hover, dropdown ul li:hover {
+                background: #1ABC9C;
+                color: white;
+                cursor: pointer;
+            }
+
+        dropdown label {
+            color: #1ABC9C;
+            border-left: 4px solid #1ABC9C;
+            border-radius: 0 5px 0 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        dropdown input {
+            display: none;
+        }
+
+            dropdown input ~ ul {
+                position: relative;
+                visibility: hidden;
+                opacity: 0;
+                top: -20px;
+                z-index: 1;
+            }
+
+            dropdown input:checked + label {
+                background: #1ABC9C;
+                color: white;
+            }
+
+            dropdown input:checked ~ ul {
+                visibility: visible;
+                opacity: 1;
+                top: 0;
+            }
+
+        dropdown ul li {
+            border-left: 4px solid #E74C3C;
+        }
+
+
+
+            dropdown ul li:hover {
+                background: #E74C3C;
+                color: white;
+            }
+
+
+    .animate {
+        -webkit-transition: all .3s;
+        -moz-transition: all .3s;
+        -ms-transition: all .3s;
+        -ms-transition: all .3s;
+        transition: all .3s;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        /* Chrome and Safari */
+        -moz-backface-visibility: hidden;
+        /* Firefox */
+        -ms-backface-visibility: hidden;
+        /* Internet Explorer */
+    }
+
+    .nav ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: block;
+        max-height: 30em;
+        max-height: 80vh;
+        overflow: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+            padding: 10px 20px;
+    }
+
+        .nav ul li {
+            display: block;
+            /*background: #B4D455;*/
+        }
+
+        .nav ul a {
+            display: block;
+          padding: 15px 30px;
+            color: #000;
+            text-decoration: none;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+            .nav ul a:hover {
+                background: rgba(0, 0, 0, 0.2);
+            }
+
+        .nav ul .hasDrop a:after {
+            float: right;
+            content: '\25BC';
+        }
+
+        .nav ul .hasDrop ul {
+            display: none;
+        }
+
+        .nav ul .hasDrop.js-active ul {
+            display: block;
+            max-height: 15em;
+            max-height: 20vh;
+            overflow: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav ul .hasDrop.js-active > a:after {
+            float: right;
+            content: '\25B2';
+        }
+
+        .nav ul .hasDrop li a {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+            .nav ul .hasDrop li a:after {
+                content: none;
+            }
+
+            .nav ul .hasDrop li a:hover {
+                background: rgba(0, 0, 0, 0.2);
+            }
+            .menu-shop{
+               
+    width: calc(100% - 50px);
+    padding: 20px 10px;
+     font-family: Homenaje-Regular;
+    font-size: 20px;
+    margin: 0;
+            }
+            .overlay .closebtn{
+                z-index:99999
+            }
+</style>
+
+<header id="header" class="header-5 ">
+    <div class="header-banner row v-mobile">
+
+        <div class="mob-head text-align-center col-xl-3 col-lg-3 col-sm-3 col-xs-3  ">
+            @*<a href="/user/wishlist" rel="nofollow" style="color:#fff !important;">  <svg class="svgic" style="padding-top: 4px; color:#fff !important;"><use xlink:href="#si-like-stroke"></use></svg></a>*@
+            <a href="@(ViewBag.Theme=="ar"?"?l=en":"?l=ar")" rel="nofollow" style="padding: 0px 20px; color:#fff !important;">@(ViewBag.Theme == "ar" ? Resources.Strings.English : @Resources.Strings.Arabic) </a>
+        </div>
+        <div class="mob-head text-align-center col-xl-9 col-lg-9 col-sm-9 col-xs-9 ">
+
+            @if (ViewBag.CurrentUser == null)
+            {
+                <a href="/member/Login" rel="nofollow" style="color:#fff !important;">@Resources.Strings.Login </a>
+                <a href="/Register" class="btn-mob-cust" rel="nofollow" style="color:#fff !important;">@Resources.Strings.Register</a>
+            }
+            @if (ViewBag.CurrentUser != null)
+            {
+                <div class="pk_account dd_el dib smooth02">
+                    <a href="#" title="My Account" class="flex-container align-items-center icon-element">
+                        @if (!String.IsNullOrEmpty(ViewBag.CurrentUser.Name))
+                        {
+                            <span class="header-icon" style="color:#fff !important;"><i class="fa fa-user-o" aria-hidden="true">&nbsp; @(ViewBag.CurrentUser.Name.Length > 10 ? ViewBag.CurrentUser.Name.Substring(0, 8) + ".." : ViewBag.CurrentUser.Name) </i> </span>
+                        }
+                        else
+                        {
+                            <span class="header-icon" style="color:#fff !important;"><i class="fa fa-user-o" aria-hidden="true">&nbsp; @Resources.Strings.MyAccount </i> </span>
+
+                        }
+
+                    </a>
+                    <div class="dd_container">
+                        <div class="indent">
+                            <ul class="user-detail" style="    border: 1px solid #8787878c;">
+                                <li class="smooth02"><a href="/member/logout" title="@Resources.Strings.LogOut" rel="nofollow">@Resources.Strings.LogOut</a></li>
+                                <li class="smooth02"><a href="/member/ChangePassword" title="@Resources.Strings.ChangePassword" rel="nofollow">@Resources.Strings.ChangePassword</a></li>
+                                <li class="smooth02"><a href="/order/UserOrders" title="@Resources.Strings.MyOrders" rel="nofollow">@Resources.Strings.MyOrders</a></li>
+                                <li class="smooth02"><a href="/user/wishlist" title="@Resources.Strings.MyWishlist" rel="nofollow">@Resources.Strings.MyWishlist</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+
+
+
+    </div>
+
+    <div class="header-main v-web  @(ViewBag.Theme=="ar"?"dir-rtl":"")">
+        <div class="page-width flex-container icons-true">
+            <div class="header_logo">
+                <a class="header_logo_img dib" href="/" title="">
+
+                    <span class="logo"><img src="~/assets/images/logo-vikik.png" /></span>
+                </a>
+            </div>
+            <div class="flexmenu-container">
+                <div class="flexmenu">
+                    <div onclick="openNav()" class="mobileMenuTitle">
+                        <div>
+                            <svg class="svgic">
+                                <use xlink:href="#si-menu"></use>
+                            </svg>
+                            <span>@Resources.Strings.Menu</span>
+                        </div>
+                    </div>
+
+
+
+                    <ul class="flexmenu_ul">
+                        @foreach (var item in Model)
+                        {
+                            if (item.ID != "2050")
+                            {
+                                @*<li class="flexmenuitem dd_el id_menu32"><a class="c-btn c-btn--line line  @((item.Path).Contains(ViewContext.RouteData.Values["Action"].ToString()) ? "active" : (item.Path =="index") ? "active" : "" )" href="~/@item.Path"><span> @item.Name</span></a></li>*@
+                                <li class="flexmenuitem dd_el id_menu32"><a class="c-btn c-btn--line   @((item.Path).Contains(ViewContext.RouteData.Values["Action"].ToString()) ? "active" : "" )" href="~/@item.Path"><span class="line"> @item.Name</span></a></li>
+
+                            }
+                            else
+                            {
+                                <li class="flexmenuitem dd_el id_menu59 hasChildren pos-relative liWithSubchildren">
+                                    <a class="c-btn c-btn--line   @((item.Path).Contains(ViewContext.RouteData.Values["Action"].ToString()) ? "active" : "")" href="~/shop/cats/70169/catvik"><span class="lineTri">@item.Name</span></a>
+                                    <a href="#" class="opener"></a>
+                                    <div class="megamenu submenu dd_container fmsid59 clearfix" style="padding:0px !important">
+                                        <div class="row">
+                                            <div class="col-md-6 menu-sec">
+                                                <div class="section-indent">
+                                                    <h2 style="font-weight:800"> @Resources.Strings.ShopbyCategory</h2>
+                                                    <ul class="main-section-links" style="padding:0px 30px ;position:relative !important">
+                                                        @{ IEnumerable<CMS.Interfaces.IMenuItem> subMenu = ((CMS.Managers.MenuManager)ViewBag.MenuManager).GetSubMenuItems(item.ID, ViewBag.CurrentLanguage);}
+                                                        @{ int count = 0;}
+                                                        @foreach (var subItem in Categories)
+                                                        {
+                                                            if (subItem.HasChildren)
+                                                            {
+                                                                <li class="noChildren cursor-pointer" style="position:initial !important" id="menu@(count)" onclick="showSubMenu('menu@(count)')">
+                                                                    <a class="menu-item-title">
+                                                                        <div id="cat-menu" class="fm-category-thumb">
+                                                                        </div>
+                                                                        <h5 class="cat-title m-0" style="text-transform:initial !important;">
+
+                                                                            <span class="line Mspan fontMenu" style="@(count==0?"color:#9C1B33;":"")">@subItem.Name <i class="@((ViewBag.Theme=="ar")?"fa fa-chevron-left":"fa fa-chevron-right")" aria-hidden="true"></i> </span>
+
+                                                                        </h5>
+                                                                    </a>
+
+                                                                    <ul class="main-section-sublinks level_0 " style="@(count==0?"display:block;":"")">
+                                                                        @foreach (var subCate in AllCategories.FindAll(x => x.ParentID == subItem.ID))
+                                                                        {
+                                                                            <li class="noChildren">
+                                                                                <a class="menu-item-title" href="~/shop/cats/@subCate.ID/viksa34fdz">
+                                                                                    <div class="cat-title m-0"><span class="line">@subCate.Name</span></div>
+                                                                                </a>
+                                                                            </li>
+                                                                        }
+                                                                    </ul>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="noChildren cursor-pointer" style="position:initial !important" id="menu@(count)">
+                                                                    <a class="menu-item-title" href="~/shop/cats/@subItem.ID/viksa34fdz">
+                                                                        <div id="cat-menu" class="fm-category-thumb">
+                                                                        </div>
+                                                                        <h5 class="cat-title m-0" style="text-transform:initial !important;">
+                                                                            <span class="line Mspan fontMenu" style="@(count==0?"color:#9C1B33;":"")">@subItem.Name  </span>
+                                                                        </h5>
+                                                                    </a>
+
+                                                                    <ul class="main-section-sublinks level_0 " style="@(count==0?"display:block;":"")">
+                                                                        @foreach (var subCate in AllCategories.FindAll(x => x.ParentID == subItem.ID))
+                                                                        {
+                                                                            <li class="noChildren">
+                                                                                <a class="menu-item-title" href="~/shop/cats/@subCate.ID/viksa34fdz">
+                                                                                    <div class="cat-title m-0"><span class="line">@subCate.Name</span></div>
+                                                                                </a>
+                                                                            </li>
+                                                                        }
+                                                                    </ul>
+                                                                </li>
+                                                            }
+
+
+                                                            count++;
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 menu-secx">
+                                                <div class="section-indent">
+                                                    @*<h2 style="font-weight:800"> @Resources.Strings.ShopbyCategory</h2>*@
+                                                    <img src="~/wsimages/bk.jpg" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </li>
+
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div id="search_widget">
+                <form id="form-sisearch" method="get" action="@Url.Action("Search","Home")" class="flex-container relative">
+                    <input type="text" name="sch" id="sch" value="@Request["sch"]" class="@(ViewBag.Theme=="ar"?"text-right":"")" placeholder="@Resources.Strings.Search">
+                    <label for="inpsearch" aria-label="Search">
+                        <svg class="svgic svgic-search">
+                            <use xlink:href="#si-search"></use>
+                        </svg>
+                    </label>
+                    @*<input type="submit"  onclick="FunSearch()" value="@Resources.Strings.Search" />*@
+
+                    <button type="submit"> @Resources.Strings.Search </button>
+                </form>
+            </div>
+            <div class="header-nav">
+
+                <div class="pk_customlinks pk_cl">
+                    <ul>
+                        @if (ViewBag.CurrentUser == null)
+                        {
+                            <li class="pk_register dd_el dib smooth02">
+                                <a href="#" title="Register" class="flex-container align-items-center icon-element">
+
+                                    <!--<span>Sign In / Up</span>-->
+                                    <span class="header-icon"><i class="fa fa-lock" aria-hidden="true" style="font-size: 18px !important;padding-top: 3px;">&nbsp;@Resources.Strings.SignUp</i></span>
+
+                                </a>
+                                <div class="dd_container">
+                                    <div class="indent">
+                                        <ul style="padding-left:0px;  border: 1px solid #8787878c;">
+                                            <li class="smooth02"><a href="/member/Login" title="@Resources.Strings.Login" rel="nofollow">@Resources.Strings.Login </a></li>
+                                            <li class="smooth02"><a href="/Register" title="@Resources.Strings.Register" rel="nofollow">@Resources.Strings.Register</a></li>
+                                            @*<li class="smooth02"><a href="/user/wishlist" title="@Resources.Strings.MyWishlist" rel="nofollow">@Resources.Strings.MyWishlist</a></li>*@
+                                            <li class="smooth02"><a href="/Services/DeleteAccountPage" title="@Resources.Strings.DeleteAccount" rel="nofollow">@Resources.Strings.DeleteAccount</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (ViewBag.CurrentUser != null)
+                        {
+                            <li class="pk_account dd_el dib smooth02">
+                                <a href="#" title="My Account" class="flex-container align-items-center icon-element">
+                                    @if (!String.IsNullOrEmpty(ViewBag.CurrentUser.Name))
+                                    {
+                                        <span class="header-icon"><i class="fa fa-user-o" style="padding-top:5px;" aria-hidden="true"> &nbsp;@(ViewBag.CurrentUser.Name.Length > 10 ? ViewBag.CurrentUser.Name.Substring(0, 8) + ".." : ViewBag.CurrentUser.Name)</i></span>}
+                                    else
+                                    {
+                                        <span class="header-icon"><i class="fa fa-user-o" style="padding-top:5px;" aria-hidden="true"> &nbsp;@Resources.Strings.MyAccount</i></span>
+                                    }
+                                </a>
+                                <div class="dd_container">
+                                    <div class="indent">
+                                        <ul style="padding-left: 0px;     border: 1px solid #8787878c;">
+                                            <li class="smooth02"><a href="/member/logout" title="@Resources.Strings.LogOut" rel="nofollow">@Resources.Strings.LogOut</a></li>
+                                            <li class="smooth02"><a href="/member/ChangePassword" title="@Resources.Strings.ChangePassword" rel="nofollow">@Resources.Strings.ChangePassword</a></li>
+                                            <li class="smooth02"><a href="/order/UserOrders" title="@Resources.Strings.MyOrders" rel="nofollow">@Resources.Strings.MyOrders</a></li>
+                                            <li class="smooth02"><a href="/user/wishlist" title="@Resources.Strings.MyWishlist" rel="nofollow">@Resources.Strings.MyWishlist</a></li>
+                                            <li class="smooth02"><a href="/Services/DeleteAccountPage" title="@Resources.Strings.DeleteAccount" rel="nofollow">@Resources.Strings.DeleteAccount</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+                        <li class="pk_register dd_el dib smooth02">
+                            <a href="@(ViewBag.Theme=="ar"?"?l=en":"?l=ar")" class="flex-container align-items-center icon-element">
+
+                                <span class="header-icon"><i class="fa fa-language" aria-hidden="true" style="font-size: 18px !important;padding-top: 3px;"></i></span>
+                            </a>
+
+                        </li>
+                    </ul>
+                </div>
+
+
+
+
+                @if (ViewBag.CurrentUser != null)
+                { }
+                <div id="desktop_cart">
+                    <div class="blockcart cart-preview active">
+                        @if (ViewBag.CurrentUser != null && Cart != null && Cart.ItemsCount > 0)
+                        {
+                            <div class="header dd_el relative">
+
+
+
+                                <a rel="nofollow" href="/cart" class="flex-container align-items-center relative cart-icon icon-element">
+                                    <svg class="svgic" style="display:block"><use xlink:href="#si-cart"></use></svg>
+                                    <span class="cart-products-count" data-cartproducts="@Cart.ItemsCount ">@Cart.ItemsCount  </span>
+                                </a>
+
+
+                                <div class="shopping_cart dd_container dd_view " style="display: none;  padding-top: 0px; margin-top: 0px; padding-bottom: 0px; margin-bottom: 0px;">
+
+
+                                    <div class="indent">
+                                        @foreach (var item in Cart.Items)
+
+                                        {
+
+                                            <article class="mini-product" data-id-product="6" data-id-product-attribute="31">
+                                                <div class="thumbnail-container relative">
+                                                    <div class="thumbnail product-thumbnail relative">
+                                                        <a href="~/catalog/product/@(item.ID)/@(CMS.Helpers.GeneralHelper.CleanForURL(item.Name))" class="relative">
+                                                            <img src="~/@(item.FullImagePath)_467x619.jpg" alt="@Html.Raw(item.Name)" width="126" height="163" class="smooth05 cover-image b-lazy b-loaded" data-full-size-image-url="~/@(item.FullImagePath)_467x619.jpg">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-description">
+                                                        <h6 class="product-brand ellipsis">@Html.Raw(item.Name)</h6>
+                                                        <h3 class="product-title"><a class="ellipsis"></a></h3>
+                                                        <div class="product-price-and-shipping">
+                                                            <span class="price">
+                                                                @Html.Raw(item.FormattedUnitPrice) <span>(@item.Quantity × @item.FormattedTotalPrice)</span>
+                                                            </span>
+                                                        </div>
+                                                        <a href="~/cart/remove/@item.ID" rel="nofollow" class="remove-product" data-link-action="remove-from-cart" title="Remove from cart">
+                                                            <svg class="svgic svgic-down"><use xlink:href="#si-cross-thin"></use></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </article>
+
+                                        }
+
+                                        <div class="flex-container">
+                                            <div class="cart-total">
+                                                <div>@Resources.Strings.Total: <i>@Cart.FormattedTotalWOShipping</i></div>
+                                            </div>
+                                            <div class="cart-button">
+                                                <a href="~/cart" class="btn ellipsis">@Resources.Strings.Checkout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="header dd_el relative">
+                                <a rel="nofollow" href="/cart" class="flex-container align-items-center relative cart-icon icon-element">
+                                    <svg class="svgic" style="display:block">
+                                        <use xlink:href="#si-cart"></use>
+                                    </svg>
+                                    <span class="cart-products-count">0</span>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="header-main v-mobile @(ViewBag.Theme=="ar"?"dir-rtl":"")" style="position:fixed;width: 100%">
+        <div class="page-width flex-container icons-true">
+            <div class="header_logo">
+                <a class="header_logo_img dib" href="/" title="">
+
+                    <span class="logo"><img src="~/assets/images/logo-vikik.png" /></span>
+                </a>
+            </div>
+
+
+            <div class="cart m-l-r-20">
+
+                @if (ViewBag.CurrentUser != null)
+                {
+                    <div id="desktop_cart">
+                        <div class="blockcart cart-preview active">
+                            @if (Cart != null && Cart.ItemsCount > 0)
+                            {
+                                <div class="header dd_el relative">
+
+
+
+                                    <a rel="nofollow" href="/cart" class="flex-container align-items-center relative cart-icon icon-element">
+                                        <svg class="svgic" style="display:block"><use xlink:href="#si-cart"></use></svg>
+                                        <span class="cart-products-count" data-cartproducts="@Cart.ItemsCount ">@Cart.ItemsCount</span>
+                                    </a>
+
+
+                                    @*<div class="shopping_cart dd_container dd_view" style="display: none;  padding-top: 0px; margin-top: 0px; padding-bottom: 0px; margin-bottom: 0px;">
+                                            <div class="indent">
+                                                @foreach (var item in Cart.Items)
+
+                                                {
+
+                                                    <article class="mini-product" data-id-product="6" data-id-product-attribute="31">
+                                                        <div class="thumbnail-container relative">
+                                                            <div class="thumbnail product-thumbnail relative">
+                                                                <a href="~/catalog/product/@(item.ID)/@(CMS.Helpers.GeneralHelper.CleanForURL(item.Name))" class="relative">
+                                                                    <img src="~/@(item.FullImagePath)_467x619.jpg" alt="@Html.Raw(item.Name)" width="126" height="163" class="smooth05 cover-image b-lazy b-loaded" data-full-size-image-url="~/@(item.FullImagePath)_467x619.jpg">
+                                                                </a>
+                                                            </div>
+                                                            <div class="product-description">
+                                                                <h6 class="product-brand ellipsis">@Html.Raw(item.Name)</h6>
+                                                                <h3 class="product-title"><a class="ellipsis"></a></h3>
+                                                                <div class="product-price-and-shipping">
+                                                                    <span class="price">
+                                                                        @Html.Raw(item.FormattedUnitPrice) <span>(@item.Quantity × @item.FormattedTotalPrice)</span>
+                                                                    </span>
+                                                                </div>
+                                                                <a href="~/cart/remove/@item.ID" rel="nofollow" class="remove-product" data-link-action="remove-from-cart" title="Remove from cart">
+                                                                    <svg class="svgic svgic-down"><use xlink:href="#si-cross-thin"></use></svg>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </article>
+
+                                                }
+
+                                                <div class="flex-container">
+                                                    <div class="cart-total">
+                                                        <div>@Resources.Strings.Total: <i>@Cart.FormattedTotalWOShipping</i></div>
+                                                    </div>
+                                                    <div class="cart-button">
+                                                        <a href="~/cart" class="btn ellipsis">@Resources.Strings.Checkout</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="header dd_el relative">
+                                    <a rel="nofollow" href="/cart" class="flex-container align-items-center relative cart-icon icon-element">
+                                        <svg class="svgic" style="display:block">
+                                            <use xlink:href="#si-cart"></use>
+                                        </svg>
+                                        <span class="cart-products-count">0</span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+
+                    <a rel="nofollow" href="/cart" class="flex-container align-items-center relative cart-icon icon-element">
+                        <svg class="svgic" style="display:block"><use xlink:href="#si-cart"></use></svg>
+                        <span class="cart-products-count">0</span>
+                    </a>
+                }
+
+            </div>
+
+
+            <div class="flexmenu-container">
+                <div class="flexmenu">
+                    <div onclick="openNav()" class="mobileMenuTitle">
+                        <div>
+                            <svg class="svgic">
+                                <use xlink:href="#si-menu"></use>
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        @*search*@
+        <div class="page-width flex-container icons-true">
+            <div id="search_widget">
+                <form id="form-sisearch" method="get" action="@Url.Action("Search","Home")" class="flex-container relative">
+                    <input type="text" name="sch" id="sch" value="@Request["sch"]" class="@(ViewBag.Theme=="ar"?"text-right":"")" placeholder="@Resources.Strings.Search">
+                    <label for="inpsearch" aria-label="Search">
+                        <svg class="svgic svgic-search">
+                            <use xlink:href="#si-search"></use>
+                        </svg>
+                    </label>
+                    @*<input type="submit"  onclick="FunSearch()" value="@Resources.Strings.Search" />*@
+
+                    <button type="submit"> @Resources.Strings.Search </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    @*mobile menu left*@
+    <div id="myNav" class="overlay v-mobile" >
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+        <div class="overlay-content @(ViewBag.Theme=="ar"?"text-right":"")">
+
+
+            <div class="header_logo">
+                <a class="header_logo_img dib" href="/" title="">
+
+                    <span class="logo"><img src="~/assets/images/logo-vikik.png" /></span>
+                </a>
+            </div>
+            <ul class="flexmenu_ul" style="list-style-type: none;">
+                @foreach (var item in Model)
+                {
+
+                    if (item.ID != "2050")
+
+                    {
+                        <li class="flexmenuitem dd_el id_menu32"><a href="~/@item.Path"><span> @item.Name</span></a></li>
+                    }
+
+                }
+            </ul>
+            <div class="p-20-30x"><a href="~/shop/cats/70169/catvik" style="cursor:pointer; "><span class="menu-shop"> @Resources.Strings.Shop</span></a></div>
+            <nav class="nav">
+
+                <ul>
+                    @{ int countMob = 0;}
+                    @foreach (var item in Categories)
+                    {
+                        <li id="countMob@(countMob)" class="@(item.HasChildren?"hasDrop": "") countMob" onclick="changeColorMenu('countMob@(countMob)')">
+                            <a href="@(item.HasChildren?"#": "/shop/cats/" + item.ID + "/viksa34fdz")">@item.Name</a>
+
+                            @foreach (var subCate in AllCategories.FindAll(x => x.ParentID == item.ID))
+                            {
+
+                                <ul>
+                                    <li><a class="noDrop" href="~/shop/cats/@subCate.ID/viksa34fdz">@subCate.Name</a></li>
+
+                                </ul>
+
+                            }
+                        </li>
+                        countMob++;
+                    }
+
+                </ul>
+            </nav>
+
+
+
+
+
+
+            @*@foreach (var item in Categories)
+                {
+                <dropdown>
+                    <input id="toggle2" type="checkbox">
+                    <label for="toggle2" class="animate">@item.Name <i class="fa fa-list float-right"></i></label>
+                    <ul class="animate">
+
+                        @foreach (var subCate in AllCategories.FindAll(x => x.ParentID == item.ID))
+                        {
+                            <li class="animate"><a href="~/shop/cats/@subCate.ID/viksa34fdz">@subCate.Name</a></li>
+
+
+                        }
+                    </ul>
+                </dropdown>
+                }*@
+            @*<div class="">
+
+                    @foreach (var item in Categories)
+                    {
+                        <div class="nav-menu-mb">
+                            <a href="~/shop/cats/@item.ID/viksa34fdz">
+                                <strong class="p-l-15">@item.Name</strong>
+                            </a>
+
+
+
+
+                            @foreach (var subCate in AllCategories.FindAll(x => x.ParentID == item.ID))
+                            {
+
+                                <a href="~/shop/cats/@subCate.ID/viksa34fdz"><strong class="p-l-15">@subCate.Name</strong> </a>
+
+                            }
+
+
+                        </div>
+
+
+                    }
+                </div>*@
+
+        </div>
+
+
+    </div>
+</header>
+<script>
+    $('.hasDrop').on('click', function (e) {
+        $(this).toggleClass('js-active');
+        e.preventDefault();
+    });
+    $('.noDrop').on('click', function (e) {
+        window.location = $(this).attr("href")
+        e.preventDefault();
+    });
+</script>
+<script>
+    function showSubMenu(id) {
+        //$("#" + id).find('ul').find('li').css("display", "block !important");
+        $("ul.main-section-sublinks.level_0").css("display", "none");
+        $(".Mspan").css("color", "#000");
+        $("#" + id + " ul").css("display", "block");
+        $("#" + id + " .Mspan").css("color", "#696969");
+
+    }
+
+    function changeColorMenu(id) {
+        //alert("li#" + id);
+        $("li.countMob").find('a').css("background", "initial").css("color", "initial").removeClass("js-active");
+        $("li#"+id).find('a').first().css("background", "#696969").css("color", "#fff");
+    }
+//    $( ".liWithSubchildren" ).hover(
+//        function () {
+//            $("body").addClass("ssssssssssssssssss");
+//              $("body").css("background", "rgba(20, 20, 20, 0.29)");
+//        }, function () {
+//            $("body").remove("ssssssssssssssssss");
+//  }
+//);
+
+//    $( ".liWithSubchildren" ).hover(
+//  function() {
+//     $("body").addClass("ssssssssssssssssss");
+//  }, function() {
+//    $( this ).removeClass( "ssssssssssssssssss" );
+//  }
+//);
+</script>
+

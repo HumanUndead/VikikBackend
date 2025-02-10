@@ -1,0 +1,9 @@
+$(document).ready(function(){var targetEl='instafeed_middle',debug=true;if(prestashop.page.page_name==='product'){$('.tab-pane').shortcode({instagram:function(){var tag=num='';if(typeof this.options==='object'){if(typeof this.options.hashtag!=='undefined')
+tag=" data-hashtag='"+this.options.hashtag+"'";if(typeof this.options.num!=='undefined')
+num=" data-num='"+this.options.num+"'";}
+return "<div class='instagram-feed'><ul id='"+targetEl+"'"+tag+num+"></ul></div>";}});}
+if(typeof pkIgCfg!=='undefined'&&pkIgCfg.PK_INSTA_FLAG&&$('#'+targetEl)[0]){var pageTag=$('#'+targetEl).data('hashtag'),pageNum=$('#'+targetEl).data('num'),tagName=pkIgCfg.PK_INSTA_HASHTAG;var feedObj={get:'user',clientId:pkIgCfg.PK_INSTA_API_CODE,accessToken:pkIgCfg.PK_INSTA_AT,target:targetEl,userId:parseInt(pkIgCfg.PK_INSTA_USERID),sortBy:pkIgCfg.PK_INSTA_SORTBY,limit:(typeof pageNum!=='undefined'&&pageNum!=='')?parseInt(pageNum):parseInt(pkIgCfg.PK_INSTA_NUMBER),links:Boolean(pkIgCfg.PK_INSTA_LINKS),template:pkIgCfg.PK_INSTA_TEMPLATE,resolution:"standard_resolution",after:function(){if(pkIgCfg.PK_INSTA_CAROUSEL==true){runCarousel();}}}
+if(typeof pageTag!=='undefined'&&pageTag!==''){tagName=pageTag;}
+if(tagName!==''){feedObj.filter=function(image){return image.tags.indexOf(tagName)>=0;}}
+var feed=new Instafeed(feedObj);feed.run();if(debug)console.log(feed.options);}else{console.log('Instagram module is not configured');}
+function runCarousel(){$("#"+targetEl).flexisel({pref:"instamiddle",visibleItems:parseInt(pkIgCfg.PK_INSTA_NUMBER_VIS),animationSpeed:500,autoPlay:pkIgCfg.PK_INSTA_AUTOSCROLL,autoPlaySpeed:3000,pauseOnHover:true,enableResponsiveBreakpoints:true,clone:true,responsiveBreakpoints:{portrait:{changePoint:400,visibleItems:1},landscape:{changePoint:768,visibleItems:2},tablet:{changePoint:991,visibleItems:3},tablet_land:{changePoint:1199,visibleItems:parseInt(pkIgCfg.PK_INSTA_NUMBER_VIS)}}});}});

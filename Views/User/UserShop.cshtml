@@ -1,0 +1,159 @@
+﻿@using CMS;
+@{
+    List<CMS.Product> products = ViewBag.Products;
+    List<Category> categories = ViewBag.ShopCategories;
+    DirectoryOutlet outlet = ViewBag.UserShop;
+}
+<div class="cart container minh-52vh">
+    @if (outlet != null && Convert.ToInt32(outlet.ID) >= 1)
+    {
+        if (outlet.Approved)
+        {
+            <div class="row  m-t-30 m-b-30">
+
+                <div class="large-2 small-12 text-center">
+                    <a class="custom-btn-8 m-b-10 large-10 small-12 f-color-white" href="~/user/AddShop">@Resources.Strings.EditShop</a>
+                </div>
+                <div class="large-2 small-12 text-center">
+                    <a class="custom-btn-4 large-10 m-b-10  small-12 f-color-white" href="~/user/AddProduct">@Resources.Strings.Add @Resources.Strings.Product</a>
+                </div>
+                <div class="large-2 small-12 text-center">
+                    <a class="custom-btn-4 large-10   small-12 f-color-white" href="~/user/ShopOrders">@Resources.Strings.ShopOrders</a>
+                </div>
+            </div>
+            <div class="row">
+                @{
+                    int counter = 1;
+                }
+                @foreach (var cat in categories)
+                {
+                    if (products == null || products.Count < 0 || products.FindAll(x => x.CategoryID == cat.ID) == null || products.FindAll(x => x.CategoryID == cat.ID).Count <= 0)
+                    {
+                        continue;
+                    }
+                    <a data-toggle="collapse" class="add-accor @(counter != 1 ? "collapsed" : "")" data-target="#cat@(cat.ID)" href="#cat@(cat.ID)" role="button">
+                        @cat.Name
+                    </a>
+                    <div class="spec-table small-12 large-12 collapse @(counter==1 ? "show" : "")" id="cat@(cat.ID)">
+                        @foreach (var item in products.FindAll(x => x.CategoryID == cat.ID))
+                        {
+
+                            <div class="small-12 large-3">
+                                <div class="product-card m-b-30">
+                                    <div class="card-top">
+                                        <a href="~/user/AddProduct?id=@item.ID">
+                                            <img src="~/@(item.FullImagePath)_352x440.jpg" />
+                                            <h1>@(!string.IsNullOrEmpty(item.Name) && item.Name.Length > 25 ? item.Name.Substring(0, 24) + "..." : item.Name)</h1>
+                                        </a>
+                                    </div>
+                                    <div class="card-bottom">
+                                        <p>@Html.Raw(item.ShortDescription)</p>
+                                    </div>
+                                    <div class="card-price">
+                                        @if (item.OldPrice.HasValue)
+                                        {
+                                            <p class="old-price">
+                                                @Resources.Strings.RRPrice: @item.FormattedOldPrice
+                                            </p>
+                                        }
+                                        <p>
+                                            @Resources.Strings.Price: @item.FormattedPrice
+                                        </p>
+                                        <p>x @item.Quantity</p>
+                                    </div>
+                                    <div class="card-controlls">
+                                        <a href="~/user/AddProduct?id=@item.ID"><i class="fa fa-pencil"></i></a>
+                                        <a onclick="deleteProduct('@item.ID','@item.Name',1)"><i class="fa fa-trash f-color-white"></i></a>
+                                        <a onclick="deleteProduct('@item.ID','@item.Name',2)"><i class="fa fa-ban f-color-white"></i></a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    counter++;
+                }
+            </div>
+        }
+        else
+        {
+            <div class="row product-content m-b-30 m-t-35  minh-64vh">
+                <div class="flex-column m-b-30 mb-t-35">
+                    <center style="width:100%">
+                        <h3>
+                            @Resources.Strings.PleaseContactUsToActiveYourShop
+                        </h3>
+                    </center>
+                    <center style="width:100%">
+                        <a title="@Resources.Strings.ContactUs" href="~/contactus" class=" custom-btn-4 btn-action btn-block" style="width:250px">@Resources.Strings.ContactUs</a>
+                    </center>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row m-t-30">
+            <div class="large-12 small-12">
+
+                <div class="large-6 small-12">
+                    <a class="custom-btn-5 w-100 f-color-white" href="~/user/AddShop">@Resources.Strings.Add @Resources.Strings.Shop</a>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<!-- Modal -->
+<div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="large-12 small-12">
+                        <h1 id="message"></h1>
+                        <a class="modal-close" data-dismiss="modal">
+                            <img src="~/images/close.png" width="20" />
+                        </a>
+                    </div>
+                    <div class="large-12 small-12" id="modal-controls">
+                        <a class="modal-custom-btn-1 f-color-white" onclick="document.getElementById('deleteForm').submit()">@Resources.Strings.Yes</a>
+                        <a class="modal-custom-btn-2" data-dismiss="modal">@Resources.Strings.Cancel</a>
+                        <form action="~/user/DeleteProduct" method="post" class="hide" id="deleteForm">
+                            <input type="hidden" name="id" id="productID" value="" />
+                            <input type="hidden" name="action" id="action" value="" />
+                            <input type="hidden" name="rt" id="rt" value="/user/UserShop" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/js/jquery.chained.js"></script>
+    <script>
+        function deleteProduct(productID, productName, action) {
+            if (action == 1) {
+                $("#message").html('@Resources.Strings.ProductDeleteSure ' + productName + "?")
+
+            }
+            else {
+            $("#message").html('@Resources.Strings.ProductDeActiveSure ' + productName + "?")
+
+            }
+            $("#productID").val(productID)
+            $("#action").val(action)
+            $("#deleteModal").modal();
+        }
+    </script>
+}
+
+
+
+

@@ -1,0 +1,375 @@
+﻿@model CMS.Cart
+@{ 
+    Layout = "~/Views/Shared/_CheckoutLayout.cshtml";
+}
+<div class="bag">
+    <div class="ti-checkout-progress" id="checkout-menu">
+        <ul class="row collapse2">
+            <li class="small-4 columns ti-checkout-step  bag">
+                <a onclick="GoScroll('bag')"><i class="icon bag"></i>@Resources.Strings.Bag<span> @Model.ItemsCount @Resources.Strings.Items</span><span class="hide-mobile"> @Resources.Strings.Total @Model.FormattedTotal</span></a>
+            </li>
+            <li class="small-4 columns ti-checkout-step  delivery" data-ti-magellan-arrival="delivery" data-active="account.authenticated == 'user' && cart.length">
+                <a onclick="GoScroll('delivery')"><i class="icon svg-truck"></i>@Resources.Strings.Delivery</a>
+            </li>
+            <li class="small-4 columns ti-checkout-step  payment" data-ti-magellan-arrival="payment" data-active="step == 'payment'">
+                <a onclick="GoScroll('payment')"><i class="icon svg-card"></i>@Resources.Strings.Payment</a>
+            </li>
+        </ul>
+    </div>
+    <div id="content">
+        <div class="row ti-checkout" form="checkoutForm" data-ti-form-valid="tracking.formStatus(name, valid)" data-ng-init="waypoints={}">
+            <div class="small-12 large-4 columns ti-checkout-column" data-ti-context="gaCategory" data-ga-category="Bag" id="bag">
+                <div data-ti-magellan-destination="bag">
+                    <div class="ti-cart" data-ti-cart data-ti-grouped-cart>
+                        <div class="cc-loading"></div>
+                        <div>
+                            <form name="cartForm">
+                                <div class="row package">
+                                    <div class="row collapse2 m-0 item">
+                                        @foreach (var item in Model.Items)
+                                        {
+                                            <div class="ti-cart-item">
+                                                <div class="row m-0">
+                                                    <div class="item-image-container">
+                                                        <a href="~/Catalog/Product/@item.ID/@CMS.Helpers.GeneralHelper.CleanForURL(item.Name)" class="item-image">
+                                                            <img src="~/@(item.FullImagePath)_635x811.jpg" alt="@item.Name" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="item-details">
+                                                        <h4 class="item-name">
+                                                            <a href="~/Catalog/Product/@item.ID/@CMS.Helpers.GeneralHelper.CleanForURL(item.Name)">
+                                                                <span class="brand">@item.CategoryName</span>
+                                                                <span class="name">@item.Name</span>
+                                                            </a>
+                                                        </h4>
+                                                        <p class="item-cost">
+                                                            <span>
+                                                                <span class="new-price" data-ng-if="item.product.oldPrice !== item.product.price">@item.Quantity x @item.FormattedUnitPrice</span>
+                                                            </span>
+                                                        </p>
+                                                        <p class="item-cost">
+                                                            <span>
+                                                                <span class="new-price" data-ng-if="item.product.oldPrice !== item.product.price">@item.FormattedTotalPrice</span>
+                                                            </span>
+                                                        </p>
+                                                        <a class="item-action move-to-wishlist" href="~/cart/MoveToWishlist?id=@item.ID">@Resources.Strings.MoveToWishlist</a>
+                                                        <a class="item-action remove-from-bag" href="~/cart/remove/@item.ID">@Resources.Strings.Remove</a>
+                                                        <div class="row quantity-size">
+                                                            <div class="small-12 columns quantity">
+                                                                <label for="qty-{{ item.sku }}">@Resources.Strings.Qty</label>
+                                                                <span>
+                                                                    <select name="qty-@(item.ID)" class="qtySelect" data-currentQty="@item.Quantity" id="qty-@(item.ID)">
+                                                                        <option value="-1">@Resources.Strings.MoveToWishlist</option>
+                                                                        <option value="0">@Resources.Strings.Remove</option>
+                                                                        @for (int i = 1; i <= item.Item.Quantity; i++)
+                                                                        {
+                                                                            <option value="@i" @(item.Quantity == i ? "selected" : "")>@i</option>
+                                                                        }
+                                                                    </select>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="m-t-30 m-b-30">
+                                <a class="button expand custom-btn-3" href="~/">
+                                    <span class="active">@Resources.Strings.ContinueShopping</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="small-12 large-4 columns ti-checkout-column" data-ti-context="gaCategory" data-ga-category="Delivery" id="delivery">
+                @if (ViewBag.CurrentUser == null)
+                {
+                    <div class="row login ti-login p-b-30" data-ti-login data-ng-show="account.authenticated !== 'user'">
+                        <form name="emailForm" action="@Url.Action("LoginUser","Member")" method="post" class="small-12 columns email-login">
+                            <input type="hidden" name="rt" value="/cart/viewcart" />
+                            <input type="hidden" value="1" name="radAccount" />
+
+                            <h2 class="text-center">Hi There!</h2>
+                            <hr />
+                            <p class="text-center">Please enter your email address to continue to delivery and payment.</p>
+                            <label>@Resources.Strings.Email</label>
+                            <input name="txtEmail" type="email" minlength="2" maxlength="40" required />
+                            <label>@Resources.Strings.Password</label>
+                            <input name="txtPassword" type="password" minlength="2" maxlength="40" required />
+                            <button class="button expand login-button" type="submit">
+                                <span class="active">@Resources.Strings.Continue</span>
+                            </button>
+                            <div class="text-center p-t-10"><a href="~/member/forgotpassword" class="login-small-print">@Resources.Strings.ForgotYourPassword?</a></div>
+                            <div class="text-center p-t-10"><a href="~/register" class="login-small-print">@Resources.Strings.CreateAccount</a></div>
+                            <div class="text-center p-t-10"><p style="color:red">@ViewBag.ErrorMessage</p></div>
+                        </form>
+                    </div>
+                }
+                @if (ViewBag.CurrentUser != null)
+                {
+                    <div>
+                        <h3>@Resources.Strings.Delivery</h3>
+                        <div class="row">
+                            <div class="small-12 columns" data-ti-shipping-address="address">
+                                <div>
+                                    <ul class="pay-by-tabs nav nav-tabs">
+                                        <li>
+                                            <a data-toggle="tab" href="#select-address" class=" active">
+                                                @Resources.Strings.SelectAddress
+                                            </a>
+                                        </li>
+                                        <li><a data-toggle="tab" href="#add-address">@Resources.Strings.AddAddress </a></li>
+                                    </ul>
+                                    <div data-ng-show="mode === 'edit'">
+                                        <div class="pay-by-tab-content tab-content">
+                                            <div class="tab-pane fade active show in " id="select-address">
+                                                <form name="homeNameForm" class="m-b-30" id="selectAddressForm">
+                                                    <div class="row collapse show">
+                                                        <label for="name">@Resources.Strings.SelectAddress</label>
+                                                        <select required>
+                                                            <option value="">@Resources.Strings.PleaseSelect</option>
+                                                            @foreach (CMS.Address item in ViewBag.Addresses)
+                                                            {
+                                                                <option value="@item.ID">@item.Label</option>
+                                                            }
+                                                        </select>
+                                                        <input type="submit" class="hide" />
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane fade  " id="add-address">
+                                                <form name="homeNameForm" class="m-b-30" id="addressAdd" data-ti-isolate-form="shippingAddress.type != 'home'">
+                                                    <div class="row collapse show">
+                                                        <label for="name">@Resources.Strings.Name</label>
+                                                        <input name="name" type="text" placeholder="Your full name" data-ti-prevent-zoom required pattern="[^<>?!{}]*" minlength="2" maxlength="50" data-ti-input-status data-ng-blur="validateOrder('name')" data-ti-api-errors="'address.name'" data-namespace="checkout.errors" data-ti-track-interaction="1" />
+                                                    </div>
+                                                    <div class="row collapse show">
+                                                        <label for="street">@Resources.Strings.StreetAddress</label>
+                                                        <input name="address1" type="text" placeholder="@Resources.Strings.StreetAddress" data-ti-prevent-zoom required pattern="^[^<>?!{}]*$" maxlength="50" data-ti-track-interaction="1" />
+                                                        <input name="address2" type="text" placeholder="@Resources.Strings.BuildingNo#" data-ti-prevent-zoom required pattern="^[^<>?!{}]*$" maxlength="50" data-ti-track-interaction="1" />
+                                                    </div>
+                                                    <div class="row collapse show">
+                                                        <label for="phone">@Resources.Strings.Country</label>
+                                                        <select required name="country" class="chained custom-select-1" id="selectCountry">
+                                                            <option value="">@Resources.Strings.PleaseSelectCountry</option>
+                                                            @foreach (CMS.LookupCategory item in ViewBag.Countries)
+                                                            {
+                                                                <option value="@item.ID" class="0">@item.Name</option>
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="row collapse show">
+                                                        <label for="phone">@Resources.Strings.City</label>
+                                                        <select name="city" class=" chained custom-select-1 " required id="selectCity">
+                                                            <option value="">@Resources.Strings.PleaseSelectCity</option>
+                                                            @foreach (CMS.Lookup item in ViewBag.Cites)
+                                                            {
+                                                                <option value="@item.ID" class="@item.CategoryID">@item.Name</option>
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="row collapse show">
+                                                        <label for="name">@Resources.Strings.Postal</label>
+                                                        <input name="postal" type="text" placeholder="Your postal code" data-ti-prevent-zoom required pattern="[^<>?!{}]*" minlength="2" maxlength="50" data-ti-input-status data-ng-blur="validateOrder('name')" data-ti-api-errors="'address.name'" data-namespace="checkout.errors" data-ti-track-interaction="1" />
+                                                    </div>
+                                                    <div class="row collapse show">
+                                                        <label for="phone">@Resources.Strings.MobileNumber</label>
+                                                        <input name="phone1" type="tel" data-mask="0499 999 999?9?" placeholder="e.g. 0401 234 567" required />
+                                                    </div>
+                                                    <button type="submit" class="button tertiary small expand address-save sel-addresses-button m-b-30">@Resources.Strings.Save</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+            <div class="small-12 large-4 columns ti-checkout-column" data-ti-context="gaCategory" data-ga-category="Payment" id="payment">
+                @if (ViewBag.CurrentUser != null)
+                {
+                    <div>
+                        <div class="ti-pay" data-ti-payment data-ng-show="TotalPrice > 0">
+                            <h3>@Resources.Strings.Pay</h3>
+                            <ul class="pay-by-tabs nav nav-tabs">
+                                <li><a data-toggle="tab" href="#home" class="active tab-btn">@Resources.Strings.CashOnDelivery </a></li>
+                                <li>
+                                    <a data-toggle="tab" class="tab-btn" href="#menu1">
+                                        <img src="~/images/credit-card.png" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" class="tab-btn" href="#menu2">
+                                        <img src="~/images/paypal.png" />
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="pay-by-tab-content tab-content">
+                                <div id="home" class="tab-pane fade in active show">
+                                    <form method="post" action="~/cart/Review" id="checkoutForm">
+                                        <input type="hidden" name="address" id="checkoutAddress" />
+                                        <a class="btn custom-btn-4" onclick="Checkout()">@Resources.Strings.PlaceOrder</a>
+                                    </form>
+                                </div>
+                                <div id="menu1" class="tab-pane fade">
+                                    <p>Com</p>
+                                </div>
+                                <div id="menu2" class="tab-pane fade">
+                                    <h3>Menu 2</h3>
+                                    <p>Some content in menu 2.</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="~/assets/js/jquery.chained.min55fe.js"></script>
+    <script src="~/assets/js/select2.min.js" type="text/javascript"></script>
+    <script src="~/assets/js/ns.js"></script>
+    <script src="~/assets/js/jquery.chained.min.js" type="text/javascript"></script>
+    <script>
+        $("#selectCity").chained("#selectCountry");
+    </script>
+    <script>
+        $(document).ready(function () {
+            var initialPos = $('#checkout-menu').offset().top;
+
+            $(window).scroll(function () {
+                var aTop = $('#checkout-menu').offset().top;
+
+                var bagTop = $('#bag').offset().top;
+                var delivearyTop = $('#delivery').offset().top;
+                var paymentTop = $('#payment').offset().top;
+
+                if ($(this).scrollTop() >= aTop) {
+                    $("#checkout-menu").addClass("fixed-header")
+
+                }
+                if (aTop == 0) {
+                    $("#checkout-menu").removeClass("fixed-header")
+                }
+
+                if ($(this).scrollTop() >= bagTop - 100 && $(this).scrollTop() < delivearyTop - 120 && $(this).scrollTop() < paymentTop - 120) {
+                    console.log("bagTop");
+
+                    $(".bag .ti-checkout-progress").addClass("pos_1")
+                    $(".bag .ti-checkout-progress").removeClass("pos_2")
+                    $(".bag .ti-checkout-progress").removeClass("pos_3")
+                }
+                else if ($(this).scrollTop() >= delivearyTop - 120 && $(this).scrollTop() < paymentTop - 120) {
+                    console.log("delivearyTop: " + delivearyTop);
+
+                    $(".bag .ti-checkout-progress").addClass("pos_2")
+                    $(".bag .ti-checkout-progress").removeClass("pos_1")
+                    $(".bag .ti-checkout-progress").removeClass("pos_3")
+                }
+                else if ($(this).scrollTop() >= paymentTop - 120) {
+                    console.log("paymentTop:" + paymentTop);
+
+                    $(".bag .ti-checkout-progress").addClass("pos_3")
+                    $(".bag .ti-checkout-progress").removeClass("pos_2")
+                    $(".bag .ti-checkout-progress").removeClass("pos_1")
+                }
+            });
+        })
+        function GoScroll(elementID) {
+            $('html, body').animate({
+                scrollTop: $("#" + elementID).offset().top - 100
+            }, 2000);
+
+        }
+    </script>
+
+    <script>
+        $(".qtySelect").change(function () {
+            let action = $(this).val();
+            let productID = $(this).attr("name").replace("qty-", "");
+
+            if (action == "-1")
+                window.location = '/cart/MoveToWishlist?id=' + productID
+            else if (action == "0") {
+                alert(action)
+                window.location = '/cart/RemoveFromCart?id=' + productID
+            }
+            else
+                window.location = '/cart/setqty?pid=' + productID + '&quantity=' + action;
+
+
+        })
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#select-city").chained("#select-country");
+    });
+    var QtyAlert=function(qty)
+    {
+        $.notify({message:'@(Resources.Strings.MaxAvailableIs) ' + qty },{type:'danger'});
+    }
+    $("#sameshipping").on("change", function () {
+        if ($("#addresssel2").css("display")!="inline-block")
+            $("#addresssel2").css("display", "inline-block");
+        else
+            $("#addresssel2").css("display", "none");
+    });
+    </script>
+
+    <script>
+        function Checkout() {
+            let selectForm = $("#selectAddressForm");
+            if (!selectForm[0].checkValidity()) {
+                $(selectForm).find("input[type=submit]").click();
+            }
+            else {
+                $("#checkoutAddress").val($(selectForm).find("select").val());
+                $("#checkoutForm").submit()
+            }
+
+        }
+    </script>
+
+    <script>
+        $("#addressAdd").submit(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '@Url.Action("AddressAdd", "Handlers")',
+                data: $("#address-form").serialize(),
+                method: 'post',
+                success: function () {
+                    let parent = $(".addresses table");
+                    let row = document.createElement("tr");
+                    window.location = window.location
+                }
+            })
+        })
+    </script>
+
+}
+
+
+
+

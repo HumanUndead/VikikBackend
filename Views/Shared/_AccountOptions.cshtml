@@ -1,0 +1,10 @@
+﻿<ul class="list-group list-group-faq">
+@if (ViewBag.CurrentUser != null && ((CMS.User)ViewBag.CurrentUser).MemberOf.Find(x => x.ID == new Guid("22222222-2222-2222-2222-222222222222")) != null)
+{
+    <li @(Request.Path.ToLower().Contains("ads") ? "class=active" : "")><a href="~/addshoplisting">@Resources.Strings.AddItem</a></li>
+    <li @(Request.Path.ToLower().Contains("ads")?"class=active":"")><a href="~/user/ads">@Resources.Strings.MyItems</a></li>
+    }
+    <li @(Request.Path.ToLower().Contains("wishlist") ?"class=active":"")><a href="~/user/wishlist">@Resources.Strings.MyWishlist</a></li>
+    <li @(Request.Path.ToLower().Contains("profile") ?"class=active":"")><a href="~/catalog/myorders">@Resources.Strings.MyOrders</a></li>
+    <li @(Request.Path.ToLower().Contains("changepassword") ?"class=active":"")><a href="~/member/changepassword">@Resources.Strings.ChangePassword</a></li>
+</ul>

@@ -1,0 +1,547 @@
+﻿@model CMS.Cart
+<style>
+
+        :root {
+            --color-primary: #9A3B3B;
+            --color-secondary: #C08261;
+            --color-tertiary: #E2C799;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 36px;
+            background-color: var(--color-primary);
+            border: 1px solid var(--color-secondary);
+            color: white;
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+        }
+
+            .btn.active,
+            .btn:hover {
+                background-color: var(--color-secondary);
+                border-color: var(--color-tertiary);
+            }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 50px
+        }
+
+        section {
+            padding: 64px 0;
+        }
+
+        header {
+            margin: 32px 0;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .tab-nav {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+            .tab-nav button {
+                width: 100%;
+            }
+
+            .tab-nav ul {
+                display: none;
+                flex-wrap: wrap;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+                .tab-nav ul.show {
+                    display: block;
+                }
+
+
+        .tab-content {
+            padding: 32px;
+            margin-top: 20px;
+            border: 1px solid var(--color-primary);
+        }
+
+        .tab-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap:15px;
+        }
+
+        .mobile-select {
+            position: relative;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            padding-right: 48px;
+            cursor: pointer;
+        }
+
+            .mobile-select::after {
+                font-family: bootstrap-icons;
+                display: inline-block;
+                position: absolute;
+                line-height: 1;
+                right: 16px;
+                top: 14px;
+            }
+
+            .mobile-select.active::after {
+                transform: rotate(180deg);
+            }
+    .buttons {
+        gap: 5px;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+<section class="container">
+    <div class="tab-container">
+        <nav class="tab-nav">
+            <div class="mobile-select"></div>
+            <div class="buttons">
+                <div><button class="btn tab-btn active" id="DRESS">Dress</button></div>
+                <div><button class="btn tab-btn" id="COATS">Coat</button></div>
+                <div><button class="btn tab-btn" id="SHIRTS">Blouse And Shirt</button></div>
+                <div><button class="btn tab-btn" id="SKIRTS">Skirt</button></div>
+                <div><button class="btn tab-btn" id="WPANTS">Low Waist Pants</button></div>
+                <div><button class="btn tab-btn" id="HPANTS">High Waist Pants</button></div>
+            </div>
+        </nav>
+        <div class="tab-content">
+            <div class="tab-item" data-id="DRESS" style=" text-align-last: center;">
+                <img src="~/assets/images/drees_En.jpg" style="width: 40%;" />
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>size</th>
+                            <th>chest</th>
+                            <th>waist</th>
+                            <th>HIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>38</td>
+                            <td>94</td>
+                            <td>72</td>
+                            <td>96</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>98</td>
+                            <td>76</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>102</td>
+                            <td>80</td>
+                            <td>104</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>106</td>
+                            <td>84</td>
+                            <td>108</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>110</td>
+                            <td>88</td>
+                            <td>112</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>114</td>
+                            <td>92</td>
+                            <td>116</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>118</td>
+                            <td>96</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>122</td>
+                            <td>100</td>
+                            <td>124</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="tab-item hide" data-id="COATS" style="text-align-last: center;">
+                <img src="~/assets/images/Coat_EN.jpg" style="width: 40%;" />
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>size</th>
+                            <th>chest</th>
+                            <th>waist</th>
+                            <th>HIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>38</td>
+                            <td>94</td>
+                            <td>74</td>
+                            <td>96</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>98</td>
+                            <td>78</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>102</td>
+                            <td>82</td>
+                            <td>104</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>106</td>
+                            <td>86</td>
+                            <td>108</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>110</td>
+                            <td>90</td>
+                            <td>112</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>114</td>
+                            <td>94</td>
+                            <td>116</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>118</td>
+                            <td>98</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>122</td>
+                            <td>102</td>
+                            <td>124</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-item hide" data-id="SHIRTS" style="text-align-last: center;">
+                <img src="~/assets/images/blouse_EN.jpg" style="width: 40%;" />
+
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>size</th>
+                            <th>chest</th>
+                            <th>waist</th>
+                            <th>HIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>38</td>
+                            <td>94</td>
+                            <td>74</td>
+                            <td>96</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>98</td>
+                            <td>78</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>102</td>
+                            <td>82</td>
+                            <td>104</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>106</td>
+                            <td>86</td>
+                            <td>108</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>110</td>
+                            <td>90</td>
+                            <td>112</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>114</td>
+                            <td>94</td>
+                            <td>116</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>118</td>
+                            <td>98</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>122</td>
+                            <td>102</td>
+                            <td>124</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-item hide" data-id="SKIRTS" style="text-align-last: center;">
+                <img src="~/assets/images/Skirt_En.jpg" style="width: 40%;" />
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>size</th>
+                            <th>waist</th>
+                            <th>HIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>38</td>
+                            <td>74</td>
+                            <td>100</td>
+
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>78</td>
+                            <td>104</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>82</td>
+                            <td>108</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>86</td>
+                            <td>112</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>90</td>
+                            <td>116</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>94</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>98</td>
+                            <td>124</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>102</td>
+                            <td>128</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-item hide" data-id="WPANTS" style="text-align-last: center;">
+                <img src="~/assets/images/LowWeigst_EN.jpg" style="width: 40%;" />
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>size</th>
+                            <th>waist</th>
+                            <th>HIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>38</td>
+                            <td>74</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>78</td>
+                            <td>104</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>82</td>
+                            <td>108</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>86</td>
+                            <td>112</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>90</td>
+                            <td>116</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>94</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>98</td>
+                            <td>124</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>102</td>
+                            <td>128</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-item hide" data-id="HPANTS" style="text-align-last: center;">
+                <img src="~/assets/images/Heighweist_EN.jpg" style="width: 40%;" />
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>size</th>
+                            <th>waist</th>
+                            <th>HIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>38</td>
+                            <td>70</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>74</td>
+                            <td>104</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>78</td>
+                            <td>108</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>82</td>
+                            <td>112</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>86</td>
+                            <td>116</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>90</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>94</td>
+                            <td>124</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>98</td>
+                            <td>128</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"></script>
+<script>
+    const select = document.querySelector('.mobile-select');
+    const selectDynamicText = () => {
+        //mobile select
+        Array.from(select.nextElementSibling.children).forEach(li => {
+            Array.from(li.children).forEach(child => {
+                if (child.classList.contains('active')) {
+                    let activeText = child.textContent;
+                    select.textContent = activeText;
+                }
+            });
+        });
+    }
+    select.addEventListener('click', function () {
+        this.classList.toggle('active');
+        this.nextElementSibling.classList.toggle('show');
+    });
+
+    const handleCloseSelect = () => {
+        select.classList.remove('active');
+        select.nextElementSibling.classList.remove('show');
+    }
+
+    //custom tabs
+    const tabContainer = document.querySelector('.tab-container');
+
+    tabContainer.addEventListener('click', e => {
+        e.stopPropagation();
+        const tabNavs = document.querySelectorAll('.tab-nav button');
+        const tabItems = document.querySelectorAll('.tab-item');
+        if (e.target.classList.contains('tab-btn')) {
+            tabNavs.forEach(tabNav => tabNav.classList.remove('active'));
+            tabItems.forEach(tabItem => {
+                tabItem.classList.add('hide');
+                let tabId = tabItem.getAttribute('data-id');
+
+                if (e.target.getAttribute('id') === tabId) {
+                    e.target.classList.add('active');
+                    tabItem.classList.remove('hide');
+                }
+            });
+            selectDynamicText();
+            handleCloseSelect();
+        }
+    });
+
+
+    selectDynamicText();
+</script>

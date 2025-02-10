@@ -1,0 +1,19 @@
+﻿@using CMS
+
+@{
+    StaticPage sizeGuide = ViewBag.SizeGuide;
+}
+<div class="main-section">
+    @Html.Partial("_USPHeader")
+    <div class="container minh-45vh">
+        <div class="row">
+            <h1>
+                @ViewBag.SizeGuideIntro.Name
+            </h1>
+            @Html.Raw(ViewBag.SizeGuideIntro.Text)
+        </div>
+        <div class="row m-t-30">
+            @Html.Raw(sizeGuide.Text)
+        </div>
+    </div>
+</div>

@@ -1,0 +1,216 @@
+@model CMS.Product
+@using System.Configuration;
+@{var ImgUrl = ConfigurationManager.AppSettings["ImgUrl"];
+//var ImgUrl = "https://vikikfashion.com/";
+}
+@section styles{
+    <style>
+        .subimage, .product-thumbnail > a > img:nth-child(2) {
+            opacity: 1 !important;
+        }
+
+        .oldPrice {
+            color: red !important;
+        }
+    </style>
+}
+
+
+<div class="container">
+    <div class="row" id="ROWS">
+
+        <div class="thumbnail-container relative dir-rtl">
+            <div class="thumbnail product-thumbnail relative flex-container" style="overflow:hidden">
+                <a href="/Catalog/ProductDetails/@Model.ID" class="relative subimage-true">
+
+                    <img src="@ImgUrl/@(Model.FullImagePath)_467x619.jpg" data-src="@ImgUrl/@(Model.FullImagePath)_467x619.jpg" alt="@Model.Name" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="" style=" object-fit: contain; height: 100%;">
+
+                    @if (Model.ImageList.Length > 0)
+                    {
+                        <img src="@ImgUrl/@(Model.FullImagePath)_467x619.jpg" data-src="@ImgUrl/@(Model.FullImagePath)_467x619.jpg" alt="@Model.Name" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="" style=" object-fit: contain; height: 100%;">
+                    }
+                    else
+                    {
+                        <img src="@ImgUrl/@(Model.FullImagePath)_467x619.jpg" data-src="" alt="" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="" style=" object-fit: contain; height: 100%;">
+                    }
+                </a>
+                <div class="product-actions">
+                    <a href="/Catalog/ProductDetails/@Model.ID" class=" btn btn-primary ">
+                        <svg class="svgic svgic-button-cart">
+                            <use xlink:href="#si-button-cart"></use>
+                        </svg>
+                    </a>
+                    <a href="/user/wishlist/add/@Model.ID" class=" btn btn-primary " role="button">
+                        <svg class="svgic">
+                            <use xlink:href="#si-like-stroke"></use>
+                        </svg>
+                    </a>
+
+                </div>
+                <div class="product-description" style="padding-top: 15px;">
+                    <h6 class="product-brand ellipsis">@Html.Raw(Model.Name)</h6>
+                </div>
+
+                <div class="product-price-and-shipping" style="z-index: 111; bottom: 25px; left: 0; background-color: #ffffff4d;">
+                    <span class="product-brand ellipsis  oldPrice" style="color:red">@Html.Raw(Model.FormattedOldPrice)</span>&nbsp;
+                    @if (!String.IsNullOrEmpty(Model.FormattedPrice) && Model.FormattedPrice != "0$")
+                    {
+                        <span class="price">@Html.Raw(Model.FormattedPrice)  </span>
+
+                    }
+                </div>
+
+                <ul class="product-flags" >
+                    <li class="new">@Resources.Strings.New</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="thumbnail-container relative dir-rtl">
+    <div class="thumbnail product-thumbnail relative flex-container">
+        <a href="/Catalog/ProductDetails/@Model.ID" class="relative subimage-true">
+
+            <img src="@ImgUrl/@(Model.FullImagePath)_300x360.jpg" data-src="@ImgUrl/@(Model.FullImagePath)_300x360.jpg" alt="@Model.Name" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="">
+
+            @if (Model.ImageList.Length > 0)
+            {
+                <img src="@ImgUrl/@(Model.FullImagePath)_300x360.jpg" data-src="@ImgUrl/@(Model.FullImagePath + Model.ImageList[0])_300x360.jpg" alt="@Model.Name" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="">
+            }
+            else
+            {
+                <img src="@ImgUrl/@(Model.FullImagePath)_300x360.jpg" data-src="" alt="" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="">
+            }
+        </a>
+        <div class="product-actions">
+
+            <a href="/Catalog/ProductDetails/@Model.ID" class=" btn btn-primary ">
+                <svg class="svgic svgic-button-cart">
+                    <use xlink:href="#si-button-cart"></use>
+                </svg>
+            </a>
+            <a href="/user/wishlist/add/@Model.ID" class=" btn btn-primary " role="button">
+                <svg class="svgic">
+                    <use xlink:href="#si-like-stroke"></use>
+                </svg>
+            </a>
+
+        </div>
+    </div>
+    <div class="product-desc-wrap">
+        <div class="product-description clearfix ">
+            <h6 class="product-brand ellipsis">@Html.Raw(Model.Name)</h6>
+            <h3 class="product-title text-left ellipsis" Modelprop="name">
+                <a href="/Catalog/ProductDetails/@Model.ID">-->
+@*@Html.Raw(Model.Description)*@
+<!--</a>
+</h3>-->
+@*<div class="product-price-and-shipping">
+        <span class="price">@Html.Raw(Model.FormattedPrice)   </span>
+    </div>*@
+
+<!--<div class="product-price-and-shipping">
+
+    <span class="product-brand ellipsis  oldPrice" style="color:red">@Html.Raw(Model.FormattedOldPrice)</span>&nbsp;
+    @if (!String.IsNullOrEmpty(Model.FormattedPrice) && Model.FormattedPrice != "0$")
+    {
+        <span class="price">@Html.Raw(Model.FormattedPrice)  </span>
+
+    }
+</div>
+<div class="short-desc product-description-short " Modelprop="description">-->
+@*<p>@Html.Raw(Model.Description)</p>*@
+<!--</div>-->
+@*<div class="sys-info-section">
+        <div class="sys-info flex-container">
+            <div class="star_content" itemprop="aggregateRating">
+                <div class="max-rating star-container rating-box starHolder">
+                    @for (double l = 1; l <= Math.Floor(Model.Rating); l++)
+                    {
+                        <div class="item_singleStar">
+                            <img src="~/wsImages/star_on.png" />
+                        </div>
+                    }
+                    @for (double u = Math.Floor(Model.Rating + 1f); u <= 5; u++)
+                    {
+                        <div class="item_singleStar">
+                            <img src="~/wsImages/star_off.png" />
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>*@
+@*<div class="hook-reviews">
+        <div class="star_content" Modelprop="aggregateRating" Modelscope="" Modeltype="http://schema.org/AggregateRating">
+            <div class="max-rating star-container">
+                <svg class="svgic svgic-pk-star">
+                    <use xlink:href="#si-pk-star"></use>
+                </svg>
+                <svg class="svgic svgic-pk-star">
+                    <use xlink:href="#si-pk-star"></use>
+                </svg>
+                <svg class="svgic svgic-pk-star">
+                    <use xlink:href="#si-pk-star"></use>
+                </svg>
+                <svg class="svgic svgic-pk-star">
+                    <use xlink:href="#si-pk-star"></use>
+                </svg>
+                <svg class="svgic svgic-pk-star">
+                    <use xlink:href="#si-pk-star"></use>
+                </svg>
+            </div>
+            <div class="star-rating" style="width:50%" data-average="2.5">
+                <div class="cut-stars star-container">
+                    <svg class="svgic svgic-pk-star">
+                        <use xlink:href="#si-pk-star"></use>
+                    </svg>
+                    <svg class="svgic svgic-pk-star">
+                        <use xlink:href="#si-pk-star"></use>
+                    </svg>
+                    <svg class="svgic svgic-pk-star">
+                        <use xlink:href="#si-pk-star"></use>
+                    </svg>
+                    <svg class="svgic svgic-pk-star">
+                        <use xlink:href="#si-pk-star"></use>
+                    </svg>
+                    <svg class="svgic svgic-pk-star">
+                        <use xlink:href="#si-pk-star"></use>
+                    </svg>
+                </div>
+            </div>
+            <meta Modelprop="bestRating" content="5" />
+            <meta Modelprop="worstRating" content="1" />
+            <meta Modelprop="ratingValue" content="2.5" />
+            <meta Modelprop="ratingCount" content="2" />
+            <meta Modelprop="reviewCount" content="2" />
+        </div>
+        <div Modelprop="review" Modelscope Modeltype="http://schema.org/Review">
+            <meta Modelprop="author" content="Alysum Prestashop AMP theme" />
+            <div Modelprop="reviewRating" Modelscope Modeltype="http://schema.org/Rating">
+                <meta Modelprop="bestRating" content="5" />
+                <meta Modelprop="worstRating" content="1" />
+                <meta Modelprop="ratingValue" content="2.5" />
+            </div>
+        </div>
+    </div>*@
+<!--</div>
+        <ul class="product-flags">
+            <li class="new">@Resources.Strings.New</li>
+        </ul>
+    </div>
+</div>-->

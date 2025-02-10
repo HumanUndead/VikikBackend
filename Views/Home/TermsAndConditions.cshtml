@@ -1,0 +1,80 @@
+﻿
+
+@using CMS;
+@{ StaticPage Terms= ViewBag.Terms;}
+@section styles{
+    <meta property="og:title" content="@Resources.Strings.project_name | @Resources.Strings.TermsAndConditions">
+    <meta property="og:description" content="@Resources.Strings.Description_Page">
+    <meta property="og:image" content="../wsimages/Vikik.jpg">
+    <meta property="og:url" content="../TermsAndConditions">
+    <meta property="twitter:title" content="@Resources.Strings.project_name | @Resources.Strings.TermsAndConditions">
+    <meta property="twitter:description" content="@Resources.Strings.Description_Page">
+    <meta property="twitter:image" content="../wsimages/Vikik.jpg">
+}
+<section class="main-contant-wrapper clearfix" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Resources.Strings.TermsAndConditions</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main">
+                   
+                        <section id="content" class="page-content page-cms page-cms-4">
+                            <div class="content-cms-wrapper">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12" style="@(ViewBag.Theme=="ar"?"text-align:right":"text-align:left")">
+                                        <div class="cms-block">
+                                            <p><strong class="dark">@Html.Raw(Terms.Name) </strong></p>
+                                            <p>@Html.Raw(Terms.Name)</p>
+                                            @Html.Raw(Terms.Text)
+                                          
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                        </section>
+                        <footer class="page-footer"></footer>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "cms");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-fr currency-usd layout-full-width page-cms tax-display-enabled cms-id-4 pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+}

@@ -1,0 +1,29 @@
+﻿@model CMS.StaticPage
+<div class="site-content light-bg">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="~/Index">@Resources.Strings.Home</a></li>
+                <li class="active">@Model.Name</li>
+            </ul>
+        </div>
+    </div><!-- /.breadcrumb-wrapper -->
+    <div class="container inner-md">
+        <div class="row">
+            <div id="primary" class="content-area col-lg-12 col-md-12 col-sm-12">
+                <main class="site-main">
+                    <article class="post wow fadeIn" itemscope>
+                        <header class="entry-header">
+                            <h1 class="entry-title newstit" itemprop="name headline">@Model.Name</h1>
+                            <span class="post-meta"> <span class="posted-on">@Model.SubTitle</span></span>
+                        </header>
+                        <div class="entry-content" itemprop="articleBody">
+                            @Html.Raw(Model.Text)
+                        </div>
+                    </article>
+
+                </main><!-- /.site-main -->
+            </div><!-- /.content-area -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</div>

@@ -1,0 +1,230 @@
+﻿@model CMS.Cart
+@using CMS.Helpers;
+@using CMS.Enums;
+@using CMS;
+@{
+    List<CMS.Transaction> userTransactions = ViewBag.UserTransaction;
+    CMS.Transaction pointsUsed = userTransactions != null && userTransactions.Count > 0 && userTransactions.Find(x => x.CartID == Model.ID && x.TranType == CMS.TransactionType.Credit) != null ? userTransactions.Find(x => x.CartID == Model.ID && x.TranType == CMS.TransactionType.Credit) : null;
+}
+<section>
+    <div class="second-page-container mb-mt35 m-t-35">
+        <div class="block mb-mt35">
+            <div class="container">
+                <h1 class="speacail-title-h1">@Resources.Strings.OrderDetails</h1> <!--Amr-->
+
+                <div class="row small-12 large-12 p-b-30">
+                    <article class="">
+                        <div class="block-form box-border ">
+                            <h3>@Resources.Strings.Order # @Model.OrderID</h3>
+                            <p>@Resources.Strings.OrderDate: @Model.OrderDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                            <p style="float: left">@Resources.Strings.Status: <strong>@(Resources.Strings.ResourceManager.GetString(Model.Status.ToString()))</strong></p>
+                        </div>
+                    </article>
+                    <div class="large-12 small-12">
+                        <h3>@Resources.Strings.Items</h3>
+                        <table class="cart-table m-b-20 table">
+                            <thead class="w-100">
+                                <tr class="w-100">
+                                    <th class="card_product_image">@Resources.Strings.Image</th>
+
+                                    <th class="card_product_price">@Resources.Strings.UnitPrice</th>
+                                    <th class="card_product_total">@Resources.Strings.Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0; }
+                                @foreach (CMS.CartItem prod in Model.Items)
+                                {
+                                    <tr>
+                                        <td class="card_product_image" data-th="Image">
+                                            <a href="~/Catalog/product/@(prod.Item.ProductID)/@CMS.Helpers.GeneralHelper.CleanForURL(prod.Name))">
+                                                <img title="@prod.Name" alt="@prod.Name" src="~/content/products/@(prod.ThumbURL)_300x200.jpg" width="120">
+                                            </a>
+                                            <br />
+                                            <a href="~/Catalog/product/@(prod.Item.ProductID)/@CMS.Helpers.GeneralHelper.CleanForURL(prod.Name))">@prod.Name</a>
+                                            <br />
+                                            x @prod.Quantity
+
+                                        </td>
+                                        <td class="card_product_price" data-th="Unit Price">@prod.FormattedUnitPrice</td>
+                                        <td class="card_product_total" data-th="Total"> <span id="total@(i)">@prod.FormattedTotalPrice</span></td>
+                                    </tr>
+                                    i++;
+                                }
+
+                            </tbody>
+                        </table>
+                        <div class="small-12 w-100 large-12">
+                            <hr>
+                        </div>
+                        <div class="small-12 m-b-20 large-12">
+                            <h3 class="sub-title">
+                                @Resources.Strings.DeliveryNotes
+                            </h3>
+                            <p>
+                                @Model.Notes
+                            </p>
+                        </div>
+                    </div>
+                    <article class="small-12 m-b-10 large-12">
+                        <div class="small-12 pv-20 bg-black mh-desk-300 columns">
+                            <div class="review-row row">
+                                <div class="small-12 f-white f-bold bg-black text-center m-0 label">
+                                    @Resources.Strings.Address
+                                </div>
+                                <div class="small-12 text-center bg-black value f-bold f-white" id="subtotal">
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="review-row row">
+                                <div class="small-6 large-6 label">
+                                    @Resources.Strings.Phone:
+                                </div>
+                                <div class="small-6 large-6 text-right bg-black value f-bold f-white" id="subtotal">
+                                    @Model.OrderAddress.Phone1
+                                </div>
+                            </div>
+                            <div class="review-row row">
+                                <div class="small-6 large-6 label">
+
+                                    @Resources.Strings.Address:
+
+                                </div>
+                                <div class="small-6 large-6 text-right bg-black f-white f-bold value" id="shipping">
+                                    @Model.OrderAddress.Address1
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <div class="large-1 mb-hide"></div>
+                    <article class="  small-12 large-12">
+                        <div class="small-12 pv-20 bg-black mh-desk-300 columns">
+                            <div class="review-row row">
+                                <div class="small-12 f-white f-bold bg-black text-center m-0 label">
+                                    @Resources.Strings.Total
+                                </div>
+                                <div class="small-12 text-center bg-black value f-bold f-white" id="subtotal">
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="review-row row">
+                                <div class="small-6 label">
+                                    @Resources.Strings.PaymentMethod:
+                                </div>
+                                <div class="small-6 bg-black value f-bold f-white" id="subtotal">
+                                    @(Resources.Strings.ResourceManager.GetString(Model.Delivery.ToString()))
+                                </div>
+                            </div>
+                            <div class="review-row row">
+                                <div class="small-6 label">
+
+                                    @Resources.Strings.ItemsCount:
+
+                                </div>
+                                <div class="small-6 bg-black f-white f-bold value" id="shipping">
+                                    @Model.ItemsCount
+                                </div>
+                            </div>
+                            <div class="review-row row">
+                                <div class="small-6 label">
+
+                                    @Resources.Strings.Shipping:
+
+                                </div>
+                                <div class="small-6 bg-black f-white f-bold value" id="shipping">
+                                    @Model.ShippingPrice
+                                </div>
+                            </div>
+                            <div class="review-row row">
+                                <div class="small-6 label">
+
+                                    @(pointsUsed != null ? Resources.Strings.SubTotal : Resources.Strings.Total):
+
+                                </div>
+                                <div class="small-6 bg-black f-white f-bold value" id="shipping">
+                                    @Model.FormattedOrderTotal
+                                </div>
+                            </div>
+                            @if (pointsUsed != null)
+                            {
+                                <div class="review-row row">
+                                    <div class="small-6 label">
+
+                                        @Resources.Strings.PointsValue:
+
+                                    </div>
+                                    <div class="small-6 bg-black f-white f-bold value" id="shipping">
+                                        @GeneralHelper.CurrentCurrency @(GeneralHelper.CurrentCurrencyRatio * pointsUsed.Amount)
+                                    </div>
+                                </div>
+                                <div class="review-row row">
+                                    <div class="small-6 label">
+
+                                        @Resources.Strings.Total:
+
+                                    </div>
+                                    <div class="small-6 bg-black f-white f-bold value" id="shipping">
+                                        @GeneralHelper.CurrentCurrency @(GeneralHelper.CurrentCurrencyRatio * (Model.OrderTotal - pointsUsed.Amount))
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </article>
+                    <div class="row col-md-12 m-0">
+                        <div class="col-xs-12 col-sm-12 p-t-10">
+                            <a href="~/user/shoporders" class="btn-default-1 grey btn btn-secondary w-100 custom-btn-9">@Resources.Strings.BackToOrders</a>
+                        </div>
+                        @switch ((CartStatus)Enum.Parse(typeof(CartStatus), ViewBag.Case))
+                        {
+                            case CartStatus.New:
+                            case CartStatus.Paid:
+                                <text>
+                                    <form action="~/user/ManageOrder" class="col-md-12" method="post">
+                                        <input name="id" value="@Model.OrderID" type="hidden" />
+                                        <input name="action" value="@CartStatus.Paid" type="hidden" />
+                                        <div class="row col-md-12 col-xs-12 col-sm-12 ">
+                                            <label for="#trackingNo" class="col-md-4 col-sm-4 col-xs-4 m-t-10 align-vertical">
+                                                @Resources.Strings.TrackingNumber
+                                            </label>
+                                            <input id="trackingNo" name="trackingNo" placeholder="@Resources.Strings.TrackingNumber" class="form-control m-t-10 col-xs-8 col-sm-8 col-md-8" value="" />
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 p-t-10">
+                                            <button type="submit" class="btn-default-1 grey btn btn-secondary w-100 custom-btn-9">@Resources.Strings.OrderPacked</button>
+                                        </div>
+                                    </form>
+                                </text>
+                                break;
+                            case CartStatus.Pending:
+                                break;
+                            case CartStatus.ReadyToShip:
+                                <text>
+                                    <form action="~/user/ManageOrder" class="col-md-12" method="post">
+                                        <input name="id" value="@Model.OrderID" type="hidden" />
+                                        <input name="action" value="@CartStatus.ReadyToShip" type="hidden" />
+                                        <div class="col-xs-12 col-sm-12 m-t-10 p-0">
+                                            <button type="submit" class="btn-default-1 grey btn btn-secondary w-100 custom-btn-7 f-color-white">@Resources.Strings.Shipped</button>
+                                        </div>
+                                    </form>
+                                </text>
+                                break;
+                            case CartStatus.Shipped:
+                                <text>
+                                    <form action="~/user/ManageOrder"  class="col-md-12" method="post">
+                                        <input name="id" value="@Model.OrderID" type="hidden" />
+                                        <input name="action" value="@CartStatus.Shipped" type="hidden" />
+                                        <div class="col-xs-12 col-sm-12 m-t-10 p-0">
+                                            <button type="submit" class="btn-default-1 grey btn btn-secondary w-100 custom-btn-7 f-color-white">@Resources.Strings.Complete</button>
+                                        </div>
+                                    </form>
+                                </text>
+                                break;
+                            default:
+                                break;
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

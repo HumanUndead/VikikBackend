@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="33" height="33" viewBox="0 0 33 33">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #232323;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3px;
+        fill: none;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="artboard-1">
+    <path d="M17.000,31.939 C15.980,31.939 2.070,19.000 2.070,11.809 C2.070,5.000 5.000,3.065 10.468,3.065 C15.000,3.065 17.000,7.883 17.000,7.883 C17.000,7.883 19.000,3.065 23.532,3.065 C29.000,3.065 31.929,5.000 31.929,11.809 C31.929,19.000 18.019,31.939 17.000,31.939 Z" class="cls-1"/>
+  </g>
+</svg>

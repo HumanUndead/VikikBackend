@@ -1,0 +1,163 @@
+@model CMS.Product
+
+@*SPECIAL DEALS*@
+<div class="sale thumbnail-container relative dir-rtl">
+
+    <div class="thumbnail product-thumbnail relative flex-container">
+        <a href="/Catalog/ProductDetails/@Model.ID" class="relative subimage-true">
+
+            @*<img src="https://via.placeholder.com/300x360" data-src="/@(Model.FullImagePath)_353x459.jpg" alt="" width="353" height="459" class="smooth05 cover-image b-lazy" data-full-size-image-url="../45-large_default/faded-short-sleeves-tshirt.jpg">
+
+                @if (Model.ImageList.Length > 0)
+                {
+                    <img src="https://via.placeholder.com/300x360" data-src="/@(Model.FullImagePath + Model.ImageList[0])_353x459.jpg" alt="" width="353" height="459" class="smooth05 cover-image b-lazy" data-full-size-image-url="../44-large_default/faded-short-sleeves-tshirt.jpg">
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/300x360" data-src="" alt="" width="353" height="459" class="smooth05 cover-image b-lazy" data-full-size-image-url="../44-large_default/faded-short-sleeves-tshirt.jpg">
+                }*@
+            <img src="../@(Model.FullImagePath)_300x360.jpg" data-src="../@(Model.FullImagePath)_300x360.jpg" alt="@Model.Name" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="../45-large_default/faded-short-sleeves-tshirt.jpg">
+
+            @if (Model.ImageList.Length > 0)
+            {
+                <img src="../@(Model.FullImagePath)_300x360.jpg" data-src="../@(Model.FullImagePath + Model.ImageList[0])_300x360.jpg" alt="@Model.Name" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="../44-large_default/faded-short-sleeves-tshirt.jpg">
+            }
+            else
+            {
+                <img src="../@(Model.FullImagePath)_300x360.jpg" data-src="" alt="" width="300" height="360" class="smooth05 cover-image b-lazy" data-full-size-image-url="../44-large_default/faded-short-sleeves-tshirt.jpg">
+            }
+        </a>
+        <div class="product-actions">
+
+            <a href="/Catalog/ProductDetails/@Model.ID" class=" btn btn-primary ">
+                <svg class="svgic svgic-button-cart">
+                    <use xlink:href="#si-button-cart"></use>
+                </svg>
+            </a>
+            <a href="/user/wishlist/add/@Model.ID" class=" btn btn-primary " role="button">
+                <svg class="svgic">
+                    <use xlink:href="#si-like-stroke"></use>
+                </svg>
+            </a>
+
+        </div>
+    </div>
+  
+    <div class="product-desc-wrap">
+        <div class="product-description clearfix ">
+            <h6 class="product-brand ellipsis">@Resources.Strings.Category: @Html.Raw(Model.CategoryName)</h6>
+            <h6 class="product-brand ellipsis color-black">@Resources.Strings.Product:@Html.Raw(Model.Name)</h6>
+
+            @if (!String.IsNullOrEmpty(Model.Description))
+            {
+                <h3 class="product-title text-left ellipsis" Modelprop="name">
+                    <a href="/Catalog/ProductDetails/@Model.ID">@Html.Raw(Model.Description)</a>
+                </h3>
+                
+             }
+
+
+            <div class="product-price-and-shipping">
+                <span class="product-brand ellipsis oldPrice">@Html.Raw(Model.FormattedOldPrice) TestOldPrice </span> &nbsp; <span class="price">@Html.Raw(Model.FormattedPrice)  </span>
+
+            </div>
+            <div class="short-desc product-description-short hidden" Modelprop="description">
+                <p>@Html.Raw(Model.Description)</p>
+            </div>
+
+            <div class="Countdown">
+                <ul>
+                    <li><span class="days"></span>days</li>
+                    <li><span class="hours"></span>Hours</li>
+                    <li><span class="minutes"></span>Minutes</li>
+                    <li><span class="seconds"></span>Seconds</li>
+                </ul>
+            </div>
+            @*<div class="sys-info-section">
+                    <div class="sys-info flex-container">Z
+                        <div class="star_content" itemprop="aggregateRating">
+                            <div class="max-rating star-container rating-box starHolder">
+                                @for (double l = 1; l <= Math.Floor(Model.Rating); l++)
+                                {
+                                    <div class="item_singleStar">
+                                        <img src="~/wsImages/star_on.png" />
+                                    </div>
+                                }
+                                @for (double u = Math.Floor(Model.Rating + 1f); u <= 5; u++)
+                                {
+                                    <div class="item_singleStar">
+                                        <img src="~/wsImages/star_off.png" />
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>*@
+            @*<div class="hook-reviews">
+                    <div class="star_content" Modelprop="aggregateRating" Modelscope="" Modeltype="http://schema.org/AggregateRating">
+                        <div class="max-rating star-container">
+                            <svg class="svgic svgic-pk-star">
+                                <use xlink:href="#si-pk-star"></use>
+                            </svg>
+                            <svg class="svgic svgic-pk-star">
+                                <use xlink:href="#si-pk-star"></use>
+                            </svg>
+                            <svg class="svgic svgic-pk-star">
+                                <use xlink:href="#si-pk-star"></use>
+                            </svg>
+                            <svg class="svgic svgic-pk-star">
+                                <use xlink:href="#si-pk-star"></use>
+                            </svg>
+                            <svg class="svgic svgic-pk-star">
+                                <use xlink:href="#si-pk-star"></use>
+                            </svg>
+                        </div>
+                        <div class="star-rating" style="width:50%" data-average="2.5">
+                            <div class="cut-stars star-container">
+                                <svg class="svgic svgic-pk-star">
+                                    <use xlink:href="#si-pk-star"></use>
+                                </svg>
+                                <svg class="svgic svgic-pk-star">
+                                    <use xlink:href="#si-pk-star"></use>
+                                </svg>
+                                <svg class="svgic svgic-pk-star">
+                                    <use xlink:href="#si-pk-star"></use>
+                                </svg>
+                                <svg class="svgic svgic-pk-star">
+                                    <use xlink:href="#si-pk-star"></use>
+                                </svg>
+                                <svg class="svgic svgic-pk-star">
+                                    <use xlink:href="#si-pk-star"></use>
+                                </svg>
+                            </div>
+                        </div>
+                        <meta Modelprop="bestRating" content="5" />
+                        <meta Modelprop="worstRating" content="1" />
+                        <meta Modelprop="ratingValue" content="2.5" />
+                        <meta Modelprop="ratingCount" content="2" />
+                        <meta Modelprop="reviewCount" content="2" />
+                    </div>
+                    <div Modelprop="review" Modelscope Modeltype="http://schema.org/Review">
+                        <meta Modelprop="author" content="Alysum Prestashop AMP theme" />
+                        <div Modelprop="reviewRating" Modelscope Modeltype="http://schema.org/Rating">
+                            <meta Modelprop="bestRating" content="5" />
+                            <meta Modelprop="worstRating" content="1" />
+                            <meta Modelprop="ratingValue" content="2.5" />
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+        @*<ul class="product-flags">
+                <li class="new">@Resources.Strings.New</li>
+            </ul>*@
+        <div class="sale-tag">
+            <span class="left-corner"></span>
+            <span class="right-corner"></span>
+            <div class="saleFlash">
+                <p>@Resources.Strings.Sale</p>
+            </div>
+        </div>
+    </div>
+</div>
+

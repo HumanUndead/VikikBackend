@@ -1,0 +1,319 @@
+﻿<style>
+
+
+    .form {
+        background-color: #fff;
+        border-radius: 20px;
+        box-sizing: border-box;
+        height: 500px;
+        padding: 20px;
+        width: 320px;
+    }
+
+    .title {
+        color: #000;
+        font-family: sans-serif;
+        font-size: 36px;
+        font-weight: 600;
+        margin-top: 30px;
+    }
+
+    .subtitle {
+        color: #000;
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .input-container {
+        height: 50px;
+        position: relative;
+        width: 100%;
+    }
+
+    .ic1 {
+        margin-top: 40px;
+    }
+
+    .ic2 {
+        margin-top: 30px;
+    }
+
+    .input {
+        background-color: #000;
+        border-radius: 12px;
+        border: 0;
+        box-sizing: border-box;
+        color: #eee;
+        font-size: 18px;
+        height: 100%;
+        outline: 0;
+        padding: 4px 20px 0;
+        width: 100%;
+    }
+
+    .cut {
+        background-color: #fff;
+        border-radius: 10px;
+        height: 20px;
+        left: 20px;
+        position: absolute;
+        top: -20px;
+        transform: translateY(0);
+        transition: transform 200ms;
+        width: 76px;
+    }
+
+    .cut-short {
+        width: 50px;
+    }
+
+    .input:focus ~ .cut,
+    .input:not(:placeholder-shown) ~ .cut {
+        transform: translateY(8px);
+    }
+
+    .placeholder {
+        color: #65657b;
+        font-family: sans-serif;
+        left: 20px;
+        line-height: 14px;
+        pointer-events: none;
+        position: absolute;
+        transform-origin: 0 50%;
+        transition: transform 200ms, color 200ms;
+        top: 20px;
+    }
+
+    .input:focus ~ .placeholder,
+    .input:not(:placeholder-shown) ~ .placeholder {
+        transform: translateY(-30px) translateX(10px) scale(0.75);
+    }
+
+    .input:not(:placeholder-shown) ~ .placeholder {
+        color: #808097;
+    }
+
+    .input:focus ~ .placeholder {
+        color: #dc2f55;
+    }
+
+    .submit {
+        background-color: red;
+        border-radius: 12px;
+        border: 0;
+        box-sizing: border-box;
+        color: #eee;
+        cursor: pointer;
+        font-size: 18px;
+        height: 50px;
+        margin-top: 38px;
+        outline: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+        .submit:active {
+            background-color: #000;
+        }
+
+    .toaster-box {
+        position: absolute;
+        /* width:200px; */
+        padding: 20px;
+        background-color: red;
+        bottom: 2%;
+        left: 2%;
+        font-family: sans-serif;
+        color: white;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        transition: 0.3s all;
+        opacity: 100%;
+        z-index: 100;
+    }
+
+    .toaster-close {
+        background: none;
+        border: transparent;
+        /* font-weight: 600; */
+        /* text-transform: lowercase; */
+        font-size: 1.75rem;
+        padding-left: 0.75rem;
+        color: white;
+        cursor: pointer;
+    }
+
+    @@media only screen and (max-width: 500px) {
+        .toaster-box {
+            width: 87vw;
+            justify-content: space-between;
+        }
+    }
+
+    /* modal and toaster*/
+
+    .modal-container {
+        width: 100vw;
+        height: 100vh;
+        background-color: #00000063;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: sans-serif;
+        transition: 0.3s all;
+        opacity: 100%;
+        z-index: 2;
+    }
+
+    .modal-box {
+        width: min(500px, 90vw);
+        height: 180px;
+        background-color: white;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4rem;
+        text-align: center;
+        padding: 1rem;
+        justify-content: space-evenly;
+    }
+
+    .modal-buttons {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .modal-button-cancel, .modal-button-confirm {
+        margin: 0 0.5rem;
+    }
+
+    .modal-button-cancel {
+        background-color: #000;
+    }
+
+    .modal-hidden {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .loading-icon {
+        width: 100px;
+        height: 100px;
+        /* background-color: white; */
+        border-radius: 50%;
+        border: 12px solid white;
+        border-top-color: red;
+        animation: rotate 1s linear infinite;
+    }
+
+    @@keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<div class="form" style="align-self: center; margin-top: 7%; ">
+
+    <div class="subtitle">Request to delete an account</div>
+    <div class="input-container ic2">
+        <input id="email" class="input" type="text" placeholder=" " />
+        <div class="cut cut-short"></div>
+        <label id="email" for="email" class="placeholder">Email</label>
+    </div>
+    <div class="input-container ic2">
+        <input id="phone" class="input" type="number" placeholder=" " />
+        <div class="cut cut-short"></div>
+        <label id="phone" for="phone" class="placeholder">phone Number</label>
+    </div>
+    <button type="text" class="submit" onclick="submit()">Confirm</button>
+</div>
+
+
+<div id="modal-container" class="modal-container modal-hidden">
+    <div class="modal-box">
+        <div class="modal-text">Are you sure you want to delete your account?</div>
+        <div class="modal-buttons">
+            <button type="text" class="submit modal-button-cancel" onclick="submitCanceled()">Cancel</button>
+            <button type="text" class="submit modal-button-confirm" onclick="submitConfirmed()">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div id="toaster" class="toaster-box modal-hidden">
+    Your request has been sent and your account will be deleted within 24 hours
+    <button class="toaster-close" onclick="closeToaster()">×</button>
+</div>
+
+@*<div id="modal-loading" class="modal-container modal-hidden">
+        <div class="loading-icon"></div>
+    </div>*@
+
+
+<div id="toasterRequred" class="toaster-box modal-hidden">
+    The email and phone is required
+    <button class="toaster-close" onclick="closeToasterReq()">×</button>
+</div>
+
+@section scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        const modal = document.getElementById("modal-container");
+        const toaster = document.getElementById("toaster");
+        const loading = document.getElementById("modal-loading");
+        const toasterRequired = document.getElementById("toasterRequired");
+
+        function submit() {
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            if (email) {
+                let validEmail = String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@@"]+(\.[^<>()[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+                if (validEmail) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Services/DeleteUser",
+                        data: {
+                            email: email,
+                            phone: phone
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            if (response.Success === 1) {
+                                window.location.href = "../Member/Logout";
+                            }
+                            else {
+                                modal.classList.remove("modal-hidden");
+                            }
+                        },
+                        error: function (error) {
+                            console.error("Error:", error);
+                        }
+                    });
+                } else {
+                    toasterRequired.classList.remove("modal-hidden");
+                    setTimeout(() => {
+                        toasterRequired.classList.add("modal-hidden");
+                    }, 1000);
+                }
+            } else {
+                toasterRequired.classList.remove("modal-hidden");
+                setTimeout(() => {
+                    toasterRequired.classList.add("modal-hidden");
+                }, 1000);
+            }
+        }
+    </script>
+}

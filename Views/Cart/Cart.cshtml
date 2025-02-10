@@ -1,0 +1,467 @@
+﻿@model CMS.Cart
+@{
+    CMS.User user = ViewBag.User;
+    //List<CMS.Lookup> Cities = ViewBag.Cities;
+}
+@section styles{
+    <style>
+       .v-web .table-wishlist thead tr th, .table-wishlist tbody tr td {
+           width: 12.5% !important;
+           /*display: flex;*/
+        }
+        .table-wishlist thead tr th, .table-wishlist tbody tr td {
+            /*width: 12.5% !important;*/
+            text-align: center;
+            vertical-align: baseline;
+         
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .table-wishlist tbody tr td {
+            height: 120px;
+            vertical-align: middle;
+        }
+    </style>
+}
+<section class="main-contant-wrapper clearfix dir-rtl" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Resources.Strings.Cart</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main">
+                        <div class="cart-grid row">
+
+                            <div class="cart-grid-body">
+
+                                <div class="card cart-container">
+                                    <div class="card-block hidden">
+                                        <h1 class="h1">@Resources.Strings.ShoppingCart</h1>
+                                    </div>
+                                    <div class="cart-overview js-cart">
+                                        <div id="block-history" class="block-center v-web">
+                                            <table class="table-wishlist table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-xs-1 col-md-1">@Resources.Strings.Image</th>
+                                                        <th class="col-xs-2 col-md-2">@Resources.Strings.Item</th>
+                                                        <th class="col-xs-1 col-md-1">@Resources.Strings.UnitPrice</th>
+                                                        <th class="col-xs-1 col-md-1">@Resources.Strings.Size</th>
+                                                        <th class="col-xs-1 col-md-1">@Resources.Strings.Color</th>
+                                                        <th class="col-xs-1 col-md-1">@Resources.Strings.Quantity</th>
+                                                        <th class="col-xs-1 col-md-1">@Resources.Strings.Total</th>
+                                                        <th class="col-xs-2 col-md-2">@Resources.Strings.Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (var item in Model.Items)
+                                                    {
+                                                    <tr id="wishlist_48">
+                                                        <td class="col-xs-2 col-md-2">
+
+                                                            @*<img src="~/@(item.FullImagePath)_353x459.jpg" width="80" />*@
+                                                            <img src="../@(item.FullImagePath)_300x360.jpg" width="80" />
+                                                        </td>
+                                                        <td class="col-xs-1 col-md-1">
+                                                            <a href="~/Catalog/Product/@item.ID/@CMS.Helpers.GeneralHelper.CleanForURL(item.Name)">
+                                                                @item.Name
+                                                            </a>
+                                                        </td>
+                                                        <td class="col-xs-1 col-md-1"> @item.FormattedUnitPrice</td>
+                                                        @if (!String.IsNullOrEmpty(item.Item.Size.Label))
+                                                        {
+                                                            <td class="col-xs-1 col-md-1"> @item.Item.Size.Label</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="col-xs-1 col-md-1"><span style="text-decoration:line-through">@Resources.Strings.Size</span></td>
+                                                        }
+                                                        @if (!String.IsNullOrEmpty(item.Item.Color.Label))
+                                                        {
+                                                            <td class="col-xs-1 col-md-1"> @item.Item.Color.Label</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="col-xs-1 col-md-1"><span style="text-decoration:line-through">@Resources.Strings.Color</span></td>
+                                                        }
+                                                        <td class="col-xs-1 col-md-1"> @item.Quantity</td>
+                                                        <td class="col-xs-1 col-md-1"> @item.FormattedTotalPrice</td>
+                                                        <td class="col-xs-2 col-md-2">
+                                                            <a class="remove-from-cart" rel="nofollow" href="/cart/remove/@item.ID">
+                                                                <svg class="svgic svgic-down">
+                                                                    <use xlink:href="#si-cross"></use>
+                                                                </svg>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    }
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div id="block-history" class="block-center v-mobile">
+                                            <table class="table-wishlist table table-bordered v-mobile p-t-20" >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="" style="width:20%">@Resources.Strings.Image</th>
+                                                        <th class="" style="width:60%">@Resources.Strings.Item</th>
+                                                        <th class="" style="width:10%">@Resources.Strings.Total</th>
+                                                        <th class="" style="width:10%">@Resources.Strings.Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @foreach (var item in Model.Items)
+                                                    {
+                                                        <tr id="wishlist_48">
+                                                            <td class="" style="width:20%">
+
+                                                                @*<img src="~/@(item.FullImagePath)_353x459.jpg" width="80" />*@
+                                                                <img src="~/@(item.FullImagePath)_300x360.jpg" width="80" />
+                                                            </td>
+                                                            <td class="" style="width:60%">
+                                                                <a href="~/Catalog/Product/@item.ID/@CMS.Helpers.GeneralHelper.CleanForURL(item.Name)">
+                                                                    @item.Name &nbsp; x(@item.Quantity)
+                                                                    <br />
+                                                                    @item.Item.Size.Label &nbsp; @item.Item.Color.Label
+                                                                </a>
+                                                            </td>
+                                                            <td class="" style="width:10%"> @item.FormattedTotalPrice</td>
+                                                            <td class="" style="width:10%">
+                                                                <a class="remove-from-cart" rel="nofollow" href="/cart/remove/@item.ID">
+                                                                    <svg class="svgic svgic-down">
+                                                                        <use xlink:href="#si-cross"></use>
+                                                                    </svg>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <a class="label hidden" href="">
+                                    <svg class="svgic">
+                                        <use xlink:href="#si-arrowleft"></use>
+                                    </svg>
+                                </a>
+
+                            </div>
+
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main">
+                        <div class="cart-grid row">
+
+                            <div class="cart-grid-body">
+
+
+
+
+
+
+                                <div class="card cart-container">
+                                    <div class="cart-detailed-totals">
+
+
+
+                                        <span class="addSpan">@Resources.Strings.ShippingAddress</span>
+                                        <section class="login-form">
+                                            <form id="form-account-create" action="" method="post">
+                                                <input type="submit" id="addressFormSubmit" style="display:none" />
+                                                <div id="account-create">
+                                                    <section>
+                                                        <input type="hidden" name="back" value="my-account">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <div class="relative">
+                                                                    <div class="relative">
+                                                                        <div class="icon-true">
+                                                                            <select class="form-control" name="userAddress" required id="userAddress" onchange="setAction()" placeholder="@Resources.Strings.Address">
+                                                                                <option value="">@Resources.Strings.SelectAddress</option>
+                                                                                @if (ViewBag.Addresses != null)
+                                                                                {
+                                                                                    foreach (CMS.Address item in ViewBag.Addresses)
+                                                                                    {
+                                                                                        <option value="@item.ID">@item.Label</option>
+                                                                                    }
+                                                                                }
+                                                                                <option value="-1">@Resources.Strings.AddNew</option>
+                                                                            </select>
+                                                                            <input type="submit" id="addressSubmit" style="display:none;" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-control-comment">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            </form>
+                                            <form id="createAddress" action="/handlers/address/add" method="post" class="hide">
+                                                <div class="form-group row">
+                                                    <div class="col-md-12">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="addressLabel" id="addressLabel" type="text" value="" placeholder="@Resources.Strings.EnterAddressLabel" required>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-12">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="address1" id="address1" type="text" value="" placeholder="@Resources.Strings.EnterYourAddress" required>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-12">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="address2" id="address2" type="text" value="" placeholder="@Resources.Strings.BuildingNo" required>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-12">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="phone1" id="phone1" type="text" value="" placeholder="@Resources.Strings.Phone" required>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-md-12">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <select class="form-control" name="city" id="city" placeholder="@Resources.Strings.City" required>
+
+                                                                        <option value="">@Resources.Strings.Select</option>
+                                                                        @foreach (var item in ViewBag.Cities)
+                                                                        {
+
+                                                                            <option value="@item.ID">@item.Name</option>
+
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                @if (ViewBag.CurrentUser != null)
+                                                {
+
+                                                    <div class="forgot-password flex-container">
+
+                                                        <button class="btn btn-primary form-control-submit" type="submit" title="Submit" data-storage="false" name="yt0">
+                                                            @Resources.Strings.AddAddress
+                                                        </button>
+                                                    </div>
+
+                                                }
+                                            </form>
+
+                                            <div class="checkout cart-detailed-actions card-block">
+                                                <div class="m-t-70">
+                                                    <a href="~/" class="button btn btn-big"> @Resources.Strings.ContinueShopping</a>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="cart-grid-right">
+                                <div class="card cart-summary">
+                                    <div class="cart-detailed-totals">
+                                        <div class="card-block card-separator">
+                                            <div class="cart-summary-line" id="cart-subtotal-products">
+                                                <span class="addSpan">@Resources.Strings.Total</span>
+                                                <span class="label js-subtotal">
+                                                    @Model.ItemsCount @Resources.Strings.Items
+                                                </span>
+                                                <h6 class="value">
+                                                    <strong><span class="amount" id="totalWithDis">@Model.FormattedTotalWOShipping</span></strong>
+                                                </h6>
+                                            </div>
+                                            @*<div class="cart-summary-line" id="cart-subtotal-shipping">
+                <span class="label">
+                    @Resources.Strings.Shipping
+                </span>
+                <h6 class="value">@Model.FormattedShippingPrice</h6>
+                <div><small class="value"></small></div>
+            </div>*@
+                                        </div>
+
+                                        <div class="card-block">
+                                            <div class="cart-summary-line cart-total">
+                                                <span class="label">@Resources.Strings.Total</span>
+                                                <h6 class="value">@Model.FormattedTotalWOShipping</h6>
+                                            </div>
+                                            <div class="cart-summary-line">
+                                                <small class="label">@Resources.Strings.SubTotal</small>
+                                                <h6 class="value">@Model.FormattedTotalWOShipping</h6>
+                                            </div>
+                                        </div>
+                                        @*<div class="card-block">
+                                            <div class="cart-summary-line cart-total">
+                                                <span class="label">@Resources.Strings.Total</span>
+                                                <h6 class="value">@Model.FormattedTotal</h6>
+                                            </div>
+                                            <div class="cart-summary-line">
+                                                <small class="label">@Resources.Strings.SubTotal</small>
+                                                <h6 class="value">@Model.FormattedTotalWOShipping</h6>
+                                            </div>
+                                            <div class="cart-summary-line">
+                                                <small class="label">@Resources.Strings.Shipping</small>
+                                                <h6 class="value">@Model.FormattedShippingPrice</h6>
+                                            </div>
+                                        </div>*@
+                                        <form id="checkoutForm" class="checkout cart-detailed-actions card-block p-t-20" action="~/cart/review" method="post">
+
+                                            <div class="text-xs-center">
+                                                <a class="button btn btn-big" onclick="MoveToReview()"> @Resources.Strings.Checkout</a>
+
+                                                <button class="button btn btn-big" type="submit" id="btnCheckout" style="display:none"> @Resources.Strings.Checkout</button>
+                                            </div>
+                                            <input type="hidden" id="checkoutAddressHidden" name="checkoutAddressHidden" />
+
+                                        </form>
+                                    </div>
+
+                                 
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+
+@section scripts{
+    <script>
+
+        function MoveToReview() {
+
+            if (!$('#form-account-create')[0].checkValidity()) {
+                $('#addressFormSubmit').click();
+                return;
+            }
+            else {
+                $("#btnCheckout").click();
+            }
+
+        }
+
+        function setAction() {
+            let addressSelect = $("#userAddress");
+
+            if (addressSelect.val() < 0) {
+                $("#createAddress").removeClass("hide");
+            }
+            else {
+                $("#createAddress").addClass("hide");
+                $("#checkoutAddressHidden").val(addressSelect.val());
+            }
+            $("#address").val(addressSelect.val());
+
+        }
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "cart");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-us currency-usd layout-full-width page-cart tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+
+}

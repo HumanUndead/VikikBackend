@@ -1,0 +1,42 @@
+﻿ <div class="site-content light-bg">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <ul class="breadcrumb">
+                    <li><a href="~/Index">@Resources.Strings.Home</a></li>
+                    <li class="active">@Resources.Strings.Blog</li>
+                </ul>
+            </div>
+        </div><!-- /.breadcrumb-wrapper -->
+        <div class="container inner-md">
+            <div class="row">
+                <div id="primary" class="content-area col-lg-12 col-md-12 col-sm-12">
+                    <main class="site-main">
+                        <!-- ========================================= POSTS ========================================= -->
+                        <div class="posts">
+@foreach (CMS.Article blog in ViewBag.Blog)
+        {
+                            <div class="format-image post wow fadeIn">
+                                <div class="">
+                                    <img class="img-responsive" src="~/assets/images/blank.gif" data-echo="content/articles/@(blog.ThumbURL.Replace("\\", "/"))_729x411.jpg" alt="" width="728" height="411">
+                                </div>
+                                <h2 class="entry-title">
+                                    <a href="~/Post/@blog.ID/@blog.Typs[0].Name.Replace("&", "").Replace(" ", "_").Replace("%20", "_")/@blog.Name.Replace(" ", "_").Replace("&", "").Replace("%20", "_").Replace("_!", "").Replace(".", "")" class="newstit">@blog.Name</a>
+
+                                </h2>
+                                <p class="post-meta"><a href="~/Blog">@blog.Typs[0].Name</a> <span class="line-divider">/</span> @blog.Date.ToString("MMMM,dd,yyyy")</p>
+                                <div class="post-excerpt"><p>@Html.Raw(blog.ShortDescription)</p></div>
+                                <a href="~/Post/@blog.ID/@blog.Typs[0].Name.Replace("&", "").Replace(" ", "_").Replace("%20", "_")/@blog.Name.Replace(" ", "_").Replace("&", "").Replace("%20", "_").Replace("_!", "").Replace(".", "")" class="btn btn-primary btn-readmore">@Resources.Strings.Read_More</a>
+                            </div>
+}
+
+                        </div><!-- /.posts -->
+                        <!-- ========================================= POSTS : END ========================================= -->
+
+                    </main><!-- /.site-main -->
+                </div><!-- /.content-area -->
+
+                <!-- /.sidebar-area -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </div><!-- /.site-content -->
+  

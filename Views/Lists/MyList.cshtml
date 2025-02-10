@@ -1,0 +1,130 @@
+﻿@model CMS.ProductList
+<div class="site-content">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="~/">@Resources.Strings.Home</a></li>
+                <li>@Model.Name</li>
+
+            </ul>
+        </div>
+    </div><!-- /.breadcrumb-wrapper -->
+    <div id="primary" class="content-area">
+        <main class="site-main container inner-bottom-md">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
+                    <div class="control-bar clearfix">
+                        <div class="control-bar-left pull-left">
+                            <div class="le-select form-control">
+                                <form id="sortform" method="get">
+                                    <select id="sortselect" name="s" class="input-block">
+                                        <option value="updatedate:d" @(Request["s"] == "updatedate:d" ? "selected" : "")>@Resources.Strings.DateNewFirst</option>
+                                        <option value="price:a" @(Request["s"] == "price:a" ? "selected" : "")>@Resources.Strings.PriceLowFirst</option>
+                                        <option value="price:d" @(Request["s"] == "price:d" ? "selected" : "")>@Resources.Strings.PriceHighFirst</option>
+                                        <option value="name:a" @(Request["s"] == "name:a" ? "selected" : "")>@Resources.Strings.NameAZ</option>
+                                        <option value="name:d" @(Request["s"] == "name:d" ? "selected" : "")>@Resources.Strings.NameZA</option>
+                                    </select>
+                                    <input type="hidden" name="id" value="@ViewBag.ID" />
+                                    <input type="hidden" name="range" value="@Request["range"]" />
+                                </form>
+                            </div>
+                        </div><!-- /.control-bar-left -->
+                        <div class="view-switcher">
+
+                        </div>
+                        <!-- /.control-bar-right -->
+                    </div><!-- /.control-bar -->
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="product-items row has-grid no-bg has-row-separator">
+                                @foreach (CMS.Product item in ViewBag.Products)
+                                {
+                                    <div class="col-lg-4 col-sm-6 col-xs-12 product-column">
+                                        @Html.Partial("_listproductcarousel", item)
+                                    </div>
+                                }
+                            </div><!-- /.row -->
+                        </div>
+                        <div class="control-bar clearfix">
+                            <div class="control-bar-right pull-right">
+                                <ul class="pagination">
+                                    @if (ViewBag.CurrentPage > 1)
+                                    {
+                                        <li>
+                                            <a href="~/lists/myweddinglist?s=@Request["s"]&p=@(ViewBag.CurrentPage-1)&range=@(Request["range"])" aria-label="Prev">
+                                                <span aria-hidden="true"><i class="icon fa fa-angle-left"></i></span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @for (var i = 1; i <= ViewBag.Pages; i++)
+                                    {
+                                        if (i == ViewBag.CurrentPage)
+                                        {
+                                            <li class="current"><a href="#">@i</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="~/lists/myweddinglist?s=@Request["s"]&p=@i&range=@(Request["range"])">@i</a></li>
+                                        }
+                                    }
+                                    @if (ViewBag.CurrentPage < ViewBag.Pages)
+                                    {
+                                        <li>
+                                            <a href="~/lists/myweddinglist?s=@Request["s"]&p=@(ViewBag.CurrentPage+1)&range=@(Request["range"])" aria-label="Next">
+                                                <span aria-hidden="true"><i class="icon fa fa-angle-right"></i></span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div><!-- /.control-bar-right -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3 col-md-pull-8 col-lg-pull-9">
+                    <aside class="sidebar sidebar-shop">
+                        <div class="product-filters">
+                            <h3>@Resources.Strings.FilterBy</h3>
+                            <div class="widgets">
+                                <aside class="widget widget-categories-filter">
+                                    <h4 class="widget-title">@Model.Name</h4>
+                                    <ul class="list-filters">
+                                       
+                                    </ul>
+                                </aside><!-- /.widget -->
+                                <aside class="widget widget-categories-filter">
+                                    <form method="get">
+                                        <h4 class="widget-title">@Resources.Strings.Price</h4>
+                                        <div class="slider-range-wrapper">
+                                            <div id="slider-range"></div><p class="slider-price-range"><input type="text" name="range" id="amount"></p>
+                                        </div>
+                                        <input type="hidden" name="s" value="@Request["s"]" />
+                                        <input type="submit" class="btn" value="@Resources.Strings.Filter" />
+                                    </form>
+                                </aside><!-- /.widget -->
+                            </div>
+                        </div><!-- /.widget-filters -->
+                    </aside><!-- /.shop-sidebar -->
+                </div>
+            </div><!-- /.row -->
+        </main><!-- /.site-main -->
+    </div><!-- /.content-area -->
+</div><!-- /.site-content -->
+@section scripts
+{
+    <script>
+    $("#sortselect").change(function(){
+                $("#sortform").submit();
+    });
+        @if(!string.IsNullOrEmpty(Request["range"]))
+        {
+            <text>
+        $(document).ready(function () {
+            $("#slider-range").slider('values', 0, @Request["range"].Replace(" - ","-").Split(("-").ToCharArray())[0]);
+            $("#slider-range").slider('values', 1, @Request["range"].Replace(" - ", "-").Split(("-").ToCharArray())[1]);
+            $("#amount").val("@Request["range"]");
+        });
+        </text>
+        }
+    </script>
+}

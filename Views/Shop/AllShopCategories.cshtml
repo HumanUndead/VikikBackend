@@ -1,0 +1,467 @@
+﻿@using CMS;
+@model CMS.Category
+@section Styles{
+    @*this*@
+    <style>
+        select#sortselect {
+            width: 16.875rem !important;
+            color: #414141 !important;
+            background: #fff !important;
+            padding: .188rem 1.5rem .188rem 1em !important;
+            font-size: .875rem !important;
+            line-height: 1.5rem !important;
+            cursor: pointer !important;
+            border: 1px solid #dfdfdf !important;
+            min-height: 32px !important;
+        }
+
+        .dropdown:after {
+            content: "";
+            background: none !important;
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            top: 0;
+            right: 10px;
+        }
+
+        .price-inp {
+            height: 32px !important;
+            text-align: center !important;
+            width: 100px;
+        }
+
+        .nav ul a {
+            border-top: none !important
+        }
+
+        .width-100 {
+            width: 100%
+        }
+
+        #accordion1 li .fa {
+            float: right;
+            padding: 5px 10px;
+        }
+
+        #accordion1 li a {
+            display: inline-block;
+            width: 100%
+        }
+
+        .fa-minus {
+            display: none
+        }
+
+        .Active .fa-minus {
+            display: initial
+        }
+
+        .Active .fa-plus {
+            display: none
+        }
+
+        #accordion1 li.firstLi:hover a.firstLia {
+            color: #000 !important
+        }
+
+        ul.subULCat li:hover a {
+            color: #000 !important
+        }
+    </style>
+
+    @if (ViewBag.Theme == "ar")
+    {
+        <style>
+            @@media (min-width: 768px) {
+                .col-md-3 {
+                    float: right;
+                    width: 25%;
+                }
+            }
+        </style>
+    }
+}
+@{
+    List<Category> catsAll = ViewBag.SubCats;
+}
+<section class="main-contant-wrapper clearfix" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="~/shop/cats/70169/catvik">
+                                <span itemprop="name">@Resources.Strings.Categories </span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Html.Raw(Model.Name)</span>
+                            </a>
+                            <meta itemprop="position" content="4">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+
+            @*<div class="row">
+                    <div class="col-md-3">
+                        <ul class="nav nav-stacked" id="">
+                            <li class="panel">
+                                <a data-toggle="collapse"  href="#firstLink">Test12</a>
+                                <ul id="firstLink" class="collapse" >
+                                    <li>SubTest1</li>
+                                    <li>SubTest1</li>
+                                    <li>SubTest1</li>
+                                    <li class="panel">
+                                        <a data-toggle="collapse"  href="#Link">
+                                            SubTest1
+                                        </a>
+
+                                        <ul id="Link" class="collapse">
+                                            <li>er</li>
+                                            <li>erfdf</li>
+                                            <li>ewref</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li class="panel">
+                                <a data-toggle="collapse"  href="#secondLink">Test2</a>
+                                <ul id="secondLink" class="collapse">
+                                    <li>SubTest2</li>
+                                    <li>SubTest2</li>
+                                    <li>SubTest2</li>
+                                    <li>SubTest2</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Test1</a>
+                            </li>
+                            <li>
+                                <a href="#">Test1</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>*@
+            <div class="row @(ViewBag.Theme =="ar"?"dir-rtl":"")">
+                <div id="left-column" class="sidebar col-xs-12 col-sm-4 col-md-3">
+                    <div id="search_filters_wrapper">
+                        <div id="search_filters">
+                            @*@(Count == 0 ? "active" : "")*@
+                            @{ List<CMS.Category> subCats = ViewBag.SubCats as List<CMS.Category>;}
+                            <h2 class="p-b-10"> @Resources.Strings.ProductFilter </h2>
+                            @if (subCats.Count() > 0)
+                            {
+                                <section class="facet">
+
+                                    <h4 class="module-title facet-title">
+                                        <span class="title-text">@Resources.Strings.Categories</span>
+                                        <span class="title" data-target="#facet_8364" data-toggle="collapse" aria-expanded="true" role="button">
+                                            <span class="navbar-toggler collapse-icons">
+                                                <svg class="svgic svgic-updown">
+                                                    <path d="M8 2.194c0 .17-.062.34-.183.47L4.44 6.275c-.117.126-.275.197-.44.197-.165 0-.323-.07-.44-.194L.184 2.666c-.242-.26-.243-.68 0-.94.243-.26.637-.26.88 0L4 4.866l2.937-3.14c.243-.26.638-.26.88 0 .12.128.183.298.183.468z" />
+                                                    <path d="M7.958,5.554c0-0.223-0.084-0.443-0.253-0.612L4.603,1.835 c-0.334-0.334-0.873-0.334-1.206,0L0.295,4.941c-0.335,0.335-0.337,0.882-0.004,1.22C0.624,6.499,1.166,6.501,1.5,6.165L4,3.663 l2.5,2.502c0.336,0.336,0.877,0.334,1.21-0.004C7.876,5.993,7.958,5.772,7.958,5.554z" />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </h4>
+                                    <div class="nav nav-stacked collapse in" id="facet_8364">
+                                        <ul class="nav nav-stacked " id="accordion1" onclick="myFunctionss()">
+                                            <li class="firstLi @(Request["catID"] ==null || Request["catID"] ==""?"active":"" )" id="item0" onclick="ActiveFun('item0')">
+                                                <a href="~/shop/cats/70169/catvik" class="_gray-darker firstLia" rel="nofollow">
+                                                    @Resources.Strings.All
+
+                                                </a>
+
+                                            </li>
+                                            @{ int item = 1;}
+                                            @foreach (CMS.Category cat in ViewBag.SubCats)
+                                            {
+
+                                                if (cat.HasChildren)
+                                                {
+                                                    List<CMS.Category> ChildrenCats = new List<CMS.Category>();
+                                                    @* ChildrenCats = catsAll.FindAll(x => x.FullPath.Split(',').Any(parent => parent == cat.ID)); *@
+                                                    ChildrenCats = ((CMS.Managers.ProductManager)ViewBag.ProductManager).GetCategoryCategories(cat.ID, ViewBag.CurrentLanguage);
+
+                                                    <li class="firstLi panel @(ChildrenCats.Any(x => Request["catID"] == x.ID.ToString())?" Active left-menu ":"") @(Request["catID"] !=null && Request["catID"] ==cat.ID ?"active ":"" )" id="item@(item)" onclick="ActiveFun('#item@(item)')">
+                                                        <span class="width-100 icon-list">
+                                                            <a class="_gray-darker firstLia width-100" data-toggle="collapse" aria-expanded="@(ChildrenCats.Any(x => Request["catID"] == x.ID.ToString()) ? "true" : "")" href="#Link@(item)" onclick="ActiveFun('#Link@(item)')" rel="nofollow">
+                                                                @cat.Name
+                                                                <i class="fa fa-plus"></i>
+                                                                <i class="fa fa-minus"></i>
+
+                                                            </a>
+                                                        </span>
+
+                                                        <ul id="Link@(item)" class="subULCat collapse @(ChildrenCats.Any(x => Request["catID"] == x.ID.ToString()) ? "in" : "") " aria-expanded="@(ChildrenCats.Any(x => Request["catID"] == x.ID.ToString()) ? "true" : "")">
+                                                            @{ int Count = 1;}
+                                                            @foreach (CMS.Category cat1 in ChildrenCats)
+                                                            {
+                                                                <li class="secondLi @(Request["catID"] !=null && Request["catID"] ==cat1.ID ?"active":"" )" id="Subitem@(item)" @*onclick="ActiveFun('Subitem@(Count)')"*@>
+                                                                    <span>
+                                                                        <a href="~/shop/cats/@cat1.ID/catvik?catID=@cat1.ID&s=@Request["s"]&maxprice-filter=@Request["maxprice-filter"]&minprice-filter=@Request["minprice-filter"]" class="_gray-darker " rel="nofollow">
+                                                                            @cat1.Name
+                                                                        </a>
+                                                                    </span>
+                                                                </li>
+
+                                                            }
+                                                        </ul>
+
+
+
+                                                    </li>
+                                                    Count++;
+                                                }
+                                                else
+                                                {
+                                                    <li class="firstLi @(Request["catID"] !=null && Request["catID"] ==cat.ID ?"active":"" )" id="item@(item)" onclick="ActiveFun('item@(item)')">
+                                                        <span>
+                                                            <a href="~/shop/cats/@cat.ID/catvik?catID=@cat.ID&s=@Request["s"]&maxprice-filter=@Request["maxprice-filter"]&minprice-filter=@Request["minprice-filter"]" class="_gray-darker firstLia" rel="nofollow">
+                                                                @cat.Name
+
+                                                            </a>
+                                                        </span>
+                                                    </li>
+                                                }
+
+                                                item++;
+                                            }
+                                        </ul>
+
+                                    </div>
+                                </section>
+                            }
+
+                            <section class="facet">
+
+                                <!--ALYSUM-->
+                                <h4 class="module-title facet-title">
+                                    <span class="title-text">@Resources.Strings.Price</span>
+                                    <span class="title" data-target="#facet_36654" data-toggle="collapse" aria-expanded="true" role="button">
+                                        <span class="navbar-toggler collapse-icons">
+                                            <svg class="svgic svgic-updown">
+                                                <path d="M8 2.194c0 .17-.062.34-.183.47L4.44 6.275c-.117.126-.275.197-.44.197-.165 0-.323-.07-.44-.194L.184 2.666c-.242-.26-.243-.68 0-.94.243-.26.637-.26.88 0L4 4.866l2.937-3.14c.243-.26.638-.26.88 0 .12.128.183.298.183.468z"></path>
+                                                <path d="M7.958,5.554c0-0.223-0.084-0.443-0.253-0.612L4.603,1.835 c-0.334-0.334-0.873-0.334-1.206,0L0.295,4.941c-0.335,0.335-0.337,0.882-0.004,1.22C0.624,6.499,1.166,6.501,1.5,6.165L4,3.663 l2.5,2.502c0.336,0.336,0.877,0.334,1.21-0.004C7.876,5.993,7.958,5.772,7.958,5.554z"></path>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </h4>
+                                <!--/ALYSUM-->
+                                <label> @Resources.Strings.min </label>
+                                <input class="price-inp" type="number" min="1" id="minPrice" name="minPrice" value="@(Request["minprice-filter"] != null && Request["minprice-filter"] != ""?Request["minprice-filter"]:"0")" />
+                                &nbsp;
+                                <label> @Resources.Strings.max </label>
+                                <input class="price-inp" type="number" min="1" id="maxPrice" name="maxPrice" value="@(Request["maxprice-filter"] != null && Request["maxprice-filter"] != ""?Request["maxprice-filter"]:"100")" />
+
+                                <div class="p-t-20">
+                                    <a class="btn" onclick="savePrice()">@Resources.Strings.Filter</a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="content-wrapper-left" class="content-wrapper wide left-column col-xs-12 col-sm-8 col-md-9">
+                    <section id="main">
+                        <div class="block-category relative">
+                        </div>
+                        <div id="products" class="view_grid">
+                            <div class="product_list_top">
+                                <div id="js-product-list-top" class="products-selection flex-container">
+
+                                    <div>
+                                        <div class="row sort-by-row">
+                                            <span class="hidden-sm-down sort-by">@Resources.Strings.Sortby:</span>
+
+                                            <form id="filtersForm" style="display:none">
+                                                <input type="hidden" id="sort-filter" name="s" value="@Request["s"]" />
+                                                <input type="hidden" id="minprice-filter" name="minprice-filter" value="@Request["minprice-filter"]" />
+                                                <input type="hidden" id="maxprice-filter" name="maxprice-filter" value="@Request["maxprice-filter"]" />
+                                                <input type="hidden" id="catID" name="catID" value="@Request["catID"]" />
+                                            </form>
+                                            <form id="sortform" class="products-sort-order dropdown">
+
+                                                <select id="sortselect" name="s" class="input-block" style="width:auto !important;">
+                                                    <option value="updatedate:d" @(Request["s"] == "updatedate:d" ? "selected" : "")>@Resources.Strings.DateNewFirst</option>
+                                                    <option value="price:a" @(Request["s"] == "price:a" ? "selected" : "")>@Resources.Strings.PriceLowFirst</option>
+                                                    <option value="price:d" @(Request["s"] == "price:d" ? "selected" : "")>@Resources.Strings.PriceHighFirst</option>
+                                                    <option value="name:a" @(Request["s"] == "name:a" ? "selected" : "")>@Resources.Strings.NameAZ</option>
+                                                    <option value="name:d" @(Request["s"] == "name:d" ? "selected" : "")>@Resources.Strings.NameZA</option>
+                                                </select>
+                                            </form>
+                                            <div class="col-sm-3 col-xs-4 hidden-md-up filter-button hidden">
+                                                <button id="search_filter_toggler" class="btn btn-secondary">
+                                                    Filter
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="listing_view">
+                                        <div class="view_btn active smooth02" id="view_grid" title="Grid">
+                                            <svg class="svgic svgic-grid">
+                                                <use xlink:href="#si-grid"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="view_btn  smooth02" id="view_list" title="List">
+                                            <svg class="svgic svgic-list">
+                                                <use xlink:href="#si-list"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 hidden-md-up text-xs-center showing hidden">
+                                        Showing 1-3 of 3 item(s)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product_list">
+                                <div id="js-product-list" class="oh">
+                                    <div class="flex-container grid-container conteiner-plus-marg">
+
+                                        @foreach (CMS.Product prod in ViewBag.Products)
+                                        {
+                                            <article class="product-miniature js-product-miniature" data-id-product="1" data-id-product-attribute="1" itemscope itemtype="http://schema.org/Product">
+                                                @Html.Partial("_SingleProduct", prod)
+                                            </article>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="js-product-list-bottom">
+                            </div>
+
+
+
+                            @{ int limt = Convert.ToInt32(ViewBag.CurrentPage) + 5;
+                                if (limt > ViewBag.Pages) { limt = ViewBag.Pages; }
+                            }
+                            <nav class="pagination flex-container">
+                                <div class="pagination-info">
+
+                                    @*Showing 13-18 of 18 item(s)*@
+
+                                </div>
+
+                                <div class="pages-num">
+
+                                    <ul class="page-list flex-container">
+                                        @if (ViewBag.Pages > 1)
+                                        {
+
+
+                                            <li>
+                                                <a rel="prev" href="~/shop/cats/@(!string.IsNullOrEmpty(Request["catID"]) ? Request["catID"] :"70169")/catvik?catID=@Request["catID"]&p=@(ViewBag.CurrentPage - 1 <= 0 ?"1":ViewBag.CurrentPage - 1)&s=@Request["s"]&maxprice-filter=@Request["maxprice-filter"]&minprice-filter=@Request["minprice-filter"]" class="previous">
+                                                    <svg class="svgic svgic-arrowleft" aria-label="Previous"><use xlink:href="@(ViewBag.Theme=="ar"?"#si-arrowright":"#si-arrowleft")"></use></svg>
+                                                </a>
+                                            </li>
+
+                                            for (int i = ViewBag.CurrentPage > 5 ? ViewBag.CurrentPage - 5 : 1; i <= limt; i++)
+                                            {
+                                                if (i == ViewBag.CurrentPage)
+                                                {
+                                                    <li class="@(ViewBag.CurrentPage == i ? "current" : "")">
+                                                        <a rel="nofollow" href="~/shop/cats/@(!string.IsNullOrEmpty(Request["catID"]) ? Request["catID"] :"70169")/catvik?catID=@Request["catID"]&p=@(i)&s=@Request["s"]&maxprice-filter=@Request["maxprice-filter"]&minprice-filter=@Request["minprice-filter"]" class="">
+                                                            @(i)
+                                                        </a>
+                                                    </li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="@(ViewBag.CurrentPage == i ? "current" : "")">
+                                                        <a rel="nofollow" href="~/shop/cats/@(!string.IsNullOrEmpty(Request["catID"]) ? Request["catID"] :"70169")/catvik?catID=@Request["catID"]&p=@(i)&s=@Request["s"]&maxprice-filter=@Request["maxprice-filter"]&minprice-filter=@Request["minprice-filter"]" class="">
+                                                            @(i)
+                                                        </a>
+                                                    </li>
+                                                }
+                                            }
+
+
+                                            <li>
+                                                <a rel="prev" href="~/shop/cats/@(!string.IsNullOrEmpty(Request["catID"]) ? Request["catID"] :"70169")/catvik?catID=@Request["catID"]&p=@(ViewBag.CurrentPage + 1 > ViewBag.Pages? ViewBag.Pages : ViewBag.CurrentPage + 1)&s=@Request["s"]&maxprice-filter=@Request["maxprice-filter"]&minprice-filter=@Request["minprice-filter"]" class=" previous ">
+                                                    <svg class="svgic svgic-arrowright" aria-label="Next"><use xlink:href="@(ViewBag.Theme=="ar"?"#si-arrowleft":"#si-arrowright")"></use></svg>
+                                                </a>
+
+                                            </li>
+
+                                        }
+                                    </ul>
+
+                                </div>
+                            </nav>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+
+
+@section scripts{
+    <script>
+        setTimeout(() => {
+            const element = document.getElementById("main");
+            element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+        }, 1000);
+    </script>
+    <script>
+        $("#sortselect").change(function () {
+
+            var s = $("#sortselect").val();
+            $("#sort-filter").val(s);
+            $("#filtersForm").submit();
+        });
+
+        function savePrice() {
+            var minPrice = $("#minPrice").val();
+            $("#minprice-filter").val(minPrice);
+            var maxPrice = $("#maxPrice").val();
+            $("#maxprice-filter").val(maxPrice);
+            $("#filtersForm").submit();
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $("body").attr("id", "category");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-fr currency-usd layout-left-column page-category tax-display-enabled category-id-59 category-women category-id-parent-2 category-depth-level-2 pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+    <script>
+        function ActiveFun(id) {
+
+            //$('.left-menu').removeClass('Active').removeClass('left-menu');
+            $(id).toggleClass('Active').addClass('left-menu')
+
+        }
+
+    </script>
+
+
+
+}

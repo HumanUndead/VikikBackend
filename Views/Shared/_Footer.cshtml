@@ -1,0 +1,165 @@
+﻿<footer id="footer" class="relative dir-rtl">
+    <div class="footer-before oh">
+        <div class="row wide">
+            <div class="container">
+            </div>
+        </div>
+    </div>
+    <div class="footer-container oh">
+        <div class="row footer-main">
+            <div class="page-width flex-container" style="justify-content:center !important;">
+                <div id="newsletter_block_left" class="m-l-24 email_subscription block">
+                    <h4  style="margin-bottom: 0 !important;">@Resources.Strings.SubscribeToOurNewsletter</h4>
+                    <div class="block_content">
+
+
+                        <form action="javascript:subscirbe()" id="footerNews" method="post" class="newsletter-form relative">
+                            <div id="formInputs" class="newsletter-form-input relative">
+                                <input id="newsletter-input" class="inputNew newsletter-input" type="email" name="email" placeholder="@Resources.Strings.EnterYourEmailAddress" value="" required />
+                                <svg class="svgic svgic-right-arrow-thin">
+                                    <use xlink:href="#si-right-arrow-thin"></use>
+                                </svg>
+                                <button class="submitNewsletter submit-widget-newsletter " name="submitNewsletter" type="submit">@Resources.Strings.Submit</button>
+                                <input type="hidden" name="action" value="0" />
+                            </div>
+                            <div class="newsletter-form-info" id="formResult" style="        display: none">
+                                <p id="holder"></p>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <div class="link-block">
+                    @*<h4>@Resources.Strings.Products</h4>
+            <ul>
+                <li>
+                    <a id="link-product-page-prices-drop-1" class="cms-page-link" href="#" title="On-sale products">Prices drop</a>
+                </li>
+                <li>
+                    <a id="link-product-page-new-products-1" class="cms-page-link" href="" title="Our new products">New products</a>
+                </li>
+                <li>
+                    <a id="link-product-page-best-sales-1" class="cms-page-link" href="#" title="Our best sales">Best sales</a>
+                </li>
+                <li>
+                    <a id="link-static-page-contact-1" class="cms-page-link" href="#" title="Use our form to contact us">Contact us</a>
+                </li>
+                <li>
+                    <a id="link-static-page-sitemap-1" class="cms-page-link" href="#" title="Lost ? Find what your are looking for">Sitemap</a>
+                </li>
+            </ul>*@
+                </div>
+                <div class="link-block">
+                    <h4>@Resources.Strings.OurCategories</h4>
+                    <ul>
+                        @foreach (var item in ViewBag.Categories)
+                        {
+                            <li>
+                                <a id="link-cms-page-1-2" class="cms-page-link" href="~/shop/@item.ID/viksa34fdz">@item.Name</a>
+                            </li>
+                        }
+
+
+                    </ul>
+                </div>
+                <div class="link-block">
+                    <h4>@Resources.Strings.Quicklinks</h4>
+                    <ul>
+                        <li>
+                            <a id="link-cms-page-1-4" class="cms-page-link" href="/#FEATURED" title="Our terms and conditions of delivery">@Resources.Strings.FeaturedProducts</a>
+                        </li>
+                        <li>
+                            <a id="link-cms-page-2-4" class="cms-page-link" href="/ContactUs" title="Legal notice">@Resources.Strings.ContactUs</a>
+                        </li>
+                        <li>
+                            <a id="link-cms-page-4-4" class="cms-page-link" href="/AboutUs" title="Learn more about us">@Resources.Strings.LegalNotice</a>
+                        </li>
+                        <li>
+                            <a id="link-cms-page-5-4" class="cms-page-link" href="/AboutUs" title="Our secure payment method">@Resources.Strings.SecurePayments</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="text-block hook-displayFooter">
+                    <div class="text-block-wrap">
+                        <h4>@Resources.Strings.ContactDetails</h4>
+                        <div class="tb-sect">
+                            <div class="tb-sect-icon">
+                                <svg class="svgic">
+                                    <use xlink:href="#si-phone"></use>
+                                </svg>
+                            </div>
+                            <div class="tb-sect-text">
+                                @Html.Raw(ViewBag.phone1)
+                                <br /> @Html.Raw(ViewBag.phone2)
+                            </div>
+                        </div>
+                        <div class="tb-sect">
+                            <div class="tb-sect-icon">
+                                <svg class="svgic">
+                                    <use xlink:href="#si-email"></use>
+                                </svg>
+                            </div>
+                            <div class="tb-sect-text">
+                                <a href="#" class="__cf_email__">@Html.Raw(ViewBag.email1)</a>
+                                <br /><a href="#" class="__cf_email__">@Html.Raw(ViewBag.email2)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<script data-cfasync="false" src="/assets/js/email-decode.min.js"></script>*@
+                <script type="6c154a079bf0388ee183c770-text/javascript">
+                    ga('send', 'pageview');
+                </script>
+            </div>
+        </div>
+        <div class="row footer-after">
+            <div class="page-width">
+            </div>
+        </div>
+        <div class="footer-bottom flex-container move-flex-start">
+            <div class="page-width flex-container align-items-center text-center">
+
+
+
+                <div class="footer_text">@Resources.Strings.project_name  |  @Resources.Strings.AllRightsReserved  @Resources.Strings.PoweredBy: &nbsp; <a class="custom-underline " href="http://www.kensoftware.com/" target="_blank"><img class="kenLogo" src="/images/kslogo.png"></a></div>
+                <div class="footer_bottom_hook dib">
+                    <div id="socialnetworks">
+                        <ul class="socialnetworks_menu dib">
+                            <li class="facebook dib">
+                                <a rel="noreferrer" class="smooth02 icon-facebook" title="facebook" target="_blank" href="https://facebook.com/">
+                                    <svg class="dib svgic svgic-facebook">
+                                        <use xlink:href="#si-facebook"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="twitter dib">
+                                <a rel="noreferrer" class="smooth02 icon-twitter" title="twitter" target="_blank" href="https://twitter.com/">
+                                    <svg class="dib svgic svgic-twitter">
+                                        <use xlink:href="#si-twitter"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                      
+                            <li class="youtube dib">
+                                <a rel="noreferrer" class="smooth02 icon-youtube" title="youtube" target="_blank" href="https://youtube.com/">
+                                    <svg class="dib svgic svgic-youtube">
+                                        <use xlink:href="#si-youtube"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="instagram dib">
+                                <a rel="noreferrer" class="smooth02 icon-instagram" title="instagram" target="_blank" href="https://instagram.com/">
+                                    <svg class="dib svgic svgic-instagram">
+                                        <use xlink:href="#si-instagram"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="fb-root"></div>
+</footer>

@@ -1,0 +1,55 @@
+﻿@model CMS.StaticPage
+<div class="site-content">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="~/Index">@Resources.Strings.Home</a></li>
+                <li class="active">@Resources.Strings.WeddingList</li>
+            </ul>
+        </div>
+    </div><!-- /.breadcrumb-wrapper -->
+
+    <div id="primary" class="content-area">
+        <main class="site-main">
+            
+            <div class="light-bg">
+                <div class="inner-top-sm container inner-bottom">
+                    <h2>@Resources.Strings.WeddingList</h2>
+                    <div class="row inner-bottom">
+                        <div class="col-md-8 col-xs-12 col-sm-6 wow fadeInUp" data-wow-delay="0.2s">
+                            <form action="~/lists/page">
+                                <input name="isMail" type="hidden" />
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input type="text" name="listID" class="form-control" placeholder="@Resources.Strings.WeddingListID">
+                                    </div><!-- /.form-group -->
+                                   
+                                    <div class="form-actions row">
+                                        <div class="col-xs-12 col-sm-6">
+
+                                            <input type="submit" class="btn btn-block btn-lg btn-primary" id="gotobtn" value="@Resources.Strings.GoTo">
+                                        </div>
+                                    </div>
+                                    <div id="contactmsg"></div>
+                                </fieldset>
+                            </form>
+                        </div><!-- /.col -->
+                        <div class="col-md-4 col-xs-12 col-sm-6 wow fadeInUp" data-wow-delay="0.4s">
+                            <h2>@Model.Name</h2>
+                            <div class="contact-info">
+                              @Html.Raw(Model.Text)
+                            </div><!-- /.contact-info -->
+                            <div class="form-actions row">
+                                    <a href="~/lists/myweddinglist" class="btn btn-block btn-lg btn-primary">@Resources.Strings.MyWeddingList</a>
+                            </div>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container -->
+            </div>
+        </main><!-- /.site-main -->
+    </div><!-- /.content-area -->
+</div>
+
+
+
+

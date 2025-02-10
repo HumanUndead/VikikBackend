@@ -1,0 +1,105 @@
+﻿@using CMS;
+@{
+    List<Tuple<Product, int>> products = ViewBag.UserProducts;
+    List<Category> categories = ViewBag.ShopCategories;
+
+    string userCatID = "70166,70167,70168";
+}
+<div class="cart container minh-52vh">
+    @if (products.Count >= 1)
+    {
+        <div class="row   m-t-30 m-b-30">
+            <div class="large-8 m-b-30 small-12">
+                <h1 class="m-0">@Resources.Strings.MyLists</h1>
+            </div>
+        </div>
+        <div class="row">
+            @{
+                int counter = 1;
+            }
+            @foreach (var cat in categories)
+            {
+                if (products == null || products.Count < 0 || products.FindAll(x => x.Item1.CategoryID == cat.ID) == null || products.FindAll(x => x.Item1.CategoryID == cat.ID).Count <= 0)
+                {
+                    continue;
+                }
+                <a data-toggle="collapse" class="add-accor @(counter != 1 ? "collapsed" : "")" data-target="#cat@(cat.ID)" href="#cat@(cat.ID)" role="button">
+                    @cat.Name
+                </a>
+                <div class="spec-table small-12 large-12 collapse @(counter==1 ? "show" : "")" id="cat@(cat.ID)">
+                    @foreach (var item in products.FindAll(x => x.Item1.CategoryID == cat.ID))
+                    {
+
+                        <div class="small-12 large-3">
+                            <div class="product-card m-b-30">
+                                <div class="card-top">
+                                    <a href="~/user/ProductDistribution?id=@item.Item1.ID&orderID=@item.Item2">
+                                        <img src="~/@(item.Item1.FullImagePath)_352x440.jpg" />
+                                        <h1>@(!string.IsNullOrEmpty(item.Item1.Name) && item.Item1.Name.Length > 25 ? item.Item1.Name.Substring(0, 24) + "..." : item.Item1.Name)</h1>
+                                    </a>
+                                </div>
+                                <div class="card-bottom">
+                                    <p>@Html.Raw(item.Item1.ShortDescription)</p>
+                                </div>
+                                <div class="card-price">
+                                    <p>
+                                        @Resources.Strings.Price: @item.Item1.FormattedPrice
+                                    </p>
+                                </div>
+                                <div class="card-controlls">
+                                    <a href="~/user/ProductDistribution?id=@item.Item1.ID&orderID=@item.Item2"><i class="fa fa-repeat"></i></a>
+                                    @if (userCatID.Split(',').ToList().Contains(item.Item1.CategoryID))
+                                    {
+                                        <form method="post" action="~/user/DeactivateProduct" class="hide">
+                                            <input type="hidden" name="rt" value="user/UserBought" />
+                                            <input type="hidden" value="@item.Item1.ID" name="id" />
+                                            <input type="submit" class="hide" id="Deactive@(item.Item1.ID)" />
+                                        </form>
+                                        <a onclick="document.getElementById('Deactive@(item.Item1.ID)').click()" title="@(item.Item1.Approved ? Resources.Strings.DeactiveProduct : Resources.Strings.ActiveProduct)"><i class="fa @(item.Item1.Approved ? "fa-ban" : "fa-check-circle") f-color-white"></i></a>
+                                        <a onclick="document.getElementById('Sold@(item.Item1.ID)').click()"  title="@Resources.Strings.Sold"><i class="fa fa-cart-arrow-down f-color-white"></i></a>
+                                        <form method="post" action="~/user/SoldProduct" class="hide">
+                                            <input type="hidden" name="rt" value="user/UserBought" />
+                                            <input type="hidden" value="@item.Item1.ID" name="id" />
+                                            <input type="submit" class="hide" id="Sold@(item.Item1.ID)" />
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                counter++;
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="row m-t-30">
+            <div class="large-12 text-center small-12">
+                <h1>
+                    @Resources.Strings.Opps!
+                </h1>
+                <h1 class="main-title m-t-30">
+                    @Resources.Strings.NothingToRelist
+                </h1>
+            </div>
+            <div class="large-12 small-12">
+                <center class="large-12 small-12">
+                    <div class="small-5">
+                        <a class="custom-btn-5 w-100  f-color-white" href="~/">@Resources.Strings.StartShopping</a>
+                    </div>
+                </center>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section scripts{
+    <script src="~/assets/js/jquery.chained.js"></script>
+}
+
+
+
+

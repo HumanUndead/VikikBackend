@@ -1,0 +1,135 @@
+﻿@using CMS;
+@model List<CMS.Category>
+
+<section class="main-contant-wrapper clearfix" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Resources.Strings.Categories </span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper-left" class="content-wrapper wide left-column col-xs-12 col-sm-12 col-md-12">
+                    <section id="main">
+                        <div class="block-category relative">
+                        </div>
+
+
+                        @*<div class="pk-widget widget-html">
+                            <div class="pts-widget" id="wid-key_1516882733506">
+                                <div class="widget-html block text-block  title_center">
+                                    <div class="widget-inner block_content text-left justify-content-left">
+                                    
+                                        @{ int count = 0;}
+                                        @foreach (var item in Model)
+                                        {
+                                            if (count == 3) { count = 0; }
+                                            if (count == 0) {@Html.Raw("<div class='txt-block'>") }
+
+                                                <div class="txt-block-01 relative col-33">
+                                                    <a href="~/shop/@item.ID/viksa34fdz">
+                                                        <img src="~/@(item.FullImagePath)_406x302.jpg" alt="demo-image" />
+                                                        <div class="txt-block-text"><span class="txt-subtitle color-white">@Resources.Strings.Category</span> <span class="txt-title color-white"> @item.Description<br /><strong>@item.Name</strong></span></div>
+                                                        <a />
+                                                </div>
+
+                                                  
+                                                if (count == 3) {@Html.Raw("<div/>")}
+                                                  count++;
+                                                }
+
+                                               
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>*@
+
+                        <div id="products" class="view_grid">
+                                <div class="product_list">
+                                    <div id="js-product-list" class="oh">
+                                        <div class="flex-container  conteiner-plus-marg">
+                                            @foreach (var item in Model)
+                                            {
+                                                <article class="product-miniature js-product-miniature  col-lg-4 col-md-4 col-xs-12">
+
+                                                    <div class="thumbnail-container relative">
+
+                                                        <div class="thumbnail product-thumbnail relative flex-container">
+
+                                                            <a href="~/shop/@item.ID/viksa34fdz" class="relative subimage-true">
+                                                                @*<img src="~/@(item.FullImagePath)_202x150.jpg" data-src="/@(item.FullImagePath)_202x150.jpg" alt="@item.Name" class="smooth05 cover-image b-lazy" data-full-size-image-url="/@(item.FullImagePath)_202x150.jpg">
+                                                                <img src="~/@(item.FullImagePath)_202x150.jpg" data-src="/@(item.FullImagePath)_202x150.jpg" alt="@item.Name" class="smooth05 cover-image b-lazy" data-full-size-image-url="/@(item.FullImagePath)_202x150.jpg">*@                                
+                                                                <img src="https://via.placeholder.com/202x150" data-src="https://via.placeholder.com/202x150" alt="@item.Name" class="smooth05 cover-image b-lazy" data-full-size-image-url="https://via.placeholder.com/202x150">
+                                                                <img src="https://via.placeholder.com/202x150" data-src="https://via.placeholder.com/202x150" alt="@item.Name" class="smooth05 cover-image b-lazy" data-full-size-image-url="https://via.placeholder.com/202x150">
+                                                            </a>
+                                                            <div class="product-actions">
+                                                                <a href="~/shop/@item.ID/viksa34fdz" class=" btn btn-primary ">
+                                                                    <svg class="svgic svgic-button-cart">
+                                                                        <use xlink:href="#si-eye2"></use>
+                                                                    </svg>
+                                                                </a>
+
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-desc-wrap">
+                                                            <div class="product-description clearfix">
+                                                                <ul class="product-flags">
+                                                                    <li class="new">@item.Name</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </article>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="js-product-list-bottom">
+                                </div>
+                            </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "category");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-fr currency-usd layout-left-column page-category tax-display-enabled category-id-59 category-women category-id-parent-2 category-depth-level-2 pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+
+}

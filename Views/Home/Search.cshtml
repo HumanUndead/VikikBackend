@@ -1,0 +1,153 @@
+﻿@using CMS;
+@model CMS.Product
+@section Styles{
+    @*this*@
+    <style>
+        select#sortselect {
+            width: 16.875rem !important;
+            color: #414141 !important;
+            background: #fff !important;
+            padding: .188rem 1.5rem .188rem 1em !important;
+            font-size: .875rem !important;
+            line-height: 1.5rem !important;
+            cursor: pointer !important;
+            border: 1px solid #dfdfdf !important;
+            min-height: 32px !important;
+        }
+
+        .dropdown:after {
+            content: "";
+            background: none !important;
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            top: 0;
+            right: 10px;
+        }
+
+        .price-inp {
+            height: 32px !important;
+            text-align: center !important;
+            width: 100px;
+        }
+    </style>
+}
+<section class="main-contant-wrapper clearfix" data-location="/templates/layouts/layout-both-columns.tpl" @*style="height: 87vh !important;"*@>
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="/Categories">
+                                <span itemprop="name">@Resources.Strings.Search</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main" class="@(ViewBag.Theme=="ar"?"dir-rtl":"")">
+                        <h2 class="h2">@Resources.Strings.SearchResults</h2>
+                        <div id="products" class="view_grid">
+                            <div class="product_list_top">
+                                <div id="js-product-list-top" class="products-selection flex-container">
+
+                                    <div>
+                                        <div class="row sort-by-row">
+                                            <span class="hidden-sm-down sort-by">@Resources.Strings.Sortby:</span>
+                                            <form id="sortform" class="products-sort-order dropdown">
+
+                                                <select id="sortselect" name="s" class="input-block  ">
+                                                    <option value="updatedate:d" @(Request["s"] == "updatedate:d" ? "selected" : "")>@Resources.Strings.DateNewFirst</option>
+                                                    <option value="price:a" @(Request["s"] == "price:a" ? "selected" : "")>@Resources.Strings.PriceLowFirst</option>
+                                                    <option value="price:d" @(Request["s"] == "price:d" ? "selected" : "")>@Resources.Strings.PriceHighFirst</option>
+                                                    <option value="name:a" @(Request["s"] == "name:a" ? "selected" : "")>@Resources.Strings.NameAZ</option>
+                                                    <option value="name:d" @(Request["s"] == "name:d" ? "selected" : "")>@Resources.Strings.NameZA</option>
+                                                </select>
+
+                                                <input type="hidden" name="sch" class="form-control large-4 mobile-fix-size small-12"  value="@Request["sch"]" />
+                                               
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="listing_view">
+                                        <div class="view_btn active smooth02" id="view_grid" title="Grid">
+                                            <svg class="svgic svgic-grid">
+                                                <use xlink:href="#si-grid"></use>
+                                            </svg>
+                                        </div>
+                                        <div class="view_btn  smooth02" id="view_list" title="List">
+                                            <svg class="svgic svgic-list">
+                                                <use xlink:href="#si-list"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 hidden-md-up text-xs-center showing hidden">
+                                        Showing 1-11 of 11 item(s)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product_list">
+                                <div id="js-product-list" class="oh">
+                                    <div class="flex-container grid-container conteiner-plus-marg">
+                                        @foreach (CMS.Product prod in ViewBag.Products)
+                                        {
+                                            <article class="product-miniature js-product-miniature" data-id-product="1" data-id-product-attribute="1" itemscope itemtype="http://schema.org/Product">
+                                                @Html.Partial("_SingleProduct", prod)
+                                            </article>
+                                        }
+                                        @if (ViewBag.Products == null || ViewBag.Products.Count == 0)
+                                        {
+                                            <p>@Resources.Strings.SorryNoResult</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="js-product-list-bottom">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+
+
+@section scripts{
+
+
+        <script>
+            $("#sortselect").change(function () {
+                $("#sortform").submit();
+            });
+        </script>
+  
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "search");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-fr currency-usd layout-full-width page-search tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+
+}

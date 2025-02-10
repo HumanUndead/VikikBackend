@@ -1,0 +1,117 @@
+﻿@model List<CMS.DirectoryOutlet>
+    <div class="site-content">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="~/Index">@Resources.Strings.Home</a></li>
+
+                <li class="active">@Resources.Strings.Shops</li>
+            </ul>
+        </div>
+    </div><!-- /.breadcrumb-wrapper -->
+    <div id="primary" class="content-area">
+        <main class="site-main container inner-bottom-md">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-md-push-4 col-lg-9 col-lg-push-3">
+                    <div class="control-bar clearfix">
+                        
+                            <form><input type="text" name="shopsearch" class="shopsearch form-control autocomplete" placeholder="@Resources.Strings.SearchShopName"/></form>
+                        
+                        <!-- /.control-bar-right -->
+                    </div><!-- /.control-bar -->
+
+                        @foreach (CMS.DirectoryOutlet item in Model)
+                        {
+                            @Html.Partial("_shopbox", item)
+                        }
+                    
+                    <div class="control-bar clearfix">
+                        <div class="control-bar-right pull-right">
+                            <ul class="pagination">
+                                @if (ViewBag.CurrentPage > 1)
+                                {
+                                    <li>
+                                        <a href="~/shops/@ViewBag.CID?s=@Request["s"]&p=@(ViewBag.CurrentPage-1)&range=@(Request["range"])" aria-label="Prev">
+                                            <span aria-hidden="true"><i class="icon fa fa-angle-left"></i></span>
+                                        </a>
+                                    </li>
+                                }
+                                @for (var i = 1; i <= ViewBag.Pages; i++)
+                                {
+                                    if (i == ViewBag.CurrentPage)
+                                    {
+                                        <li class="current"><a href="#">@i</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="~/shops/@ViewBag.CID?s=@Request["s"]&p=@i&range=@(Request["range"])">@i</a></li>
+                                    }
+                                }
+                                @if (ViewBag.CurrentPage < ViewBag.Pages)
+                                {
+                                    <li>
+                                        <a href="~/shops/@ViewBag.CID?s=@Request["s"]&p=@(ViewBag.CurrentPage+1)&range=@(Request["range"])" aria-label="Next">
+                                            <span aria-hidden="true"><i class="icon fa fa-angle-right"></i></span>
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div><!-- /.control-bar-right -->
+                    </div><!-- /.control-bar -->
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3 col-md-pull-8 col-lg-pull-9">
+                    <aside class="sidebar sidebar-shop">
+                        <div class="product-filters">
+                            <h3>@Resources.Strings.FilterBy</h3>
+                            <div class="widgets">
+                                <aside class="widget widget-categories-filter">
+                                    @if (ViewBag.Category != null)
+                                    {
+                                        <h4 class="widget-title">@ViewBag.Category.Name</h4>
+                                        <ul class="list-filters">
+                                            @foreach (CMS.Category cat in ViewBag.SubCategories)
+                                            {
+                                                <li><a href="~/shops/all/@ViewBag.DirCatID/@ViewBag.Name.Replace(" ","-")/@cat.ID/@cat.Name.Replace(" ", "-").Replace("&", "")">@cat.Name (@cat.ProductCount)</a></li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <h4 class="widget-title">@Resources.Strings.Categories</h4>
+                                        <ul class="list-filters">
+                                            @foreach (CMS.DirectoryCategory cat in ViewBag.Categories)
+                                            {
+                                                <li @(cat.ID==ViewBag.CID?"":"")><a href="~/shops/@cat.ID/@CMS.Helpers.GeneralHelper.CleanForURL(cat.Name)">@cat.Name</a>
+                                            @if (cat.ID == ViewBag.CID)
+                                            {
+                                                <a href="~/shops">
+                                                    <i class="fa fa-times r khaclose"></i>
+                                                </a>
+                                            }
+                                            </li>
+                                            }
+                                        </ul>
+                                    }
+                                </aside><!-- /.widget -->
+                            </div>
+                        </div><!-- /.widget-filters -->
+                    </aside><!-- /.shop-sidebar -->
+                </div>
+            </div>
+        </main>
+    </div><!-- /.content-area -->
+</div>
+
+@section scripts
+{
+<script src="~/assets/js/jquery.autocomplete.min.js"></script>
+    <script type="text/javascript">
+        $('.autocomplete').autocomplete({
+            serviceUrl: '@Url.Content("~/")handlers/shopssearch',
+            onSelect: function (suggestion) {
+                window.location.href = '@(Url.Content("~/"))shop/' + suggestion.data + '/' + suggestion.value.replace(" ","-");
+            }
+        });
+    </script>
+}

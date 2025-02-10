@@ -1,0 +1,65 @@
+﻿<div class="site-content">
+
+    <div class="faq-section" id="faq">
+        <div class="row">
+            <section class="small-12 columns">
+                <h1>@Resources.Strings.FrequentlyAskedQuestions</h1>
+            </section>
+        </div>
+        <div class="row">
+            <ul class="flex-row nav nav-tabs">
+                @{
+                    int counter = 1;
+                }
+                @foreach (CMS.ArticleType item in ViewBag.MainFAQ)
+                {
+                    <li class="flex-item faq-column">
+                        <a href="#ID@(item.ID)" class="@(counter == 1 ? "active show" : "")" data-toggle="tab">
+                            <i class="fa @item.Description"></i>
+                            <h3 class="faq-label">@item.Name</h3>
+                        </a>
+                    </li>
+                    counter++;
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div id="primary" class="content-area">
+        <main class="site-main">
+            <div class="row">
+                <div class="tab-content">
+                    @{
+                        counter = 1;
+                        int subCounter = 1;
+                    }
+                    @foreach (CMS.ArticleType main in ViewBag.MainFAQ)
+                    {
+                        subCounter = 1;
+                        <div id="ID@(main.ID)" class="tab-pane @(counter == 1 ? "fade show in active" : "fade" )">
+                            <div class="panel-group" id="A@(main.ID)">
+                                @foreach (CMS.Article item in ((List<CMS.Article>)ViewBag.FAQs).FindAll(x => x.Typs[0].ID == main.ID))
+                                {
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" class="collapsed" href="#id@(item.ID + item.Typs[0].ID)">@item.Name</a>
+                                            </h4>
+                                        </div>
+                                        <div id="id@(item.ID + item.Typs[0].ID)" data-parent="#A@(main.ID)" class="panel-collapse @(subCounter == 1 ? "in" : "") collapse">
+                                            <div class="panel-body">
+                                               @Html.Raw(item.Description)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    subCounter++;
+                                }
+                            </div>
+                        </div>
+                        counter++;
+                    }
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

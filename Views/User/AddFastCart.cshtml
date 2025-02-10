@@ -1,0 +1,117 @@
+﻿@model CMS.FastCart
+@using CMS
+@{
+
+    List<Category> categories = ViewBag.AddShopCategories;
+
+}
+<div class="bag p-s-20 m-t-30">
+    <div class="row ">
+        @if (Model != null)
+        {
+            <h1>
+
+                @Model.ID
+
+            </h1>
+        }
+        else
+        {
+            <h1>
+                @Resources.Strings.Add @Resources.Strings.FastCart
+            </h1>
+        }
+    </div>
+    @if (true)
+    {
+        <form class="row" enctype="multipart/form-data" method="post" action="@Url.Action("FastCartDoAdd","User")">
+            <div class="large-12 small-12">
+                <input type="hidden" name="id" value="@(Model != null ? Model.ID.ToString() : "")" />
+                <h3 class="speacail-title-h1">@Resources.Strings.AddItem</h3>
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.Category
+                    </label>
+                    @if (Model == null)
+                    {
+                        <select name="mainCatID" id="mainCategory" class="m-b-30" required>
+                            <option value="">@Resources.Strings.PleaseSelectCategory</option>
+                            @foreach (var item in categories.FindAll(x => x.ParentID == "60043"))
+                            {
+                                <option>@item.Name</option>
+                            }
+                        </select>
+                        <label>
+                            @Resources.Strings.SubCategory
+                        </label>
+                        <select name="catID" id="catID" data-chain-to="mainCategory" class="chained m-b-30" required>
+                            <option value="">@Resources.Strings.PleaseSelectCategory</option>
+                            @foreach (var item in categories.FindAll(x => x.ParentID != "60043" && x.ID != "60043" && x.ID != "70163"))
+                            {
+                                <option value="@item.ID" class="@item.ParentID">@item.Name</option>
+                            }
+                        </select>
+                        <select name="subCatID" id="subCatID" data-chain-to="catID" class="chained">
+                            @foreach (var item in categories.FindAll(x => x.ParentID != "60043" && x.ID != "60043" && x.ID != "70163"))
+                            {
+                                <option value="@item.ID" class="@item.ParentID">@item.Name</option>
+                            }
+                        </select>
+                    }
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="large-12 small-12">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="col-md-3">
+                        <div class="product-card m-b-30">
+                            <div class="card-top">
+                                <a href="~/user/AddProduct?id=@item.ID">
+                                    <img src="~/@(item.FullImagePath)_352x440.jpg" />
+                                    <h1>@(!string.IsNullOrEmpty(item.Name) && item.Name.Length > 25 ? item.Name.Substring(0, 24) + "..." : item.Name)</h1>
+                                </a>
+                            </div>
+                            <div class="card-bottom">
+                               
+                            </div>
+                            <div class="card-price">
+                                <p>
+                                    @Resources.Strings.Price: @item.FormattedUnitPrice
+                                </p>
+                                <p>x @item.Quantity</p>
+                            </div>
+                            <div class="card-controlls">
+                                <a href="~/user/RemoveFastCartProduct?id=@item.ID&cartID=@Model.ID"><i class="fa fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="submit" class="custom-btn-7 f-color-white">@(Model == null ? Resources.Strings.Add : Resources.Strings.Edit)</button>
+        </form>
+    }
+</div>
+
+@section scripts{
+    <script src="~/assets/js/jquery.chained.js"></script>
+    <script>
+        $("#catID").chained("#mainCategory");
+        $("#subCatID").chained("#catID");
+        $("#subCatID").hide();
+
+
+        $("#catID").change(function () {
+
+            let options = $('#subCatID option').length;
+            if (options > 1) {
+                $("#subCatID").show();
+            }
+        })
+    </script>
+}
+
+
+
+

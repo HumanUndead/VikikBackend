@@ -1,0 +1,1049 @@
+﻿@using CMS;
+@{
+    List<Category> AllShopCategories = ViewBag.AllShopCategories as List<Category>;
+    List<Product> ListAllProducts = ViewBag.ListAllProducts as List<Product>;
+    Product SingleProduct = ViewBag.SingleProduct as Product;
+    List<Article> SliderHome = ViewBag.SliderHome as List<Article>;
+    List<Article> SliderHomeMobileView = ViewBag.SliderHomeMobileView as List<Article>;
+    List<Product> FeaturedProducts = ViewBag.FeaturedProducts as List<Product>;
+    List<Photo> Brands = ViewBag.Brands as List<Photo>;
+    List<Article> services = ViewBag.services as List<Article>;
+
+}
+@section styles{
+    <meta property="og:title" content="@Resources.Strings.project_name | @Resources.Strings.Home">
+    <meta property="og:description" content="@Resources.Strings.Description_Page">
+    <meta property="og:image" content="../wsimages/Vikik.jpg">
+    <meta property="og:url" content="..">
+    <meta property="twitter:title" content="@Resources.Strings.project_name | @Resources.Strings.Home">
+    <meta property="twitter:description" content="@Resources.Strings.Description_Page">
+    <meta property="twitter:image" content="../wsimages/Vikik.jpg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        section.main-contant-wrapper.clearfix {
+            padding: 0 !important;
+        }
+        /*.pos-relative {
+            position: relative !important;
+        }*/
+        .pageHeader-Transparent {
+            background: rgba(10, 10, 10, 0.5) !important;
+        }
+
+        .map {
+            height: 500px;
+            width: 100%;
+        }
+
+        .map-tools {
+            position: absolute;
+            right: 30px;
+            top: 50px;
+            z-index: 3;
+            width: 348px;
+        }
+
+        .map-filters {
+            background: rgba(255,255,255,.8);
+            background-position: center right 20px;
+            border: 3px solid #B3FFF1;
+            padding-right: 48px;
+        }
+
+            .map-filters input[type="text"] {
+                background: transparent;
+                border: none;
+                font-size: 18px;
+                margin: 0;
+                outline: none;
+                padding: 5px 10px;
+                width: 100%;
+            }
+
+        .map-locations {
+            background-color: #FFF;
+            border: 3px solid #B3FFF1;
+            height: 300px;
+            overflow-y: scroll;
+            position: relative;
+        }
+
+            .map-locations::-webkit-scrollbar {
+                position: absolute;
+                right: 0;
+                width: 7px;
+            }
+
+            .map-locations::-webkit-scrollbar-thumb {
+                background: rgba(0,0,0,.16);
+                border-radius: 14px;
+            }
+
+            .map-locations li {
+                border-bottom: 1px solid #B3FFF1;
+                color: #656565;
+                cursor: pointer;
+                font-size: 15px;
+                line-height: 16px;
+                margin-bottom: 0;
+                padding: 10px;
+                position: relative;
+            }
+
+            .map-locations h6 {
+                color: black;
+                font-size: 15px;
+                margin: 0 0 2px;
+                padding-right: 63px;
+            }
+
+            .map-locations .hours {
+                background-color: #B3FFF1;
+                color: #fff;
+                font-size: 9.75px;
+                font-weight: bold;
+                line-height: 13px;
+                padding: 2px 6px;
+                position: absolute;
+                right: 15px;
+                top: 15px;
+            }
+
+                .map-locations .hours:empty {
+                    display: none;
+                }
+
+                .map-locations .hours.closed {
+                    background: #fff;
+                    border: 1px solid rgba(155, 155, 155, .5);
+                    color: #9B9B9B;
+                }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-locations ul li.empty {
+            cursor: auto;
+            display: none;
+        }
+
+        .map-locations li.active {
+            background-color: rgba(116, 150, 247, .12);
+        }
+
+        .map-locations li::before,
+        .map-tags li::before {
+            display: none;
+        }
+
+        .map-tags {
+            background: rgba(255,255,255,.8);
+            border: 3px solid #B3FFF1;
+            border-top: none;
+            margin-bottom: 10px;
+        }
+
+            .map-tags ul {
+                padding: 12px 16px 2px;
+            }
+
+            .map-tags li {
+                background: #B3FFF1;
+                border-radius: 11px;
+                color: lightslategray;
+                cursor: pointer;
+                display: inline-block;
+                font-size: 13px;
+                margin-bottom: 5px;
+                padding: 2px 5px;
+            }
+
+                .map-tags li.active {
+                    background: aqua;
+                    color: black;
+                }
+
+        @@media (max-width:768px) {
+            .map-tools {
+                padding: 0 5%;
+                position: absolute;
+                right: 0;
+                top: 20px;
+                width: 100%;
+            }
+        }
+
+
+        @@media (max-width :800px) {
+            .map {
+                height: 1000px;
+                width: 100%;
+            }
+
+            .map-locations {
+                height: 200px !important;
+            }
+        }
+        .content-Slider {
+            position: absolute;
+            z-index: 1111111;
+            top: 34%;
+            left: 6%;
+        }
+        .content-Slider h1 ,p{
+            color:#fff;
+        }
+    </style>
+
+}
+
+<section class="main-contant-wrapper clearfix p-b-0 no-margin" data-location="/templates/layouts/layout-both-columns.tpl">
+
+
+
+    @*<div id="owl-demo" class="owl-carousel owl-theme">
+
+            @foreach (var item in SliderHome)
+            {
+                <div class="item">
+                    <div class="back-slider" style="background-image: url('../@(item.FullImagePath)_1519x600.jpg'); margin-top: 100px ">
+                        <div class=" text-slider mt-50 text-align-center">
+
+                            <h1 class="wow  slideInLeft" data-wow-delay="0.4s">@Html.Raw(item.ExtraInfo)</h1>
+                            <p class="text-p">
+                                @Html.Raw(item.Description)
+                            </p>
+                            <div class="text-align-center">
+                                <a href="@Html.Raw(item.Path)" class="btn " style="transition: none 0s ease 0s; line-height: 13px; border-width: 2px; margin: 0px; padding: 10px 22px; letter-spacing: 0px; font-weight: 400; font-size: 14px;color:#fff !important;">@Html.Raw(item.ShortDescription)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+
+        </div>*@
+    <swiper-container class="mySwiper" loop="true" centered-slides="true" autoplay-delay="2000">
+        @foreach (var item in SliderHome)
+        {
+            <swiper-slide class="position-relative">
+                <img src="/@(item.FullImagePath)_1519x600.jpg" />
+
+                <div class="content-Slider">
+                    <h1 class="text-white wow  slideInLeft" data-wow-delay="0.4s">@Html.Raw(item.ExtraInfo)</h1>
+                    <p class="text-white text-p">
+                        @Html.Raw(item.Description)
+                        <div class="text-align-center">
+                            <a href="@Html.Raw(item.Path)" class="btn " style="transition: none 0s ease 0s; line-height: 13px; border-width: 2px; margin: 0px; padding: 10px 22px; letter-spacing: 0px; font-weight: 400; font-size: 14px;color:#fff !important;">@Html.Raw(item.ShortDescription)</a>
+                        </div>
+                    </p>
+                </div>
+            </swiper-slide>
+        }
+
+    </swiper-container>
+
+    <div id="owl-demoMobile" class="owl-carousel owl-theme" style="margin-top: 100px;">
+
+        @foreach (var item in SliderHomeMobileView)
+        {
+            //450x300
+            <div class="item">
+                <div class="back-slider" style="background-image: url('../@(item.FullImagePath)_866x1300.jpg'); margin-top: 20px ;  ">
+                    <div class=" text-slider mt-50 text-align-center">
+
+                        @* <h1 class="wow  slideInLeft" data-wow-delay="0.4s">@Html.Raw(item.ExtraInfo)</h1>
+                            <p class="text-p">
+                                 @Html.Raw(item.Description)
+                             </p>
+                            <div class="text-align-center">
+                                 <a href="@Html.Raw(item.Path)" class="btn " style="transition: none 0s ease 0s; line-height: 13px; border-width: 2px; margin: 0px; padding: 10px 22px; letter-spacing: 1px; font-weight: 400; font-size: 13px;color:#fff !important;">@Html.Raw(item.ShortDescription)</a>
+                             </div>*@
+                    </div>
+                </div>
+            </div>
+
+
+        }
+
+    </div>
+
+
+
+
+
+    <div class="pts-container-wrap mt40">
+        <div class="pts-inner ps-container page-width">
+            <div class="row-inner row-level-1 container">
+                <div class="row clearfix">
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="col-inner  ">
+
+
+                            <div class="pk-widget widget-module dir-rtl">
+                                <div class="pts-widget " id="wid-key_1516882792864">
+                                    <div class="widget-module  title_center">
+                                        <div class="widget-inner text-left justify-content-left">
+                                            @{ int c = 1;}
+                                            <div class="pk-isotope view_grid oh isotope-col-5">
+                                                <div class="page-width v-mobile" uk-filter="target: .js-filtermobile">
+
+
+
+                                                    <div class="option-combo">
+
+                                                        <div class="pk-widget widget-html" style="margin:10px 0px 0px 0px !important;">
+                                                            <div class="widget-html block center-title  title_center ">
+                                                                <h4 class="module-title"><span>@Resources.Strings.BrowseAndShop</span></h4>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="uk-filter  flex-container dragscroll" style="justify-content: initial !important;">
+                                                            @*<h5 class="sitem"><a href="#" style="text-align:center !important" uk-filter-control=".c00" class="allp" onclick="initialize_owl('.owl-slider0')">@Resources.Strings.All </a></h5>*@
+                                                            @foreach (var item in AllShopCategories.Take(4))
+                                                            {
+                                                                <h5 class="sitem">
+                                                                    <a href="#" style="text-align:center !important" uk-filter-control=".filter@(c)" onclick="initialize_owl('.owl-slider@(c)')">
+                                                                        @*@Html.Raw(item.Name)*@
+                                                                        @*<img src="../@(item.FullImagePath)_300x300.png" alt="" />*@
+                                                                        @Html.Raw(item.Name)
+                                                                    </a>
+                                                                </h5>
+                                                                c++;
+                                                            }
+                                                            <h5 class="sitem">
+                                                                <a href="~/shop/cats/70169/catvik" style="text-align:center !important;">
+                                                                    @*<span>@Resources.Strings.Shop</span>*@
+                                                                    @Resources.Strings.Shop
+                                                                </a>
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="block_content  ">
+                                                        <div class="isotope products-module flex-container js-filtermobile ">
+                                                            @{ c = 1;}
+                                                            <div class="owl-carousel owl-theme c00 owl-test  t0 @(ViewBag.Theme=="ar"?"dir-ltr":"")">
+                                                                @foreach (var prod in ListAllProducts)
+                                                                {
+
+                                                                    <article class="item product-miniature js-product-miniature ">
+                                                                        @Html.Partial("_SingleProduct", prod)
+                                                                    </article>
+
+                                                                }
+                                                            </div>
+                                                            @foreach (var item in AllShopCategories)
+                                                            {
+                                                                <div class="owl-carousel owl-theme owl-slider@(c) disNone owl-test filter@(c) @(ViewBag.Theme=="ar"?"dir-ltr":"")">
+                                                                    @foreach (var prod in ListAllProducts.FindAll(x => x.CategoryID == item.ID || (!string.IsNullOrEmpty(x.CategoryParentPath) && x.CategoryParentPath.Split(',').ToList().Find(y => y == item.ID) != null)).Take(10))
+                                                                    {
+
+                                                                        <article class="item product-miniature js-product-miniature ">
+                                                                            @Html.Partial("_SingleProduct", prod)
+                                                                        </article>
+
+                                                                    }
+                                                                </div>
+                                                                c++;
+                                                            }
+
+
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                                @*<div class="page-width v-mobile" uk-filter="target: .js-filtermobile">
+
+                                                        <div class="option-combo">
+                                                            <div class="pk-widget widget-html" style="margin:0px !important;">
+                                                                <div class="widget-html block center-title  title_center ">
+                                                                    <h4 class="module-title"><span>@Resources.Strings.BrowseAndShop</span></h4>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="uk-filter  flex-container dragscroll " style="justify-content: initial !important;">
+                                                                <h5 class="sitem"><a href="#" style="text-align:center !important" uk-filter-control="" class="">@Resources.Strings.All </a></h5>
+
+                                                                @foreach (var item in AllShopCategories)
+                                                                {
+                                                                    <h5 class="sitem"><a href="#" style="text-align:center !important" uk-filter-control=".c@(item.ID)" onclick="initialize_owl('owl-slider@(c)')">@Html.Raw(item.Name)</a></h5>
+                                                                    c++;
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="block_content  ">
+                                                            <div class="isotope products-module flex-container js-filtermobile ">
+                                                                @{ c = 0;}
+                                                                @foreach (var item in AllShopCategories)
+                                                                {
+                                                                    <div class=" owl-carousel owl-theme  owl-slider@(c)">
+                                                                        @foreach (var prod in ListAllProducts.FindAll(x => x.CategoryID == item.ID || (!string.IsNullOrEmpty(x.CategoryParentPath) && x.CategoryParentPath.Split(',').ToList().Find(y => y == item.ID) != null)).Take(10))
+                                                                        {
+
+                                                                            <article class="item product-miniature js-product-miniature c@(item.ID)">
+                                                                                @Html.Partial("_SingleProduct", prod)
+                                                                            </article>
+
+                                                                        }
+                                                                    </div>
+                                                                    c++;
+                                                                }
+
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>*@
+                                                @*<div class="page-width v-mobile" uk-filter="target: .js-filtermobile">
+
+
+
+                                                        <div class="option-combo">
+
+                                                            <div class="pk-widget widget-html" style="margin:0px !important;">
+                                                                <div class="widget-html block center-title  title_center ">
+                                                                    <h4 class="module-title"><span>@Resources.Strings.BrowseAndShop</span></h4>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="uk-filter  flex-container dragscroll " style="justify-content: initial !important;">
+                                                                <h5 class="sitem"><a href="#" style="text-align:center !important" uk-filter-control="" class="">@Resources.Strings.All </a></h5>
+                                                                @foreach (var item in AllShopCategories)
+                                                                {
+                                                                    <h5 class="sitem"><a href="#" style="text-align:center !important" uk-filter-control=".c@(item.ID)">@Html.Raw(item.Name)</a></h5>
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="block_content  ">
+                                                            <div class="isotope products-module flex-container js-filtermobile ">
+                                                                <div id="owl-prod" class="owl-carousel owl-theme"></div>
+                                                                    @foreach (var item in AllShopCategories)
+                                                                    {
+
+                                                                        foreach (var prod in ListAllProducts.FindAll(x => x.CategoryID == item.ID || (!string.IsNullOrEmpty(x.CategoryParentPath) && x.CategoryParentPath.Split(',').ToList().Find(y => y == item.ID) != null)).Take(10))
+                                                                        {
+
+                                                                            <article class="item product-miniature js-product-miniature c@(item.ID)">
+                                                                                @Html.Partial("_SingleProduct", prod)
+                                                                            </article>
+
+                                                                        }
+
+                                                                    }
+
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>*@
+                                                <div class="page-width v-web" uk-filter="target: .js-filterWeb">
+
+                                                    <div class="option-combo">
+                                                        <div class="pk-widget widget-html" style="margin:0px !important;">
+                                                            <div class="widget-html block center-title  title_center ">
+                                                                <h4 class="module-title" style="margin:0 !important"><span>@Resources.Strings.BrowseAndShop</span></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="uk-filter  flex-container dragscroll">
+                                                            <h5 style="margin:10px 0;padding: 0 10px;"><a href="#" uk-filter-control="" class="">@Resources.Strings.All </a></h5>
+                                                            @foreach (var item in AllShopCategories)
+                                                            {
+                                                                <h5 style="margin:10px 0;padding: 0 10px;"><a href="#" uk-filter-control=".c@(item.ID)">@Html.Raw(item.Name)</a></h5>
+                                                            }
+
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="block_content ">
+                                                        <div class="isotope products-module flex-container js-filterWeb">
+                                                            @foreach (var item in AllShopCategories)
+                                                            {
+
+                                                                foreach (var prod in ListAllProducts.FindAll(x => x.CategoryID == item.ID || (!string.IsNullOrEmpty(x.CategoryParentPath) && x.CategoryParentPath.Split(',').ToList().Find(y => y == item.ID) != null)).Take(10))
+                                                                {
+
+                                                                    <article class="product-miniature js-product-miniature c@(item.ID)">
+                                                                        @Html.Partial("_SingleProduct", prod)
+                                                                    </article>
+
+                                                                }
+
+                                                            }
+
+
+                                                        </div>
+                                                        <div class="" style="margin: 5px;text-align:right">
+                                                            <a href="/shop/cats/70169/catvik" class=" " style="padding: 5px;font-size: 16px;color: #ff4c4c !important;margin: 8px;">
+                                                                @Resources.Strings.AllShops
+                                                                <svg class="svgic svgic-right-arrow-thin" style="height: 29px!important;">
+                                                                    <use xlink:href="#si-right-arrow-thin"></use>
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pk-widget widget-html m-b-20">
+                                <div class="pts-widget" id="wid-key_1516884351795">
+                                    <div class="widget-html block center-title  title_center">
+                                        <div class="widget-inner block_content text-left justify-content-left">
+                                            <h4 class="module-title"><span>@Html.Raw(ViewBag.servicesTitle.Name)</span></h4>
+                                            <div class="description-block flex-container text-align-center">
+                                                @{int count = 0; int s = 0; }
+                                                @for (int i = 0; i < 3; i++)
+                                                {
+                                                    count = 0;
+                                                    <div class="desc-block-01">
+                                                        @foreach (var item in services.Skip(s))
+                                                        {
+                                                            <div class="desc-item-01">
+                                                                <img src="~/@(item.FullImagePath)_70x70.jpg" />
+                                                                <h6>@Html.Raw(item.Name)</h6>
+                                                                <div class="desc-block-text">@Html.Raw(item.Description)</div>
+                                                            </div>
+                                                            count++;
+                                                            s++;
+                                                            if (count > 1) { break; }
+
+
+                                                        }
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*...remove section  pts-container-wrap...*@
+                                <section id="content" class="page-content card card-block mt40">
+                                    <div class="row contact-page">
+                                        <section class="contact-form-map col-sm-12 col-md-12">
+                                            <div style="position:relative !important;">
+                                                <div class="map-tools">
+                                                    <div class="map-filters">
+                                                        <input class="map-text-filter" type="text" placeholder="Search" />
+                                                    </div>
+                                                    <div class="map-tags">
+                                                        <ul>
+                                                            <li>Amman</li>
+                                                            <li>Zarqa</li>
+                                                            <li>Jarash</li>
+
+                                                        </ul>
+                                                    </div>
+                                                    <div class="map-locations">
+                                                        <ul id="ulMap">
+                                                            <li class="empty">@Resources.Strings.Nolocations.</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div id="map" class="map"></div>
+                                            </div>
+                                        </section>
+
+                                    </div>
+                                </section>
+
+                                @*<hr />*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div id="popup_this" style="display:none">
+        <span class="button b-close">
+            <span>X</span>
+        </span>
+        <h1>@Html.Raw(ViewBag.POpUp.SubTitle)</h1>
+        <p>@Html.Raw(ViewBag.POpUp.Text)</p>
+        <div>
+            <a href="https://play.google.com/store/apps/details?id=com.kensoftware.vikik&hl=en" target="_blank"><img src="~/wsimages/google-play-app-icon.png" /> </a>
+            <a href="https://apps.apple.com/us/app/vikik/id1445357491"><img src="~/wsimages/app-store-icon.png" target="_blank" /> </a>
+        </div>
+    </div>
+</section>
+
+
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>   
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "index");
+            $("body").attr("class", "");
+        });
+        $("body").addClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGFkRqvjqF3zG1hUrbufLIP9yaCMtG0C0"></script>
+
+    <script>
+        var locations = [
+            {
+                data: {
+                    address: "Khalil As Salem 49-47, Amman",
+                    name: "Tla Al Ali",
+                    tags: ["amman"],
+                    direction: "https://goo.gl/maps/g49CEtHQ27uM3NSA9"
+                },
+                position: {
+                    lat: 31.9991111,
+                    lng: 35.8635891
+                },
+                zoom: 12
+            },
+            {
+                data: {
+                    address: "Unnamed Road, Az-Zarqa",
+                    name: "Zarqa",
+                    tags: ["zarqa"],
+                    direction: "https://goo.gl/maps/KLg547wUPbT2    "
+
+                },
+                position: {
+                    lat: 32.0630278,
+                    lng: 36.0860057
+                },
+                zoom: 12
+            },
+
+            {
+                data: {
+                    address: "Avenue Mall, Salah Al Shaimat St 10, Amman",
+                    name: "Avenue Mall",
+                    tags: ["amman"],
+                    direction: "https://goo.gl/maps/HZbcrEUsaQsEn2QQA"
+
+                },
+                position: {
+                    lat: 31.95725,
+                    lng: 35.8668946
+                },
+                zoom: 12
+            },
+            {
+                data: {
+                    address: "Pr. Rashed St. 185, Amman",
+                    name: "Northern Hashima",
+                    tags: ["amman"],
+                    direction: "https://goo.gl/maps/vbAToQMiUYbsJBWa8"
+
+                },
+                position: {
+                    lat: 31.9712698,
+                    lng: 35.9510683
+                },
+                zoom: 12
+            },
+            {
+                data: {
+                    address: "Ad-Dustour St 115-103, Amman",
+                    name: "Hay Nazzal",
+                    tags: ["amman"],
+                    direction: "https://goo.gl/maps/FHfy9b6gfmoHA4h76"
+
+                },
+                position: {
+                    lat: 31.9344978,
+                    lng: 35.9126291
+                },
+                zoom: 20
+            },
+            {
+                data: {
+                    address: "Unnamed Road, Jarash",
+                    name: "Jerash",
+                    tags: ["jarash"],
+                    direction: "https://goo.gl/maps/QVhirR2gRRTWSL4N7"
+
+                },
+                position: {
+                    lat: 32.2787552,
+                    lng: 35.8939371
+                },
+                zoom: 12
+            }
+        ];
+
+
+        var customMapStyles = [
+            { stylers: [{ hue: "#16a085" }, { saturation: 0 }] },
+            {
+                featureType: "road",
+                elementType: "geometry",
+                stylers: [{ lightness: 100 }, { visibility: "simplified" }]
+            },
+            {
+                featureType: "road",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }]
+            }
+        ];
+
+        (function () {
+            // create a new StyledMapType object, passing it the array of styles.
+            var styledMap = new google.maps.StyledMapType(customMapStyles, {
+                name: "New York Skateparks"
+            });
+
+            // store map locations list wrapper.
+            var mapLocationsEl = $(".map-locations");
+
+            // create a map object, and include the MapTypeId to add to the map type control.
+            var mapOptions = {
+                center: {
+                    lat: 31.9991111,
+                    lng: 35.8635891
+                },
+                mapTypeControl: 0,
+                mapTypeControlOptions: {
+                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, "map_style"]
+                },
+                streetViewControl: 0,
+                zoom: 12,
+                zoomControl: 0
+            };
+
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            // associate the styled map with the MapTypeId and set it to display.
+            map.mapTypes.set("map_style", styledMap);
+            map.setMapTypeId("map_style");
+
+            // store all our location markers.
+            var markers = [];
+
+            // our primary map tools functions.
+            var mapTools = {
+                addMarker: function (location, index) {
+                    var marker = new google.maps.Marker({
+                        id: location.id,
+                        data: location.data,
+                        map: map,
+                        position: location.position,
+                        title: location.data.name
+                    });
+
+                    // create click event listener for each marker.
+                    marker.addListener("click", mapTools.focusOnLocation);
+
+                    // save the marker.
+                    markers.push(marker);
+                },
+                addToList: function (location) {
+                    $("ul", mapLocationsEl).append(
+                        '<li data-id="' +
+                        location.id +
+                        '">' +
+                        "<h6>" +
+                        location.data.name +
+                        "</h6>" + "<span><a href='" + location.data.direction + "'>Gat Direction<a/></span><br/>" +
+                        location.data.address +
+                        "<br />" +
+                        "</li>"
+                    );
+                },
+                filterList: function () {
+                    var filters = {
+                        tags: [],
+                        text: $(".map-text-filter")
+                            .val()
+                            .toLowerCase()
+                    },
+                        visibleMarkers = 0;
+
+                    // add all active tags to array.
+                    $(".map-tags li.active").each(function () {
+                        var val = $(this)
+                            .text()
+                            .toLowerCase();
+                        filters.tags.push(val);
+                    });
+
+                    // check that each marker meets conditions.
+                    markers.forEach(function (marker) {
+                        if (
+                            // marker name or address contains the search string.
+                            (marker.data.name.toLowerCase().indexOf(filters.text) > -1 ||
+                                marker.data.address.toLowerCase().indexOf(filters.text) > -1) &&
+                            // and marker also contains all selected tags.
+                            markerContainsAllTags(marker)
+                        ) {
+                            $('li[data-id="' + marker.id + '"]', mapLocationsEl).show();
+                            marker.setVisible(true);
+                            visibleMarkers++;
+                        } else {
+                            $('li[data-id="' + marker.id + '"]', mapLocationsEl).hide();
+                            marker.setVisible(false);
+                        }
+                    });
+
+                    function markerContainsAllTags(marker) {
+                        var containsAllTags = true;
+
+                        for (var i = 0; i < filters.tags.length; i++) {
+                            if (marker.data.tags.indexOf(filters.tags[i]) === -1) {
+                                containsAllTags = false;
+                                break;
+                            }
+                        }
+
+                        return containsAllTags;
+                    }
+
+                    // show no results message if there are no visible markers.
+                    if (visibleMarkers === 0) {
+                        $(".empty", mapLocationsEl).show();
+                    } else {
+                        $(".empty", mapLocationsEl).hide();
+                    }
+                },
+                focusOnLocation: function () {
+                    var marker = this,
+                        $currentListItem = $('li[data-id="' + marker.id + '"]');
+
+                    // animate (bounce) selecter marker.
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+
+                    // increase zoom.
+                    // map.setZoom(12);
+
+                    // update interactive list active item.
+                    $currentListItem
+                        .addClass("active")
+                        .siblings()
+                        .removeClass("active");
+
+                    // movelist to selected location.
+                    //$(mapLocationsEl).animate(
+                    //    {
+                    //        scrollTop: $currentListItem.position().top
+                    //    },
+                    //    "slow"
+                    //);
+
+                    // move to selected location on map.
+                    map.panTo(marker.position);
+
+                    // animate for duration of one bounce (v3.13).
+                    setTimeout(function () {
+                        marker.setAnimation(null);
+                    }, 700);
+                }
+            };
+
+            // add markers for all locations.
+            locations.forEach(function (location, i) {
+                // use index as unique id.
+                location.id = i;
+
+                mapTools.addMarker(locations[i]);
+                mapTools.addToList(locations[i]);
+            });
+
+            // handle interactive list events.
+            $("ul", mapLocationsEl).on("click", "li", function () {
+                var locationId = $(this).data("id");
+
+                google.maps.event.trigger(markers[locationId], "click");
+            });
+
+            // filtering mechanisms.
+            $(".map-text-filter").bind("keydown keyup", function (e) {
+                mapTools.filterList();
+            });
+
+            $(".map-tags li").click(function (e) {
+                $(this)
+                    .toggleClass("active")
+                    .siblings()
+                    .removeClass("active");
+                mapTools.filterList();
+            });
+        })();
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#owl-demo").owlCarousel({
+                items: 1,
+                //nav: true,
+                loop: true,
+                autoplay: true,
+
+
+            });
+
+        });
+
+        $(document).ready(function () {
+            $("#owl-demoMobile").owlCarousel({
+                items: 1,
+                //nav: true,
+                loop: true,
+                dots: false,
+                autoplay: true,
+
+
+            });
+
+        });
+
+        //    $(document).ready(function () {
+        //        $("#owl-prod").owlCarousel({
+        //            items: 1,
+        //            //nav: true,
+        //            loop: true,
+        //            dots: false,
+        //            autoplay: true,
+        //               responsive:{
+        //    0:{
+        //        items:2
+        //    },
+        //    600:{
+        //        items:3
+        //    },
+        //    1000:{
+        //        items:5
+        //    }
+        //},
+
+        //        });
+
+        //    });
+
+        $(document).ready(function () {
+            //           setTimeout(() => {
+            //for (let i = 1; i < 10; i++) {
+            //    $(".t" + i).addClass("filter" + i);
+            //               }
+            //               $(".allp").click();
+            //           },1000)
+
+
+            //        $(".owl-slider1").owlCarousel({
+            //            items: 1,
+            //            //nav: true,
+            //            loop: true,
+            //            dots: false,
+            //            autoplay: true,
+            //               responsive:{
+            //    0:{
+            //        items:2
+            //    },
+            //    600:{
+            //        items:3
+            //    },
+            //    1000:{
+            //        items:5
+            //    }
+            //}, });
+            $("#owl-featured").owlCarousel({
+                items: 1,
+                //nav: true,
+                loop: true,
+                dots: false,
+                autoplay: true,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 3
+                    },
+                    1000: {
+                        items: 4
+                    }
+                },
+
+
+            });
+            $(".owl-test").owlCarousel({
+                items: 1,
+                //nav: true,
+                loop: true,
+                dots: false,
+                autoplay: true,
+                responsive: {
+                    0: {
+                        items: 2
+                    },
+                    600: {
+                        items: 3
+                    },
+                    1000: {
+                        items: 5
+                    }
+                },
+
+
+            });
+
+            $(".disNone").css("display", "none");
+
+        });
+        function initialize_owl(el) {
+            //alert(el);
+            $(el).owlCarousel({
+                items: 1,
+                loop: true,
+                nav: true,
+                dots: false,
+                responsive: { 0: { items: 2 }, 600: { items: 3 }, 1000: { items: 5 } }
+
+            });
+        }
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            var x = window.matchMedia("(max-width: 800px)")
+           // alert(x.matches)
+           var msg = "@ViewBag.showmessage";
+          if (msg == 1 && x.matches ) {
+           $('#popup_this').bPopup();
+              //$(window).on("load", function () {
+              //          $('#popup_this').bPopup();
+              //      });
+           }
+       });
+    </script>
+
+    @*<script>
+            function myFunction(x) {
+                if (x.matches) { // If media query matches
+                    document.body.style.backgroundColor = "yellow";
+                } else {
+                    document.body.style.backgroundColor = "pink";
+                }
+            }
+
+            var x = window.matchMedia("(max-width: 700px)")
+            myFunction(x) // Call listener function at run time
+            x.addListener(myFunction) // Attach listener function on state changes
+        </script>*@
+}
+

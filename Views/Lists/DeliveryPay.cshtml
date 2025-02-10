@@ -1,0 +1,71 @@
+﻿@model CMS.Cart
+<section>
+    <div class="second-page-container">
+        <div class="block">
+            <div class="container">
+                <div class="breadcrumb-wrapper">
+                    <div class="container">
+                        <ul class="breadcrumb">
+                            <li><a href="~/">@Resources.Strings.Home</a></li>
+                            <li class="active">@Resources.Strings.OrderComplete</li>
+                        </ul>
+                    </div>
+                </div><!-- /.breadcrumb-wrapper -->
+                <div class="row">
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="block-form box-border wow fadeInLeft animated" data-wow-duration="1s">
+                            <h3> <i class="fa fa-info"></i>@Resources.Strings.OrderDetails</h3>
+                            <p>@Resources.Strings.YourOrderNo @Model.OrderID</p>
+                            <hr>
+                            <div>@Resources.Strings.Shipping: @Resources.Strings.Currency @Model.ShippingPrice</div>
+                            <div>@Resources.Strings.Total: @Resources.Strings.Currency @Model.OrderTotal</div>
+                            @if (ViewBag.PreviousBalance>0)
+                            {
+                            <div>@Resources.Strings.PreviousBalance: @Resources.Strings.Currency @ViewBag.PreviousBalance</div>
+                            }
+                            @if (ViewBag.UsedPoints > 0)
+                            {
+                                <div>@Resources.Strings.PointsUsed: @ViewBag.UsedPoints</div>
+                            }
+                            <div>@Resources.Strings.RequiredPayment: @Resources.Strings.Currency @ViewBag.Total</div>
+                            <div>@Resources.Strings.PaymentMethod: @Resources.Strings.PayOnDelivery</div>
+                            <br/>
+                            <h3> <i class="fa fa-info"></i>@Resources.Strings.Cart</h3>
+                            <table class="cart-table table wow fadeInLeft" data-wow-duration="1s">
+                                <thead>
+                                    <tr>
+                                        <th class="card_product_image"></th>
+                                        <th class="card_product_name">@Resources.Strings.Item</th>
+                                        <th class="card_product_quantity">@Resources.Strings.Quantity</th>
+                                        <th class="card_product_price">@Resources.Strings.Price</th>
+                                        <th class="card_product_total">@Resources.Strings.Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ var i = 0; }
+                                    @foreach (CMS.CartItem prod in Model.Items)
+                                    {
+                                        <tr>
+                                            <td class="card_product_image" data-th="Image"><a href="~/shop/@(prod.Item.ProductID)/@(prod.Name.Replace(" ","-").Replace("/","").Replace("&","-").Replace("+","").Replace(".","").Replace(",",""))"><img title="@prod.Name" alt="@prod.Name" src="~/content/products/@(prod.ThumbURL)_400x500.jpg"></a></td>
+                                            <td class="card_product_name" data-th="@prod.Name"><a href="~/shop/@(prod.Item.ProductID)/@(prod.Name.Replace(" ","-").Replace("/","").Replace("&","-").Replace("+","").Replace(".","").Replace(",",""))">@prod.Name</a><br />@prod.Notes</td>
+                                            <td class="card_product_quantity" data-th="Quantity">
+                                                @prod.Quantity
+                                                &nbsp;
+                                                &nbsp;<a href="#"><i class="icon-trash icon-large"></i> </a>
+                                            </td>
+                                            <td class="card_product_price" data-th="Unit Price">@Resources.Strings.Currency @prod.UnitPrice</td>
+                                            <td class="card_product_total" data-th="Total">@Resources.Strings.Currency <span id="total@(i)">@prod.TotalPrice</span></td>
+                                        </tr>
+                                        i++;
+                                    }
+
+                                </tbody>
+                            </table>
+                            <a href="~/" class="btn-default-1">@Resources.Strings.BackHome</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

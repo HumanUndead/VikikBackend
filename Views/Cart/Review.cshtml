@@ -1,0 +1,233 @@
+﻿@model CMS.Cart
+@{
+    CMS.User user = ViewBag.User;
+    //List<CMS.Lookup> City = ViewBag.City;
+}
+
+@section styles{
+    <style>
+        .table-wishlist thead tr th, .table-wishlist tbody tr td {
+            width: 10% !important;
+            text-align: center;
+            vertical-align: baseline;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .table-wishlist tbody tr td {
+            height: 120px;
+        }
+    </style>
+}
+<section class="main-contant-wrapper clearfix dir-rtl" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Resources.Strings.CartReview</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main">
+                        <div class="cart-grid row">
+
+                            <div class="cart-grid-body">
+                                <div class="card cart-container">
+                                    <div class="cart-detailed-totals">
+                                        <span class="addSpan">@Resources.Strings.DeliveryAddress</span>
+                                        <section class="login-form">
+                                            <form id="form-account-create" action="" method="post">
+                                                <input type="submit" id="addressFormSubmit" style="display:none" />
+                                                <div id="account-create">
+                                                    <section>
+
+
+
+                                                        <table class="txt-align-left">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="product-name"><strong class="color-fe0078">@Resources.Strings.Name :</strong> </td>
+                                                                    <td class="product-total">@(ViewBag.CurrentUser.Name)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="product-name"><strong class="color-fe0078">@Resources.Strings.Phone :</strong></td>
+                                                                    <td class="product-total">@Model.OrderAddress.Phone1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="product-name"><strong class="color-fe0078">@Resources.Strings.Email :</strong></td>
+                                                                    <td class="product-total">@(ViewBag.CurrentUser.Email)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="product-name"><strong class="color-fe0078">@Resources.Strings.addressLabel :</strong></td>
+                                                                    <td class="product-total">@Model.OrderAddress.Label</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="product-name"><strong class="color-fe0078">@Resources.Strings.StreetAddress:</strong></td>
+                                                                    <td class="product-total">@Model.OrderAddress.Address1</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="product-name"><strong class="color-fe0078">@Resources.Strings.BuildingNo:</strong></td>
+                                                                    <td class="product-total">@Model.OrderAddress.Address2</td>
+                                                                </tr>
+                                                                @foreach (var item in ViewBag.City)
+                                                                {
+                                                                    if (item.ID.ToString() == Model.OrderAddress.City)
+                                                                    {
+                                                                        <tr>
+                                                                            <td class="product-name"><strong class="color-fe0078">@Resources.Strings.City :</strong></td>
+                                                                            <td class="product-total">@item.Name</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+
+                                                    </section>
+                                                </div>
+                                            </form>
+                                        </section>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="cart-grid-body">
+                                <div class="card cart-container">
+                                    <div class="cart-detailed-totals">
+                                        <span class="addSpan">@Resources.Strings.OrderDetails #@Model.OrderID</span>
+                                        <div class="card-block card-separator">
+
+                                            @foreach (var item in Model.Items)
+                                            {
+                                                <div class="cart-summary-line" id="cart-subtotal-shipping">
+                                                    <span class="label">
+                                                        @item.Name <strong class="product-quantity"> × @item.Quantity</strong>
+                                                    </span>
+                                                    <span class="label">
+                                                        &nbsp;   @Resources.Strings.Color <strocng class="product-quantity"> : @item.Color.Label</strocng>
+                                                    </span>
+                                                    <span class="label">
+                                                        &nbsp;  @Resources.Strings.Size <strocng class="product-quantity"> : @item.Size.Label</strocng>
+                                                    </span>
+                                                    <h6 class="value">
+                                                        <strong><span class="amount">@item.FormattedTotalPrice</span></strong>
+                                                    </h6>
+                                                </div>
+                                            }
+                                            <div class="cart-summary-line" id="cart-subtotal-products">
+                                                <span class="label js-subtotal">
+                                                    @Resources.Strings.Product
+                                                </span>
+                                                <h6 class="value">
+                                                    <strong><span class="amount">@Resources.Strings.Total</span></strong>
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="card-block m-t-10">
+                                            <div class="cart-summary-line cart-total">
+                                                <span class="label">@Resources.Strings.OrderTotal</span>
+                                                <h6 class="value">@Model.FormattedTotalWOShipping</h6>
+                                            </div>
+                                            <div class="cart-summary-line">
+                                                <small class="label">@Resources.Strings.SubTotal</small>
+                                                <h6 class="value">@Model.FormattedTotalWOShipping</h6>
+                                            </div>
+                                        </div>*@
+
+                                    <div class="card-block m-t-10">
+                                        <div class="cart-summary-line cart-total">
+                                            <span class="label">@Resources.Strings.OrderTotal</span>
+                                            <h6 class="value">@Model.FormattedTotal</h6>
+                                        </div>
+                                        <div class="cart-summary-line">
+                                            <small class="label">@Resources.Strings.Shipping</small>
+                                            <h6 class="value">@Model.FormattedShippingPrice</h6>
+                                        </div>
+                                        <div class="cart-summary-line">
+                                            <small class="label">@Resources.Strings.SubTotal</small>
+                                            <h6 class="value">@Model.FormattedTotalWOShipping</h6>
+                                        </div>
+                                        @*<div class="cart-summary-line">
+            <small class="label">@Resources.Strings.Shipping</small>
+            <h6 class="value">@Model.FormattedShippingPrice</h6>
+        </div>*@
+                                    </div>
+                                        <form class="checkout cart-detailed-actions card-block p-t-20" action="~/order/deliverypay" method="post" name="form1" id="form1">
+                                            <input type="hidden" name="PSPID" value="cubicm">
+                                            <input type="hidden" name="ORDERID" value="@Model.OrderID">
+                                            <input type="hidden" name="CURRENCY" value="AED">
+                                            <input type="hidden" name="LANGUAGE" value="en_US">
+                                            <input type="hidden" name="CN" value="@ViewBag.ClientName">
+                                            <input type="hidden" name="EMAIL" value="@ViewBag.ClientEmail">
+                                            <input type="hidden" name="OWNERADDRESS" value="@Model.OrderAddress.Address1">
+                                            <input type="hidden" name="OWNERTOWN" value="@Model.OrderAddress.City">
+                                            <input type="hidden" name="OWNERCTY" value="AE">
+                                            <div class="text-xs-center">
+                                                <button class="button btn btn-big" type="submit"> @Resources.Strings.PlaceYourOrder</button>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                    
+
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+
+@section scripts{
+
+    <script>
+        function checkout() {
+            $("#form1").submit()
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "cart");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-us currency-usd layout-full-width page-cart tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+
+}

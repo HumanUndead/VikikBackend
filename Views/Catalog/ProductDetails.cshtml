@@ -1,0 +1,964 @@
+﻿@using CMS;
+@using System.Configuration;
+@model  CMS.Product
+@{
+    List<CMS.Product> SizesColor = ViewBag.SizesColor as List<CMS.Product>;
+    var ImgUrl = ConfigurationManager.AppSettings["ImgUrl"];
+}
+@section styles{
+    <meta property="og:title" content="@Resources.Strings.project_name | @Model.Name">
+    <meta property="og:description" content="@Model.Description">
+    <meta property="og:image" content="@ImgUrl/wsimages/Vikik.jpg">
+    <meta property="og:url" content="@ImgUrl/Catalog/ProductDetails/@Model.ID">
+    <meta property="twitter:title" content="@Resources.Strings.project_name | @Model.Name">
+    <meta property="twitter:description" content="@Model.Description">
+    <meta property="twitter:image" content="@ImgUrl/wsimages/Vikik.jpg">
+
+    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5df61b960981240012b8c764&product=inline-share-buttons&cms=sop' async='async'></script>
+    <style>
+        /*table tr td, table tr th{
+            width: 100px !important;
+        }*/
+        /*#specTable{
+                width:50% !important;
+            }*/
+
+
+        @@media only screen and (min-width: 1200px) {
+            #specTable {
+                /*width: 50% !important;*/
+                width: 100% !important;
+            }
+        }
+
+        @@media only screen and (max-width:800px) {
+            #specTable {
+                width: 100% !important;
+            }
+        }
+
+        #st-1 .st-btn[data-network='sharethis'] {
+            background-color: #95D03A;
+            border-radius: 0px !important;
+        }
+
+        #st-1 {
+            text-align: left !important;
+        }
+
+        .owl-carousel .owl-nav.disabled, .owl-carousel .owl-dots.disabled {
+            display: block;
+        }
+
+        .color {
+            margin: 3px !important;
+        }
+
+        .circle-color {
+            border-radius: 50%;
+            border: 1px solid #d6d0d0;
+            height: 40px;
+            width: 40px;
+        }
+
+        .size-style {
+            margin: 0 !important
+        }
+
+            .size-style:hover {
+                background-color: #ccc
+            }
+    </style>
+    @if (ViewBag.Theme == "ar")
+    {
+        <style>
+           div#st-1{
+                  text-align: right !important;
+                      margin: 5px;
+            }
+#owl-review .owl-carousel .owl-nav button.owl-prev, .owl-carousel .owl-nav button.owl-next, .owl-carousel button.owl-dot {
+    font-size: 34px !important;
+    padding-bottom:5px;
+    margin-top:0px;
+}
+
+
+       @* #owl-review .owl-prev span{
+            font-size:20px !important;
+        }*@
+button.btn.btn-touchspin.js-touchspin.bootstrap-touchspin-up{
+    border-radius:0px !important;
+}
+        </style>
+
+    }
+    @*<style>
+                .owl-carousel{
+           transform: rotate(90deg);
+           width: 270px;
+           margin-top:100px;
+         }
+        .item{
+           transform: rotate(-90deg);
+         }
+        .owl-carousel .owl-nav{
+           display: flex;
+           justify-content: space-between;
+           position: absolute;
+           width: 100%;
+           top: calc(50% - 33px);
+         }
+        div.owl-carousel .owl-nav .owl-prev, div.owl-carousel .owl-nav .owl-next{
+            font-size:36px;
+            top:unset;
+            bottom: 15px;
+        }
+            </style>*@
+}
+<section class="main-contant-wrapper clearfix dir-rtl" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside> 
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12"> 
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="~/shop/cats/@Model.CategoryID/catvik?catID=@Model.CategoryID&s=&maxprice-filter=&minprice-filter=" @*href="~/shop/@Model.CategoryID/viksa34fdz"*@>
+                                <span itemprop="name">@Html.Raw(Model.CategoryName)</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Html.Raw(Model.Name)</span>
+                            </a>
+                            <meta itemprop="position" content="4">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container prodDet">
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main" data-id_product_attribute="95" data-id_product="12">
+
+                        <div itemprop="brand">
+                            <meta itemprop="name" content="Anchorsea" />
+                        </div>
+                        <div class="row product-page-col page-width">
+                            <div class="col-md-6">
+                                <section class="page-content" id="content">
+                                    <ul class="product-flags"></ul>
+                                    <div class="images-container flex-container" id="product-images-cont">
+                                        <div class="js-qv-mask js-vCarousel mask relative thumb-carousel scroll-box-arrows">
+                                            <ul class="product-images js-qv-product-images js-vCarousel-list flex-container  ">
+                                                <li class="thumb-container">
+                                                    <img class="thumb js-thumb smooth02 selected vikclass" onclick="goDoSomething('#thumbmain')" data-pointe="color@(Model.Color.ID)" id="thumbmain" data-image-medium-src="@ImgUrl/@(Model.FullImagePath ).jpg" data-image-large-src="@ImgUrl/@(Model.FullImagePath ).jpg" src="@ImgUrl/@(Model.FullImagePath ).jpg" alt="" title="" width="100" itemprop="image">
+                                                </li>
+                                                @*@{
+                                                        int counter = 0;
+                                                    }
+                                                    @foreach (string img in Model.ImageList)
+                                                    {
+                                                        <li class="thumb-container">
+                                                            <img class="thumb js-thumb smooth02 selected" id="thumb@(counter)" data-image-medium-src="@ImgUrl/@(Model.FullImagePath +img).jpg" data-image-large-src="~/@(Model.FullImagePath )_467x619.jpg" src="~/@(Model.FullImagePath ).jpg" alt="" title="" width="100" itemprop="image">
+                                                        </li>
+                                                        counter++;
+                                                    }*@
+                                                @if ((!string.IsNullOrEmpty(Model.Color.ToString()) && ViewBag.SizesColor != null) || ViewBag.SizesColor != null && ViewBag.SizesColor.Count > 0 && ((List<Product>)ViewBag.SizesColor).Any(x => x.Quantity > 0) && ViewBag.SizesColor[0].Color.ID != null)
+                                                {
+                                                    List<string> UniListColor = new List<string>();
+
+                                                    int counter = 0;
+                                                    foreach (Product item in ViewBag.SizesColor)
+                                                    {
+                                                        if ((item.Color.ID == Model.Color.ID))
+                                                        {
+                                                            continue;
+                                                        }
+                                                        if (UniListColor.Contains(Convert.ToString(item.Color.ID)))
+                                                        {
+                                                            continue;
+                                                        }
+
+                                                        <li class="thumb-container ">
+                                                            <img class="thumb js-thumb smooth02  vikclass" onclick="goDoSomething('#thumb@(counter)')" data-pointe="color@(item.Color.ID)" id="thumb@(counter)" data-image-medium-src="@ImgUrl/@(item.FullImagePath ).jpg" data-image-large-src="@ImgUrl/@(item.FullImagePath ).jpg" src="@ImgUrl/@(item.FullImagePath ).jpg" alt="" title="" width="100" itemprop="image">
+                                                        </li>
+
+                                                        UniListColor.Add(Convert.ToString(item.Color.ID));
+                                                        counter++;
+                                                    }
+
+                                                }
+                                            </ul>
+                                            <i class="up"><svg class="svgic"><use xlink:href="#si-top-arrow-thin"></use></svg></i>
+                                            <i class="down"><svg class="svgic"><use xlink:href="#si-bottom-arrow-thin"></use></svg></i>
+                                        </div>
+                                        <div class="product-cover">
+                                            <div class="prod-image-zoom smooth500" data-width="500" data-height="650">
+                                                <img class="js-qv-product-cover" src="@ImgUrl/@(Model.FullImagePath ).jpg" alt="" title="" itemprop="image">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                @*review new*@
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-6 product-info-section">
+                                    <a class="product-brand">@Html.Raw(Model.CategoryName)</a>
+                                    <h1 class="h1" itemprop="name">@Html.Raw(Model.Name)</h1>
+                                    <div class="sys-info-section">
+                                        <div class="sys-info flex-container">
+                                            <div class="star_content" itemprop="aggregateRating">
+                                                <div class="max-rating star-container rating-box starHolder">
+                                                    @for (double l = 1; l <= Math.Floor(Model.Rating); l++)
+                                                    {
+                                                        <div class="item_singleStar">
+                                                            <img src="~/wsImages/star_on.png" />
+                                                        </div>
+                                                    }
+                                                    @for (double u = Math.Floor(Model.Rating + 1f); u <= 5; u++)
+                                                    {
+                                                        <div class="item_singleStar">
+                                                            <img src="~/wsImages/star_off.png" />
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                            </div>
+
+                                            <div class="add-review">
+                                                <a class="open-comment-form" href="#">@Resources.Strings.Rate @Model.Rating/5</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sys-info flex-container hidden">@Resources.Strings.Quantity: @Html.Raw(Model.Quantity)</div>
+                                    <input type="hidden" id="QtyModel" value="@Model.Quantity" />
+                                    <div class="product-prices price">
+                                        <div class="product-price h5 " itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                                            <link itemprop="availability" href="" />
+
+
+
+                                            <div class="current-price">
+                                                <span itemprop="price" content="240">@Model.FormattedPrice</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-information">
+                                        @if (Model.Specs.Count() > 0)
+                                        {
+                                            <div id="product-description-short-12 m-b-0" class="short-desc" itemprop="description">
+                                                <br />
+                                                @*<p>@Html.Raw(Model.Description)</p>*@
+                                                <h2 class="">@Resources.Strings.Description</h2>
+                                                <table id="specTable" class="m-0">
+                                                    @foreach (var item in Model.Specs)
+                                                    {
+                                                        @*<strong>@item.Name:&nbsp; &nbsp; &nbsp; &nbsp;</strong>@item.Value <br />*@
+
+                                                        <tr>
+                                                            <th style="@(ViewBag.Theme=="ar"?"text-align:right;width:50%;":"text-align:left;width:50%;")">
+                                                                @item.Name:
+                                                            </th>
+                                                            <td style="@(ViewBag.Theme=="ar"?"text-align:right;width:50%;":"text-align:left;width:50%;")">
+                                                                @item.Value
+                                                            </td>
+                                                        </tr>
+
+
+                                                    }
+                                                </table>
+                                                <br />
+                                            </div>}
+                                        <div class="product-actions">
+                                            <form id="CartForm" action="/cart/add/@Model.ID" name="prodform" method="post">
+                                                <input type="hidden" name="pid" id="pid" value="@Model.ID" />
+                                                <input type="hidden" name="prodSizeColorID" id="prodSizeColorID" value="" />
+                                                <div class="product-variants">
+                                                    @*@if (ViewBag.SizesColor != null)*@
+                                                    @if ((!string.IsNullOrEmpty(Model.Color.ToString()) && ViewBag.SizesColor != null) || ViewBag.SizesColor != null && ViewBag.SizesColor.Count > 0 && ((List<Product>)ViewBag.SizesColor).Any(x => x.Quantity > 0) && ViewBag.SizesColor[0].Color.ID != null)
+
+                                                    {
+                                                        <div class="clearfix product-variants-item">
+                                                            <span class="control-label">@Resources.Strings.Color</span>
+                                                            <ul id="group_3" class="type-color">
+                                                                @if (true || Model.Quantity > 0)
+                                                                {
+                                                                    <li class="pull-xs-left relative input-container circle-color" id="color@(Model.Color.ID)">
+                                                                        <input class="input-color" type="radio" name="color" value="@Model.Color.ID" onclick="changeImageCloro(@Model.Color.ID)" required>
+                                                                        <span class="color" style="background-color: @Model.Color.Value"><span class="sr-only">@Model.Color.Label</span></span>
+                                                                    </li>
+                                                                }
+
+
+                                                                @{
+                                                                    List<string> UniListColor = new List<string>();
+                                                                }
+
+                                                                @foreach (Product item in ViewBag.SizesColor)
+                                                                {
+                                                                    //if ((item.Quantity < 1 || item.Color.ID == Model.Color.ID) && SizesColor.FindAll(x => x.Color.ID == Model.Color.ID).Count != SizesColor.Count)
+                                                                    if ((item.Color.ID == Model.Color.ID))
+                                                                    {
+                                                                        continue;
+                                                                    }
+                                                                    if (UniListColor.Contains(Convert.ToString(item.Color.ID)))
+                                                                    {
+                                                                        continue;
+                                                                    }
+                                                                    <li class="pull-xs-left relative input-container circle-color" id="color@(item.Color.ID)">
+                                                                        <input class="input-color" type="radio" name="color" value="@item.Color.ID" onclick="changeImageCloro(@item.Color.ID)" required>
+                                                                        <span class="color" style="background-color: @item.Color.Value"><span class="sr-only">@item.Color.Label</span></span>
+                                                                    </li>
+                                                                    UniListColor.Add(Convert.ToString(item.Color.ID));
+                                                                }
+
+                                                            </ul>
+                                                        </div>
+                                                    }
+                                                    @if ((!string.IsNullOrEmpty(Model.Size.ToString()) && ViewBag.SizesColor != null) || ViewBag.SizesColor != null && ViewBag.SizesColor.Count > 0 && ((List<Product>)ViewBag.SizesColor).Any(x => x.Quantity > 0) && ViewBag.SizesColor[0].Size.ID != null)
+                                                    {
+                                                        <div class="clearfix product-variants-item">
+                                                            <span class="control-label">@Resources.Strings.Size</span>
+                                                            <ul id="group_1" class="type-size">
+                                                                @if (true || Model.Quantity > 0)
+                                                                {
+                                                                    <li class="pull-xs-left relative input-container size-style first-style" id="Size@(Model.Size.ID)">
+                                                                        <input class="input-color" type="radio" name="size" value="@Model.Size.ID" onclick="changeSize(@Model.Size.ID)" required>
+                                                                        <span><span class="sr-only">@Model.Size.Label</span></span>
+                                                                    </li>
+                                                                }
+
+
+                                                                @{
+                                                                    List<string> UniListSize = new List<string>();
+                                                                }
+
+                                                                @foreach (Product item in ViewBag.SizesColor)
+                                                                {
+                                                                    //if ((item.Quantity < 1 || item.Size.ID == Model.Size.ID) && SizesColor.FindAll(x => x.Size.ID == Model.Size.ID).Count != SizesColor.Count)
+                                                                    if ((item.Size.ID == Model.Size.ID))
+                                                                    {
+                                                                        continue;
+                                                                    }
+                                                                    if (UniListSize.Contains(Convert.ToString(item.Size.ID)))
+                                                                    {
+                                                                        continue;
+                                                                    }
+                                                                    <li class="pull-xs-left relative input-container size-style" id="Size@(item.Size.ID)">
+                                                                        <input class="input-color" type="radio" name="size" value="@item.Size.ID" onclick="changeSize(@item.Size.ID)" required>
+                                                                        <span><span class="sr-only">@item.Size.Label</span></span>
+                                                                    </li>
+                                                                    UniListSize.Add(Convert.ToString(item.Size.ID));
+
+                                                                }
+                                                            </ul>
+                                                            <button id="myButton" style="color:red">View Size Details</button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <section class="product-discounts"></section>
+                                                <div class="product-add-to-cart">
+                                                    @if (Model.Quantity > 0)
+                                                    {
+                                                        <span class="control-label">@Resources.Strings.Quantity</span>
+                                                        <div class="product-quantity">
+                                                            <div class="qty" style="float: inherit !important;">
+                                                                <input type="text" name="quantity" id="quantity_wanted" value="1" min="1" class="input-group">
+                                                            </div>
+                                                            <div class="add flex-container align-items-center" style="float: inherit !important;">
+                                                                <button style="display:none " type="submit" id="submitForm"></button>
+
+                                                                <a class="btn btn-primary add-to-cart smooth05 " style="@(ViewBag.Theme=="ar"?"margin: 2px;":"") ;margin: 0px;display:blook" onclick="FindprodrID()">
+                                                                    @Resources.Strings.AddToCart
+                                                                </a>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    @if (!(ViewBag.IsAdmin is null) && ViewBag.IsAdmin)
+                                                    {
+                                                        <span class="control-label">@Resources.Strings.Edit</span>
+                                                        <div class="product-quantity">
+
+                                                            <div class="add flex-container align-items-center">
+                                                                <a class="btn btn-primary add-to-cart smooth05" onclick="editProd()">
+                                                                    @Resources.Strings.Edit
+                                                                </a>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    <div class="clearfix"></div>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 product-info-section">
+                                    <div class="">
+                                        @if (Model.Reviews != null && Model.Reviews.Count > 0)
+                                        {
+                                      
+                                            <div class="reviewBox owl-carousel owl-theme @(ViewBag.Theme=="ar"?"dir-ltr":"") " id="owl-review">
+                                                @foreach (CMS.ProductReview item in Model.Reviews)
+                                                {
+                                                    <div class="reviewText item">
+
+                                                        @*@item.Rating&nbsp; star / stars*@
+                                                        @if (item.Rating == 5)
+                                                        {
+                                                            <h1> Excellent </h1>
+                                                        }
+                                                        else if (item.Rating == 4)
+                                                        {
+                                                            <h1> Very Good </h1>
+                                                        }
+                                                        else if (item.Rating == 3)
+                                                        {
+                                                            <h1>  Good </h1>
+                                                        }
+                                                        else if (item.Rating == 2)
+                                                        {
+                                                            <h1> Fair </h1>
+                                                        }
+                                                        else if (item.Rating == 1)
+                                                        {
+                                                            <h1> Poor </h1>
+                                                        }
+
+
+                                                        <div class="starHolder">
+                                                            @for (int l = 1; l <= item.Rating; l++)
+                                                            {
+                                                                <div class="item_singleStar">
+                                                                    <img src="~/wsImages/star_on.png" />
+                                                                </div>
+                                                            }
+                                                            @for (int u = item.Rating + 1; u <= 5; u++)
+                                                            {
+                                                                <div class="item_singleStar">
+                                                                    <img src="~/wsImages/star_off.png" />
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        @*@{ User User = ViewBag.MemberManager().GetUser(item.UserID); }*@
+                                                        <p>"@item.Review"</p>
+
+                                                        @if (!(ViewBag.IsAdmin is null) && ViewBag.IsAdmin)
+                                                        {
+                                                            <div class="product-quantity">
+
+                                                                <div class="add flex-container align-items-center">
+                                                                    <a class="btn btn-primary add-to-cart smooth05" onclick="">
+                                                                        @Resources.Strings.Delete
+                                                                    </a>
+
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+
+
+                                                }
+                                            </div>
+                                        }
+
+                                    </div>
+                                    <div>
+                                        @if (ViewBag.CurrentUser != null)
+                                        {
+                                            <form action="~/member/addreview" method="post" class="m-t-10">
+                                                <div id="starHolder">
+                                                    <div class="singleStar" data-weight="1">
+                                                        <img src="~/wsImages/star_on.png" />
+                                                    </div>
+                                                    <div class="singleStar" data-weight="2">
+                                                        <img src="~/wsImages/star_on.png" />
+                                                    </div>
+                                                    <div class="singleStar" data-weight="3">
+                                                        <img src="~/wsImages/star_on.png" />
+                                                    </div>
+                                                    <div class="singleStar" data-weight="4">
+                                                        <img src="~/wsImages/star_on.png" />
+                                                    </div>
+                                                    <div class="singleStar" data-weight="5">
+                                                        <img src="~/wsImages/star_on.png" />
+                                                    </div>
+                                                </div>
+                                                <textarea name="review" id="review" rows="4" cols="40"></textarea>
+                                                <input type="hidden" value="5" name="rate" id="rate" />
+                                                <input type="hidden" value="@Model.ID" name="prodID" />
+                                                <input type="hidden" value="@Model.Name" name="prodName" />
+                                                <br />
+                                                <input type="submit" id="ReviewaddBtn" class="btn btn-primary" value="@(Model.Reviews.Find(x => x.UserID == ViewBag.CurrentUser.ID) != null ? Resources.Strings.ResubmitReview : Resources.Strings.AddReview)" />
+                                            </form>
+                                        }
+                                    </div>
+                                    <div>
+                                        <span id="product-availability" class="flex-container align-items-center p-t-20">
+                                            <svg class="svgic"><use xlink:href="#si-done"></use></svg>&nbsp;
+                                            @if (Model.Quantity > 0)
+                                            {
+                                                @Resources.Strings.itemsInStock
+                                            }
+                                            else
+                                            {
+                                                @Resources.Strings.ItemOutOfStock
+                                            }
+                                        </span>
+                                        <p class="product-minimal-quantity">
+                                            <div class="sharethis-inline-share-buttons m-t-20"></div>
+
+                                        </p>
+                                        @if (ViewBag.CurrentUser != null)
+                                        {
+                                            <div class="flex-container align-items-center">
+                                                <div class="wrap_alert relative dib">
+                                                    <a href="/user/wishlist/add/@Model.ID" class="flex-container align-items-center whislistButton icon-button " title="@Resources.Strings.AddToWishlist">
+                                                        <svg class="svgic">
+                                                            <use xlink:href="#si-like-stroke"></use>
+                                                        </svg><span>@Resources.Strings.AddToWishlist</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    @*<div class="row product-page-col page-width">
+                                            <div class="col-md-2">
+                                                <section class="page-content">
+                                                    <div class="sharethis-inline-share-buttons m-t-20"></div>
+                                                </section>
+                                            </div>
+
+                                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+
+
+
+            @*<div class="tabs-container  tabs-container-cust">
+                <div class="tabs page-width">
+                    <ul class="nav nav-tabs flex-container">
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#product-Reviews" aria-expanded="false"><h5>@Resources.Strings.Reviews</h5></a>
+                        </li>
+
+
+                    </ul>
+                    <div class="tab-content" id="tab-content">
+
+                        <div class="tab-pane fade active in" id="product-Reviews">
+                            <div class="product-description">
+
+                                @if (Model.Reviews != null && Model.Reviews.Count > 0)
+                                {
+
+
+                                    <div class="reviews-product-active2">
+                                        <div class="reviewItem">
+                                            @foreach (CMS.ProductReview item in Model.Reviews)
+                                            {
+
+                                                <div class="mb-30">
+                                                    <div class="starHolder">
+                                                        @for (int l = 1; l <= item.Rating; l++)
+                                                        {
+                                                            <div class="item_singleStar">
+                                                                <img src="~/wsImages/star_on.png" />
+                                                            </div>
+                                                        }
+                                                        @for (int u = item.Rating + 1; u <= 5; u++)
+                                                        {
+                                                            <div class="item_singleStar">
+                                                                <img src="~/wsImages/star_off.png" />
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <p class="Review-text pt-20">@item.Review</p>
+                                                </div>
+
+                                            }
+                                        </div>
+                                    </div>
+
+                                }
+
+
+                            </div>
+                        </div>
+
+
+                    </div>*@
+        </div>
+    </div>
+
+</section>
+
+@section scripts{
+    
+    <script>//This Script To Move From Product Details To Product Details Size 
+        document.getElementById("myButton").onclick = function () {
+            window.location.href = '/Catalog/ProductDetailsSize';
+        };
+    </script>
+
+    <script>
+        $(".singleStar").click(function () {
+            let weight = $(this).attr("data-weight");
+            for (let i = 1; i <= weight; i++) {
+                $("[data-weight=" + i + "]").find("img").attr("src", "/wsImages/star_on.png");
+            }
+            for (let u = parseInt(weight) + parseInt(1); u <= 5; u++) {
+                $("[data-weight=" + u + "]").find("img").attr("src", "/wsImages/star_off.png");
+
+            }
+            $("#rate").val(weight);
+        })
+    </script>
+
+    <script src="~/assets/js/notify.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "product");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-us currency-usd layout-full-width page-product tax-display-enabled product-id-6 product-free-people-what-she-said-lace-tanga-thong product-id-category-61 product-id-manufacturer-5 product-id-supplier-1 product-available-for-order pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+    <script>
+        let prodSizeColor = [];
+
+
+      @if (Model.GroupID.HasValue) {
+        foreach (var item in SizesColor)
+        {
+
+         <text>
+
+    prodSizeColor.push({
+        "ID": '@item.ID',
+        "SIZEID": '@item.Size.ID',
+        "COLORID": '@item.Color.ID',
+        "Qty":@item.Quantity ,
+        "ImagePath": '@item.FullImagePath',
+        "Imgs":'@item.Images'
+    })
+
+         </text>
+
+          }//end foreach
+
+
+       <text>
+         prodSizeColor.push({
+        "ID": '@Model.ID',
+        "SIZEID": '@Model.Size.ID',
+        "COLORID": '@Model.Color.ID',
+        "Qty":@Model.Quantity ,
+        "ImagePath": '@Model.FullImagePath',
+        "Imgs":'@Model.Images'
+
+         })
+     </text>
+
+
+      }//end if
+
+
+            //FindprodrID..2
+        function FindprodrID() {
+            if (!$('#CartForm')[0].checkValidity()) {
+                $("#submitForm").click();
+
+                return;
+            }
+
+
+            @if (Model.GroupID.HasValue) {
+                <text>
+                let usersize = $("input[name=size]:checked").val();
+
+                let usercolor = $("input[name=color]:checked").val();
+
+            let sizes = prodSizeColor.filter(x => x.SIZEID != null && x.SIZEID != "");
+            let colors = prodSizeColor.filter(x => x.COLORID != null && x.COLORID!="");
+            if (sizes.length > 0 && colors.length > 0) {
+                 let product = prodSizeColor.find(x => x.SIZEID == usersize && x.COLORID == usercolor);
+                $("#prodSizeColorID").val(product.ID);
+
+                let quantityWanted = $("#quantity_wanted").val();
+
+
+            if (product.Qty < quantityWanted)
+                window.location = "@Url.Action("TurnErrorPage", "Home")";
+              else
+                    $("#submitForm").click();
+            }
+            else {
+                //NO size
+                if (sizes.length == 0) {
+                    //1
+                    let product = prodSizeColor.find(x => x.COLORID == usercolor);
+                    $("#prodSizeColorID").val(product.ID);
+                    //2
+                    let quantityWanted = $("#quantity_wanted").val();
+                    //3
+                    if (product.Qty < quantityWanted)
+                        window.location = "@Url.Action("TurnErrorPage", "Home")";
+                    //4
+                    else
+                        $("#submitForm").click();
+
+                }
+                //no color
+                else if (colors.length == 0) {
+                    //1
+                    let product = prodSizeColor.find(x => x.SIZEID == usersize);
+                    $("#prodSizeColorID").val(product.ID);
+                    //2
+                    let quantityWanted = $("#quantity_wanted").val();
+                    //3
+                    if (product.Qty < quantityWanted)
+                        window.location = "@Url.Action("TurnErrorPage", "Home")";
+                    //4s
+                    else
+                        $("#submitForm").click();
+                }
+                else {
+                    //1
+                    let pid = $("#pid").val();
+                    $("#prodSizeColorID").val(pid);
+                    //2
+                    let quantityWanted = $("#quantity_wanted").val();
+                    //3
+                    if (product.Qty < quantityWanted)
+                        window.location = "@Url.Action("TurnErrorPage", "Home")";
+                    //4s
+                    else
+                        $("#submitForm").click();
+                }
+            }
+                  </text>
+            }
+            else
+            {
+
+                <text>
+               let QtyModel = $("#QtyModel").val();
+               let quantityWanted = $("#quantity_wanted").val();
+              if (QtyModel < quantityWanted)
+                window.location = "@Url.Action("TurnErrorPage", "Home")";
+              else
+                $("#submitForm").click();
+              </text>
+            }
+
+        }
+
+
+        @*function FindprodrID() {
+            if (!$('#CartForm')[0].checkValidity()) {
+                $("#submitForm").click();
+
+                return;
+            }
+
+
+            @if (Model.GroupID.HasValue) {
+                <text>
+                let usersize = $("input[name=size]:checked").val();
+
+                let usercolor = $("input[name=color]:checked").val();
+
+
+              let sizes = prodSizeColor.filter(x => x.SIZEID != null && x.SIZEID != "");
+            let colors = prodSizeColor.filter(x => x.COLORID != null && x.COLORID!="");
+            if (sizes.length > 0 && colors.length > 0) {
+
+
+                 let product = prodSizeColor.find(x => x.SIZEID == usersize && x.COLORID == usercolor);
+                $("#prodSizeColorID").val(product.ID);
+
+                let quantityWanted = $("#quantity_wanted").val();
+
+
+            if (product.Qty < quantityWanted)
+                window.location = "@Url.Action("TurnErrorPage", "Home")";
+              else
+                    $("#submitForm").click();
+
+
+                 } else {
+                if (sizes.length == 0) {
+                    let product = prodSizeColor.find(x => x.COLORID == usercolor);
+                $("#prodSizeColorID").val(product.ID);
+
+                let quantityWanted = $("#quantity_wanted").val();
+
+
+            if (product.Qty < quantityWanted)
+                window.location = "@Url.Action("TurnErrorPage", "Home")";
+              else
+                    $("#submitForm").click();
+                } else {
+                    let product = prodSizeColor.find(x => x.SIZEID == usersize);
+                $("#prodSizeColorID").val(product.ID);
+
+                let quantityWanted = $("#quantity_wanted").val();
+
+
+            if (product.Qty < quantityWanted)
+                window.location = "@Url.Action("TurnErrorPage", "Home")";
+              else
+                    $("#submitForm").click();
+                }
+            }
+
+                  </text>
+            }
+            else
+            {
+
+                <text>
+               let QtyModel = $("#QtyModel").val();
+               let quantityWanted = $("#quantity_wanted").val();
+              if (QtyModel < quantityWanted)
+                window.location = "@Url.Action("TurnErrorPage", "Home")";
+              else
+                $("#submitForm").click();
+              </text>
+            }
+
+        }*@
+
+        //in hidden save prod id
+
+        function changeImageCloro(ColorID) {
+
+            let domainPath = '@ImgUrl/'
+            $(".type-color li").removeClass("active");
+            $("li#color" + ColorID).addClass("active")
+            let product = prodSizeColor.find(x => x.COLORID == ColorID);
+            //$("#thumbmain").attr("src", "/" + product.ImagePath + ".jpg");
+            //$("#thumbmain").attr("data-image-medium-src", domainPath + "/" + product.ImagePath + ".jpg");
+            //$("#thumbmain").attr("data-image-large-src", domainPath + "/" + product.ImagePath + ".jpg");
+
+            let imgList = product.Imgs.split(',').filter(x => x.trim() != "");
+
+            imgList.map((item, index) => {
+                //$("#thumb" + index).attr("src",domainPath + "/" + product.ImagePath + item + ".jpg");
+                //$("#thumb" + index).attr("data-image-medium-src", domainPath +"/" + product.ImagePath + item + ".jpg");
+                //$("#thumb" + index).attr("data-image-large-src",domainPath + "/" + product.ImagePath + item + ".jpg");
+            })
+            $(".js-qv-product-cover").attr("src", domainPath + "/" + product.ImagePath + ".jpg");
+            $(".js-thumb").on("click", function () {
+                $(".js-qv-product-cover").attr("src", $(this).attr("src"));
+
+            })
+            $('.product-images').children("li").each((index, element) => {
+
+                if ($(element).children("img").attr('data-pointe') == "color" + ColorID) {
+                        $(element).children("img").addClass("selected");
+                    } else {
+                        $(element).children("img").removeClass("selected")
+                    }
+                });
+            setZoomBG();
+
+        }
+
+        $(".js-qv-product-cover").on('click', function () {
+           setZoomBG()
+        })
+
+        function setZoomBG() {
+             setTimeout(() => {
+                $(".prod-image-zoom").css({
+                    'background': 'url(\'' + $('.js-qv-product-cover').attr('src') + '\')',
+                })
+            },0)
+        }
+
+    function changeSize(SizeID) {
+        $(".type-size li").removeClass("active");
+        $("li#Size" + SizeID).addClass("active");
+                //$("li#Size"+SizeID+"span.border" ).addClass("active")
+        }
+        @if (!(ViewBag.IsAdmin is null) && ViewBag.IsAdmin)
+            {
+            <text>
+        function editProd() {
+                       let usersize = $("input[name=size]:checked").val();
+
+                let usercolor = $("input[name=color]:checked").val();
+            let product = prodSizeColor.find(x => x.SIZEID == usersize && x.COLORID == usercolor);
+                    window.location.replace("@ImgUrl/admin/default?mod=pro-p&id=" + product.ID);
+        }
+        </text>
+            }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#owl-prod").owlCarousel({
+                items: 5,
+                //nav: true,
+                loop: true,
+                dots: false,
+                autoplay: true,
+
+
+            });
+
+        });
+
+        $(document).ready(function () {
+            $("#owl-review").owlCarousel({
+                items: 1,
+                nav: true,
+                loop: true,
+                dots: false,
+                autoplay: true,
+
+
+            });
+
+        });
+        //$(".owl-prev").html('<i class="fa fa-arrow-circle-left font-size-40"></i>');
+        //$(".owl-next").html('<i class="fa fa-arrow-circle-right font-size-40"></i>');
+        $(".owl-prev").css("font-size", "20px !important;");
+
+
+
+        function goDoSomething(identifier) {
+            // alert(" data-pointe:" + $(identifier).data('pointe'));
+            let selectedColor = $(identifier).data('pointe');
+            //alert(selectedColor);
+            $("#" + selectedColor).find('input').trigger("click");
+        }
+
+    </script>
+}

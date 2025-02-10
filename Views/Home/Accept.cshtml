@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12 formarea">
+        <h2 class="formtitle">@Resources.Strings.PaymentComplete</h2>
+        @Html.Raw(String.Format(Resources.Strings.PaymentCompleteText,ViewBag.Amount, ViewBag.TransactionReference))
+    </div>
+</div>
+@section scripts
+{
+}

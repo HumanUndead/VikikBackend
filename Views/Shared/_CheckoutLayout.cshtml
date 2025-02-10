@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" lang="en" id="ti-app" ng-csp="no-inline-style" ng-controller="TiAppController">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=10" data-ti-viewport />
+    <link href="~/assets/css/owl.carousel.css" rel="stylesheet" />
+
+
+    <title>
+        @ViewBag.Title
+    </title>
+    <meta name="description" content="@ViewBag.Description" />
+    <meta name="rating " content="general " />
+    <meta name="language " content="English " />
+    <link rel="apple-touch-icon-precomposed " sizes="180x180 " href="~/assets/images/raptor/core/the-iconic-180.png ">
+    <link rel="apple-touch-icon-precomposed " sizes="167x167 " href="~/assets/images/raptor/core/the-iconic-167.png ">
+    <link rel="apple-touch-icon-precomposed " sizes="152x152 " href="~/assets/images/raptor/core/the-iconic-152.png ">
+    <link rel="apple-touch-icon-precomposed " sizes="120x120 " href="~/assets/images/raptor/core/the-iconic-120.png ">
+    <link rel="apple-touch-icon-precomposed " sizes="76x76 " href="~/assets/images/raptor/core/the-iconic-76.png ">
+    <link rel="apple-touch-icon-precomposed " href="~/assets/images/raptor/core/the-iconic-60.png ">
+    <link rel="shortcut icon " href="~/assets/images/raptor/core/favicon.ico " type="image/x-icon " />
+    <link rel="icon " href="~/wsimages/fav.png" type="image/png " />
+    <script src="~/assets/js/modernizr.custom.js"></script>
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet " type="text/css " href="~/assets/css/main.css" />
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet" />
+
+
+    <link href="~/assets/css/animate.css" rel="stylesheet" />
+    <link href="~/assets/css/normalize.css" rel="stylesheet" />
+    <link href="~/assets/css/styles.css" rel="stylesheet" />
+
+    <!-- ================================================= Owl Carousel ==================================== -->
+    <link href="~/assets/css/owl.carousel.css" rel="stylesheet" />
+    <link href="~/assets/css/owl.theme.default.css" rel="stylesheet" />
+    @RenderSection("head",false)
+
+</head>
+<body class="thm-raptor " data-csrf-token="YII_CSRF_TOKEN " data-ti-accept-delegated="navigation " data-ti-breakpoints data-ti-input-mode data-ng-class="{ 'navigation-active': navigation.getActive()} " data-ti-recently-viewed="recent ">
+    <div class="ti-mq ti-mq-small " data-ti-detect-breakpoint="small "></div>
+    <div class="ti-mq ti-mq-medium " data-ti-detect-breakpoint="medium "></div>
+    <div class="ti-mq ti-mq-large " data-ti-detect-breakpoint="large "></div>
+    <div class="ti-mq ti-mq-xlarge " data-ti-detect-breakpoint="xlarge "></div>
+    <div class="font-loader " aria-hidden="true" data-family="Iconic Icons " data-name="iconic-icons ">
+        <div class="content ">
+            <div class="inner-wrapper ">
+                <div class="inner-content "></div>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" async src="data:text/javascript;base64,IWZ1bmN0aW9uKHQsZSl7InVzZSBzdHJpY3QiO2Zvcih2YXIgbj1lLmJvZHksbz1uLnF1ZXJ5U2VsZWN0b3JBbGwoIi5mb250LWxvYWRlciIpLHI9by5sZW5ndGgsbD0ic2Nyb2xsVG9wIixhPSJzY3JvbGxMZWZ0IixpPSJzY3JvbGwiLGM9ImxvYWQiLHU9ImFkZEV2ZW50TGlzdGVuZXIiLGY9InJlbW92ZUV2ZW50TGlzdGVuZXIiLHM9ImdldEF0dHJpYnV0ZSIsZD0iY2hpbGRyZW4iO3ItLTspIWZ1bmN0aW9uKCl7dmFyIGUsbSx2LHksZz1vW3JdLEw9Z1tzXSgiZGF0YS1uYW1lIiksYj1nW3NdKCJkYXRhLWZhbWlseSIpLGg9Z1tkXVswXSx3PWhbZF1bMF0sQT0hMTtnW2FdPXdbYV09MWUzLGdbbF09d1tsXT0xZTMsdj1mdW5jdGlvbigpe3RbZl0oYyx2KSxuLmNsYXNzTmFtZSs9IiAiK0x9LHk9ZnVuY3Rpb24odCl7cmV0dXJuIGZ1bmN0aW9uKG4pe0F8fG4udGFyZ2V0IT10fHwoQT0hMCx2KCksZ1tmXShpLGUpLHdbZl0oaSxtKSl9fSxlPXkoZyksbT15KHcpLHNldFRpbWVvdXQoZnVuY3Rpb24oKXtnW3VdKGksZSwhMSksd1t1XShpLG0sITEpfSksdFt1XShjLHYpLGguc3R5bGUuZm9udEZhbWlseT1ifSgpfSh3aW5kb3csZG9jdW1lbnQpOwo=">
+        //
+    </script>
+    <div id="loadingbar" class="waiting ng-hide" data-ng-cloak data-ti-loading-bar></div>
+    <div id="top-page" class="header-higher">
+
+        @Html.Partial("_CheckoutMenu")
+    
+
+        @RenderBody()
+
+        <footer class="main-footer">
+            <section class="row first-row">
+                <div class="small-12 medium-6 large-5 xlarge-4 columns medium-push-6 large-push-7 xlarge-push-8 footer-newsletter">
+                    <div data-ng-show="customer.is_newsletter_subscribed != 'subscribed'">
+                        <h4 class="list-heading">@Resources.Strings.StayInTouch </h4>
+                        <p class="headline">
+                            <span data-ng-show="customer.is_newsletter_subscribed == 'never-subscribed' && customer.is_raf_program_user === false">
+                                @Resources.Strings.SignUpNewsletter
+                            </span>
+                        </p>
+                        <form id="footerNewsletterForm" class="footerNewsletterForm row" data-ti-newsletter="footer" name="footerNewsletterForm" data-ng-submit="signup()">
+                            <div class="newsletter-widget small-8 columns">
+                                @*<div class="newsletter-gender">
+                                        <select name="gender" data-ng-model="newsletter.gender" data-ti-prevent-zoom>
+                                            <option value="female">Women</option>
+                                            <option value="male">Men</option>
+                                        </select>
+                                    </div>*@
+                                <div class="newsletter-email">
+                                    <input type="email" id="newsletteremail-footer" name="email" class="post-prefix" data-ng-model="newsletter.email" data-ti-prevent-zoom placeholder="@Resources.Strings.SubscribeToOurNewsletter" pattern="^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$" minlength="3" maxlength="40" data-ti-autoselect required />
+                                </div>
+                            </div>
+                            <div class="newsletter-submit small-3 columns">
+                                <button type="submit" id="newsletter-button" class="button small primary action narrow expand">
+                                    <span class="active">@Resources.Strings.Submit</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="small-6 medium-2 medium-pull-6 large-pull-5 xlarge-pull-4 columns">
+                    <h4 class="list-heading">@Resources.Strings.vikik</h4>
+                    <ul>
+                        <li>
+                            <a data-ga-category="Footer Navigation" data-ga-action="Company Info" data-ga-label="Terms &amp; Conditions" href="~/TermsAndConditions" class="ga-track-link-click">@Resources.Strings.TermsAndConditions</a>
+                        </li>
+                        <li>
+                            <a data-ga-category="Footer Navigation" data-ga-action="Company Info" data-ga-label="Privacy &amp; Cookies" href="~/privacypolicy" class="ga-track-link-click">@Resources.Strings.PrivacyPolicy</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="small-6 medium-2 medium-pull-6 large-pull-5 xlarge-pull-4 columns">
+                    <h4 class="list-heading">@Resources.Strings.HelpAndSupport</h4>
+                    <ul class="first">
+                        <li>
+                            <a data-ga-category="Footer Navigation" data-ga-action="Customer Service" data-ga-label="Contact" href="~/faq" class="ga-track-link-click">@Resources.Strings.FAQ</a>
+                        </li>
+                        <li>
+                            <a data-ga-category="Footer Navigation" data-ga-action="Customer Service" data-ga-label="Contact" href="~/contactus" class="ga-track-link-click">@Resources.Strings.Contact</a>
+                        </li>
+                        <li>
+                            <a data-ga-category="Footer Navigation" data-ga-action="Customer Service" data-ga-label="Delivery" href="~/Delivery" class="ga-track-link-click">@Resources.Strings.Delivery</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="small-12 medium-2 medium-pull-6 large-pull-5 xlarge-pull-4 end columns">
+                    <h4 class="list-heading">@Resources.Strings.FollowUs</h4>
+                    <div class="row">
+                        <ul class="small-6 medium-12 columns">
+                            <li>
+                                <a class="ga-track-link-click ga-track-social-link-click" data-social-network="Youtube" data-social-action="Follow" data-ga-category="Footer Navigation" data-ga-action="Social Network" data-ga-label="Youtube" href="" target="_blank" rel="noopener">
+                                    <i class="icon icon-youtube"></i>
+                                    Youtube
+                                </a>
+                            </li>
+                            <li>
+                                <a class="ga-track-link-click ga-track-social-link-click" data-social-network="Facebook" data-social-action="Follow" data-ga-category="Footer Navigation" data-ga-action="Social Network" data-ga-label="Facebook" href="" target="_blank" rel="noopener">
+                                    <i class="icon icon-facebook"></i>
+                                    Facebook
+                                </a>
+                            </li>
+                            <li>
+                                <a class="ga-track-link-click ga-track-social-link-click" data-social-network="Twitter" data-social-action="Follow" data-ga-category="Footer Navigation" data-ga-action="Social Network" data-ga-label="Twitter" href="" target="_blank" rel="noopener">
+                                    <i class="icon icon-twitter"></i>
+                                    Twitter
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section class="row">
+                <div class="small-12 columns">
+                    <hr />
+                </div>
+            </section>
+
+            <section class="third-row p-t-10">
+                <div class="row">
+                    <div class="small-3 medium-2 medium-push-5 columns m-0 footer-vertical-align     text-center">
+                        <h1 class="caps-text footer-logo">@Resources.Strings.vikik</h1>
+                    </div>
+                    <div class="small-8 medium-5 medium-pull-2 columns m-0 footer-vertical-align">
+                        <div class="row">
+                            <div class="small-12 medium-12 columns text-center">
+                                <div>
+                                    @Resources.Strings.Copyright @DateTime.Now.Year @Resources.Strings.AllRightsReserved
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </footer>
+    </div>
+    <script type="text/javascript">
+        window.NREUM || (NREUM = {});
+        NREUM.info = {
+            "beacon": "bam.nr-data.net",
+            "licenseKey": "e59f54dcad",
+            "applicationID": "9152012",
+            "transactionName": "ZVdSYUcHXEYDVUdfClwdc0BGEl1YTV5cWwBCU1dQ",
+            "queueTime": 0,
+            "applicationTime": 36,
+            "atts": "SRBFFw8dTxlAVxEMHk9P",
+            "errorBeacon": "bam.nr-data.net",
+            "agent": ""
+        }
+    </script>
+
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script>
+        var prevClick;
+        $(".mybtn").click(function () {
+            $("body").addClass("navigation-active");
+
+            let myDepart = $(this).attr("data-ti-tab");
+            $("#" + myDepart).addClass("active");
+            if (prevClick !== null) {
+                $("#" + prevClick).removeClass("active");
+            }
+            if (prevClick !== myDepart) {
+                prevClick = myDepart;
+            }
+            else {
+                prevClick = null;
+            }
+            if ($('.department.active').length < 1) {
+                $("body").removeClass("navigation-active");
+            }
+        })
+
+
+
+    </script>
+    <script src="~/assets/js/owl.carousel.js"></script>
+    <script type="text/javascript" src="~/assets/js/three.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/Projector.js"></script>
+    <script type="text/javascript" src="~/assets/js/CanvasRenderer.js"></script>
+    <script type="text/javascript" src="~/assets/js/Bird.js"></script>
+    <script src="~/assets/js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function () {
+         
+            var checkWidth = $(document).width();
+
+            if (checkWidth <= 600) {
+                $("#owl-demo").owlCarousel();
+            }
+
+            $("#account").on('click', function () {
+                $(".account-menu").toggleClass("active")
+            })
+
+        });
+
+    </script>
+    <script>
+        $(".owl-categories").owlCarousel({
+            loop: false,
+            margin: 10,
+            nav: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 4
+                }
+            }
+        });
+    </script>
+    <script>
+        function closeMobileMenu() {
+            $("body").removeClass("navigation-active");
+            $(".department").removeClass("active");
+        }
+
+    </script>
+    <script>
+        var currentWidth = $(window).width();
+        if (currentWidth < 768) {
+            $(".account-menu .close-button").on("click", function () {
+                $(".account-menu.active").removeClass("active")
+            })
+        }
+    </script>
+    @RenderSection("scripts", false)
+</body>
+</html>

@@ -1,0 +1,200 @@
+﻿@using CMS;
+
+@{
+    List<Product> wishlistItems = ViewBag.WishlistProducts == null ? new List<Product>() : ViewBag.WishlistProducts;
+}
+
+
+@section styles{
+    <meta property="og:title" content="@Resources.Strings.project_name | @Resources.Strings.MyOrders">
+    <meta property="og:description" content="@Resources.Strings.Description_Page">
+    <meta property="og:image" content="../wsimages/Vikik.jpg">
+    <meta property="og:url" content="../order/UserOrders">
+    <meta property="twitter:title" content="@Resources.Strings.project_name | @Resources.Strings.MyOrders">
+    <meta property="twitter:description" content="@Resources.Strings.Description_Page">
+    <meta property="twitter:image" content="../wsimages/Vikik.jpg">
+    <style>
+        .v-web .table-wishlist thead tr th, .table-wishlist tbody tr td {
+            width: 20% !important;
+        }
+        .table-wishlist thead tr th, .table-wishlist tbody tr td {
+  
+            text-align: center;
+            vertical-align: baseline;
+            /*display: flex;*/
+            justify-content: center;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .table-wishlist tbody tr td {
+            height: auto;
+             vertical-align: middle;
+        }
+    </style>
+}
+<section class="main-contant-wrapper clearfix dir-rtl" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Resources.Strings.MyOrders</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper m-0" class="content-wrapper">
+                    <section id="main">
+                        <section id="content" class=" page-content card card-block m-0">
+                            <div id="mywishlist" class="mywishlist_17">
+                                <div id="block-history" class="block-center v-web">
+                                    @if (ViewBag.UserOrders != null)
+                                    {
+                                        <table class="table-wishlist table table-bordered m-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-xs-1 col-md-1">@Resources.Strings.OrderID</th>
+                                                    <th class="col-xs-1 col-md-1">@Resources.Strings.Date</th>
+                                                    @*<th class="col-xs-2 col-md-2">@Resources.Strings.addressLabel</th>
+                            <th class="col-xs-1 col-md-1">@Resources.Strings.Address</th>
+                            <th class="col-xs-1 col-md-1">@Resources.Strings.Phone</th>*@
+                                                    <th class="col-xs-2 col-md-2">@Resources.Strings.Total</th>
+                                                    <th class="col-xs-2 col-md-2">@Resources.Strings.Status</th>
+                                                    <th class="col-xs-2 col-md-2">@Resources.Strings.View</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (CMS.Cart item in ViewBag.UserOrders)
+                                                {
+                                                    <tr id="wishlist_48">
+                                                        <td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.OrderID</a> </td>
+                                                        <td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.OrderDate</a> </td>
+                                                        @*<td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.OrderAddress.Label </a> </td>
+                                <td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.OrderAddress.Address1 </a> </td>
+                                <td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.OrderAddress.Phone1 </a> </td>*@
+                                                        <td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.FormattedOrderTotal </a> </td>
+                                                        <td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.Status </a> </td>
+                                                        <td class="col-xs-2 col-md-2"> <a href="~/Order/OrderDetails?id=@item.OrderID">@Resources.Strings.View </a> </td>
+                                                    </tr>
+                                                }
+
+
+
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="row product-content">
+                                            <div class="flex-column m-b-30">
+                                                <center style="width:100%">
+                                                    <h1>
+                                                        @Resources.Strings.Opps!
+                                                    </h1>
+                                                    <h3>
+                                                        @Resources.Strings.EmptyWishlistMessage
+                                                    </h3>
+                                                </center>
+
+
+                                            </div>
+                                            <center style="width:100%">
+                                                <a title="@Resources.Strings.StartShopping" href="~/" class=" custom-btn-4 btn-action btn-block" style="width:250px">@Resources.Strings.StartShopping</a>
+                                            </center>
+                                        </div>
+                                    }
+                                </div>
+
+
+                                <div  class="block-center v-mobile">
+                                    @if (ViewBag.UserOrders != null)
+                                    {
+                                        <table class="table-wishlist table table-bordered" style="padding:5px !important;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:20%">@Resources.Strings.OrderID</th>
+                                                    <th style="width:40%">@Resources.Strings.Date</th>
+                                                    <th style="width:20%">@Resources.Strings.Total</th>
+                                                    <th style="width:20%">@Resources.Strings.View</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (CMS.Cart item in ViewBag.UserOrders)
+                                                {
+                                                    <tr id="wishlist_48">
+                                                        <td style="width:20%"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.OrderID</a> </td>
+                                                        <td style="width:40%"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.OrderDate</a> </td>
+                                                        <td style="width:20%"> <a href="~/Order/OrderDetails?id=@item.OrderID">@item.FormattedOrderTotal </a> </td>
+                                                        <td style="width:20%"> <a href="~/Order/OrderDetails?id=@item.OrderID">@Resources.Strings.View </a> </td>
+                                                    </tr>
+                                                }
+
+
+
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="row product-content">
+                                            <div class="flex-column m-b-30">
+                                                <center style="width:100%">
+                                                    <h1>
+                                                        @Resources.Strings.Opps!
+                                                    </h1>
+                                                    <h3>
+                                                        @Resources.Strings.EmptyWishlistMessage
+                                                    </h3>
+                                                </center>
+
+
+                                            </div>
+                                            <center style="width:100%">
+                                                <a title="@Resources.Strings.StartShopping" href="~/" class=" custom-btn-4 btn-action btn-block" style="width:250px">@Resources.Strings.StartShopping</a>
+                                            </center>
+                                        </div>
+                                    }
+                                </div>
+                                @*<div id="block-order-detail">&nbsp;</div>*@
+
+                            </div>
+                        </section>
+                        <footer class="page-footer"></footer>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "module-pk_wishlist-mywishlist");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-us currency-usd layout-full-width page- tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+}

@@ -1,0 +1,241 @@
+﻿@using CMS;
+@model CMS.Cart
+@{
+    //List<CMS.Lookup> City = ViewBag.City;
+}
+@section styles{
+    <style>
+
+        .cart-table thead tr th, .table-wishlist tbody tr td {
+            text-align: center;
+            vertical-align: baseline;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        tr th, tr td {
+            padding: 5px;
+            border: 1px solid #f6f6f6;
+        }
+
+        table thead tr th {
+            width: 20%;
+        }
+        /*.cart-table tbody tr td {
+            height: 120px;
+        }*/
+    </style>
+
+}
+
+<section class="main-contant-wrapper dir-rtl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Resources.Strings.OrderDetailsSuccess</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section>
+
+                        <div class="">
+                            <div class="modal-header">
+
+                                <strong class="modal-title h6 text-xs-center" id="myModalLabel">@Resources.Strings.OrderComplete</strong>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row p-b-20">
+                                    <div class="col-md-12 divide-right p-t-20">
+                                        <div class="flex-container">
+                                            <table class=" v-web">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="card_product_name">@Resources.Strings.Image</th>
+                                                        <th class="card_product_name">@Resources.Strings.Item</th>
+                                                        <th class="card_product_name">@Resources.Strings.Color</th>
+                                                        <th class="card_product_name">@Resources.Strings.Size</th>
+                                                        <th class="card_product_price">@Resources.Strings.UnitPrice</th>
+                                                        <th class="card_product_total">@Resources.Strings.Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{ var i = 0; }
+                                                    @foreach (CMS.CartItem prod in Model.Items)
+                                                    {
+                                                        Product p = ((List<Product>)ViewBag.Prods).Find(x => x.ID == prod.Item.ProductID.ToString());
+                                                        <tr class="text-align-center">
+                                                            <td class="">
+
+                                                                <img src="~/@(prod.Item.FullImagePath)_300x360.jpg" width="80" />
+                                                            </td>
+                                                            <td class="card_product_image" data-th="Image">
+                                                                <a href="~/shop/@(prod.Item.ProductID)/@(CMS.Helpers.GeneralHelper.CleanForURL(prod.Name))">@prod.Name</a>
+
+                                                                x @prod.Quantity
+                                                            </td>
+                                                            @*<td class="card_product_price vertical-middle" data-th="color"> @prod.Color.Label</td>
+                                <td class="card_product_price vertical-middle" data-th="size"> @prod.Size.Label</td>*@
+                                                            @if (!String.IsNullOrEmpty(p.Color.Label))
+                                                            {
+                                                                <td class="card_product_price vertical-middle" data-th="color"> @p.Color.Label</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="card_product_price vertical-middle" data-th="color" style="text-decoration:line-through">@Resources.Strings.Color</td>
+
+                                                            }
+                                                            @if (!String.IsNullOrEmpty(p.Size.Label))
+                                                            {
+                                                                <td class="card_product_price vertical-middle" data-th="size"> @p.Size.Label</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="card_product_price vertical-middle" style="text-decoration:line-through" data-th="size">@Resources.Strings.Size</td>
+                                                            }
+                                                            <td class="card_product_price vertical-middle" data-th="Unit Price"> @prod.FormattedUnitPrice</td>
+                                                            <td class="card_product_total vertical-middle" data-th="Total"> <span id="total@(i)">@prod.FormattedTotalPrice</span></td>
+                                                        </tr>
+                                                        i++;
+                                                    }
+
+                                                </tbody>
+                                            </table>
+
+
+                                            <table class="  v-mobile">
+                                                <thead>
+                                                    <tr>
+                                                        @*<th class="card_product_name" style="width:20%">@Resources.Strings.Image</th>*@
+                                                        <th class="card_product_name" style="width:40%">@Resources.Strings.Item</th>
+                                                        <th class="card_product_name" style="width:5%">@Resources.Strings.Color</th>
+                                                        <th class="card_product_name" style="width:5%">@Resources.Strings.Size</th>
+                                                        <th class="card_product_price" style="width:15%">@Resources.Strings.UnitPrice</th>
+                                                        <th class="card_product_total" style="width:15%">@Resources.Strings.Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{ var j = 0; }
+                                                    @foreach (CMS.CartItem prod in Model.Items)
+                                                    {
+                                                        Product p = ((List<Product>)ViewBag.Prods).Find(x => x.ID == prod.Item.ProductID.ToString());
+
+                                                        <tr class="text-align-center">
+                                                            @*<td style="width:20%">
+
+                                    <img src="~/@(prod.Item.FullImagePath)_300x360.jpg" width="80" />
+                                </td>*@
+
+                                                            <td class="card_product_image" style="width:40%" data-th="Image">
+                                                                <img src="~/@(prod.Item.FullImagePath)_300x360.jpg" width="80" />
+                                                                <br />
+                                                                <a href="~/shop/@(prod.Item.ProductID)/@(CMS.Helpers.GeneralHelper.CleanForURL(prod.Name))">@prod.Name</a>
+
+                                                                x @prod.Quantity
+                                                            </td>
+                                                            @*<td class="card_product_price vertical-middle" style="width:5%" data-th="color"> @prod.Color.Label</td>
+                                <td class="card_product_price vertical-middle" style="width:5%" data-th="size"> @prod.Size.Label</td>*@
+                                                            @if (!String.IsNullOrEmpty(p.Color.Label))
+                                                            {
+                                                                <td class="card_product_price vertical-middle" style="width:5%" data-th="color"> @p.Color.Label</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="card_product_price vertical-middle" style="width:5% ;text-decoration:line-through" data-th="color"> @Resources.Strings.Color</td>
+                                                            }
+                                                            @if (!String.IsNullOrEmpty(p.Size.Label))
+                                                            {
+                                                                <td class="card_product_price vertical-middle" style="width:5%" data-th="color"> @p.Size.Label</td>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="card_product_price vertical-middle" style="width:5% ;text-decoration:line-through" data-th="color"> @Resources.Strings.Size</td>
+
+                                                            }
+                                                            <td class="card_product_price vertical-middle" style="width:15%" data-th="Unit Price"> @prod.FormattedUnitPrice</td>
+                                                            <td class="card_product_total vertical-middle" style="width:15%" data-th="Total"> <span id="total@(j)">@prod.FormattedTotalPrice</span></td>
+                                                        </tr>
+                                                        i++;
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-4 p-t-20">
+                                        <div class="cart-content">
+                                            <span class="cart-products-count addSpan">@Resources.Strings.Address</span>
+                                            <div>
+                                                <p><strong>@Resources.Strings.Name:</strong>&nbsp;<i>@ViewBag.CurrentUser.Name </i></p>
+                                                <p><strong>@Resources.Strings.Phone:</strong>&nbsp;<i>@Model.OrderAddress.Phone1 </i></p>
+                                                <p><strong>@Resources.Strings.Email:</strong>&nbsp;<i>@(ViewBag.CurrentUser.Email) </i></p>
+                                                <p><strong>@Resources.Strings.addressLabel:</strong>&nbsp;<i>@Model.OrderAddress.Label </i></p>
+                                                <p><strong>@Resources.Strings.StreetAddress:</strong>&nbsp;<i>@Model.OrderAddress.Address1 </i></p>
+                                                <p><strong>@Resources.Strings.BuildingNo:</strong>&nbsp;<i>@Model.OrderAddress.Address2 </i></p>
+                                                @foreach (var item in ViewBag.City)
+                                                {
+                                                    if (item.ID.ToString() == Model.OrderAddress.City)
+                                                    {
+                                                        <p><strong>@Resources.Strings.City:</strong>&nbsp;<i>@item.Name</i></p>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 p-t-20">
+                                        <div class="cart-content">
+                                            <span class="cart-products-count addSpan">@Resources.Strings.Total</span>
+                                            <div>
+                                                <p><strong>@Resources.Strings.SubTotal:</strong>&nbsp;<i>@Model.FormattedTotalWOShipping </i></p>
+                                                <p><strong>@Resources.Strings.Total:</strong>&nbsp;<i>@ViewBag.FormattedTotal </i></p>
+                                                <a href="~/order/UserOrders" class="btn btn-secondary">@Resources.Strings.MyOrders</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "product");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-us currency-usd layout-full-width page-product tax-display-enabled product-id-6 product-free-people-what-she-said-lace-tanga-thong product-id-category-61 product-id-manufacturer-5 product-id-supplier-1 product-available-for-order pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Head -->
+<div class="breadcrumb-wrapper">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="~/Index">@Resources.Strings.Home</a></li>
+            <li class="active">@Resources.Strings.PostNewAd</li>
+        </ul>
+    </div>
+</div>
+<div class="container contents lisitng-grid-layout">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="span12">
+                <div class="main restab">
+                    <div id="horizontalTab">
+                        <ul>
+                            <li><a href="#tab-1"><div class="circle l">1</div> @Resources.Strings.PostType</a></li>
+                            <li><a href="#tab-2"><div class="circle l">2</div> @Resources.Strings.Details </a></li>
+                            <li><a href="#tab-3"><div class="circle l">3</div> @Resources.Strings.Done </a></li>
+
+                        </ul>
+                        <div id="tab-1">
+
+                            
+                        </div>
+                        <div id="tab-2"></div>
+                            <div id="tab-3">
+                                @Html.Raw(String.Format(Resources.Strings.PublishThanks,ViewBag.NewAdLink))
+                                    </div>
+                        
+                        </div>
+                </div>
+            </div>
+        </div><!-- End contents row -->
+
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/js/jquery.responsiveTabs.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#horizontalTab').responsiveTabs({
+            rotate: false,
+            startCollapsed: 'accordion',
+            collapsible: 'accordion',
+            setHash: true,
+            disabled: [0, 1],
+            active: 2
+        });});
+    </script>
+
+}

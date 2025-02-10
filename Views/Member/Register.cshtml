@@ -1,0 +1,218 @@
+﻿@using CMS;
+@using vikik.Models
+@section styles{
+    <meta property="og:title" content="@Resources.Strings.project_name | @Resources.Strings.Register">
+    <meta property="og:description" content="@Resources.Strings.Description_Page">
+    <meta property="og:image" content="../wsimages/Vikik.jpg">
+    <meta property="og:url" content="../Register">
+    <meta property="twitter:title" content="@Resources.Strings.project_name | @Resources.Strings.Register">
+    <meta property="twitter:description" content="@Resources.Strings.Description_Page">
+    <meta property="twitter:image" content="../wsimages/Vikik.jpg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+}
+
+<section class="main-contant-wrapper clearfix dir-rtl height87VH" data-location="/templates/layouts/layout-both-columns.tpl" @*style="height: 87vh !important;"*@>
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="1" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="#">
+                                <span itemprop="name">@Resources.Strings.Register</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main">
+                        <section id="content" class="page-content card card-block">
+                            <div class="authentication-page">
+                                <div class="register-section col-xs-12 col-sm-6">
+                                    <h2>@Html.Raw(ViewBag.NewCustomers.Label)</h2>
+                                    <div class="section-content">
+                                        <p>
+                                            @Html.Raw(ViewBag.NewCustomers.Text)
+                                        </p>
+
+                                    </div>
+                                </div>
+                                <div class="login-section col-xs-12 col-sm-6">
+                                    <h2>
+                                        @Resources.Strings.CreateAnAccount
+
+                                </h2>
+
+                                <section class="login-form">
+                                    @*<form id="form-account-create" action="@Url.Action("Register","Member")" method="post">*@
+                                    <form id="form-account-create" action="@Url.Action("DoAddUser","Member")" method="post">
+                                        <input type="hidden" value="0" name="radAccount" />
+                                        <div id="account-create">
+                                            <input type="hidden" name="rt" value="@(ViewBag.RT ==null || string.IsNullOrEmpty(ViewBag.RT) ? @Url.Action("RegisterSuccess","Member") : ViewBag.RT)" />
+                                            <section>
+                                                <input type="hidden" name="back" value="my-account">
+                                                <div class="form-group row">
+                                                    <div class="col-md-8">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="firstName" id="RegistrationForm_first_name" type="text" value="" placeholder="@Resources.Strings.FirstName" required>
+                                                                    <span class="focus-border"><i></i></span>
+                                                                    <svg class="svgic input-icon">
+                                                                        <use xlink:href="#si-account"></use>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-8">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="lastName" id="RegistrationForm_last_name" type="text" value="" placeholder="@Resources.Strings.LastName" required>
+                                                                    <span class="focus-border"><i></i></span>
+                                                                    <svg class="svgic input-icon">
+                                                                        <use xlink:href="#si-account"></use>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-8">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="phone" id="RegistrationForm_last_name" type="text" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" value="" placeholder="@Resources.Strings.Phone" required>
+                                                                    <span class="focus-border"><i></i></span>
+                                                                    <svg class="svgic input-icon">
+                                                                        <use xlink:href="#si-phone"></use>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-8">
+                                                        <div class="relative">
+                                                            <div class="relative">
+                                                                <div class="icon-true">
+                                                                    <input class="form-control" name="txtEmail" id="RegistrationForm_email" type="email" value="" placeholder="@Resources.Strings.EmailAddress" required>
+                                                                    <span class="focus-border"><i></i></span>
+                                                                    <svg class="svgic input-icon">
+                                                                        <use xlink:href="#si-email"></use>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-8">
+                                                        <div class="relative">
+                                                            <div class="input-group-dis js-parent-focus">
+                                                                <div class="icon-true relative">
+                                                                    <input class="form-control js-child-focus js-visible-password" name="txtPassword" id="password" type="password" placeholder="@Resources.Strings.Password" value="" pattern=".{5,}" required>
+                                                                    <span class="focus-border"><i></i></span>
+                                                                    <svg class="svgic input-icon">
+                                                                        <use xlink:href="#si-password"></use>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control-comment">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                    
+                                                    </div>
+                                                </div>
+                                                <div class="forgot-password flex-container">
+
+                                                    <button class="btn btn-primary form-control-submit" type="submit" id="send" title="Submit" data-storage="false" name="yt0">
+                                                        @Resources.Strings.Register
+                                                    </button>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </form>
+                                </section>
+                                </div>
+                            </div>
+                        </section>
+                        <footer class="page-footer"></footer>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+
+
+
+
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+
+        var msg = '@TempData["msg"]';
+         var toastrType = '@TempData["toastrType"]';
+        if (msg != '')
+        {
+            if (toastrType == "1")
+            {
+                Swal.fire('OOps!', msg, 'error');
+
+            } else {
+                Swal.fire('Hello!', msg, 'success');
+
+            }
+        }
+         
+        
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "authentication");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-us currency-usd layout-full-width page-authentication tax-display-enabled page-customer-account pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+
+}
+
+

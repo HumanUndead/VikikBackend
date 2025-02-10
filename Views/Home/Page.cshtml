@@ -1,0 +1,40 @@
+﻿@using CMS
+
+@{
+    List<Article> articles = ViewBag.Pages;
+    string activeID = ViewBag.PageID;
+}
+<div class="main-section">
+    @Html.Partial("_USPHeader")
+    <div class="container minh-45vh">
+        <div class="row m-t-30">
+            @{
+                int counter = 1;
+            }
+            @foreach (var item in articles.OrderByDescending(x => x.Date))
+            {
+               
+                    <div class="col-md-12">
+                        <center class="page-card-top">
+                            <div class="page-icon">
+                                <img src="~/@(item.FullImagePath)_100x100.png" width="100" />
+                            </div>
+                        </center>
+                        <div class="page-card-content text-center">
+                            <p>
+                                @Html.Raw(item.Description)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("#p@(activeID)").addClass('active')
+    </script>
+    }

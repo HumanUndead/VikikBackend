@@ -1,0 +1,22 @@
+﻿@model List<CMS.Category>
+@{
+    Layout = null;
+}
+
+@foreach (CMS.Category item in Model.FindAll(x => x.ID != "70166"))
+{
+    if (item.ID == "70166")
+    {
+        continue;
+    }
+    <div class="mobile-custom-card">
+        <div class="card-top">
+            <img @Html.Raw(string.IsNullOrEmpty( item.FullImagePath) || item.FullImagePath.Contains("noimg") ? "src='/wsImages/noImage.jpeg'" :  "src='/" + item.FullImagePath +"_635x811.jpg'") />
+        </div>
+        <div class="card-bottom">
+            <div class="title">
+                <a href="~/@ViewBag.Path/@item.ID/@CMS.Helpers.GeneralHelper.CleanForURL(item.Name)">@item.Name</a>
+            </div>
+        </div>
+    </div>
+}

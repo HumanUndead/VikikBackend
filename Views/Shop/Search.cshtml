@@ -1,0 +1,75 @@
+﻿<div class="main-section">
+    @Html.Partial("_USPHeader")
+    <div id="primary" class="content-area">
+        <main class="site-main container inner-bottom-md">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="control-bar clearfix">
+                        <div class="control-bar-left m-t-30 large-12 pull-left">
+                            <form id="sortform">
+                                <select id="sortselect" name="s" class="large-4 m-b-20 mobile-fix-size small-12 input-block">
+                                    <option value="updatedate:d" @(Request["s"] == "updatedate:d" ? "selected" : "")>@Resources.Strings.DateNewFirst</option>
+                                    <option value="price:a" @(Request["s"] == "price:a" ? "selected" : "")>@Resources.Strings.PriceLowFirst</option>
+                                    <option value="price:d" @(Request["s"] == "price:d" ? "selected" : "")>@Resources.Strings.PriceHighFirst</option>
+                                    <option value="name:a" @(Request["s"] == "name:a" ? "selected" : "")>@Resources.Strings.NameAZ</option>
+                                    <option value="name:d" @(Request["s"] == "name:d" ? "selected" : "")>@Resources.Strings.NameZA</option>
+                                </select>
+                                <input type="text" name="sch" class="form-control large-4 mobile-fix-size small-12" placeholder="@Resources.Strings.SearchFor" value="@Request["sch"]" />
+                                <input type="submit" value="@Resources.Strings.Search" class="custom-btn-8 fix-btn-size m-0" />
+                                <input type="hidden" value="@ViewBag.Cat" name="cat" />
+                            </form>
+                        </div><!-- /.control-bar-left -->
+                        <div class="view-switcher">
+
+                        </div>
+                        <!-- /.control-bar-right -->
+                    </div><!-- /.control-bar -->
+                    <div class="small-12 large-12 column" id="catalog-content">
+                        <div id="catalog-images-wrapper" class="row">
+                            <div class="ti-catalog catalog-page product-grid">
+                                @foreach (CMS.Product item in ViewBag.Products)
+                                {
+                                    @Html.Partial("_4Col", item)
+                                }
+                                @if(ViewBag.Products == null ||  ViewBag.Products.Count == 0)
+                                {
+                                    <p>@Resources.Strings.SorryNoResult</p>
+                                }
+                            </div><!-- /.row -->
+                        </div>
+                        @if (ViewBag.Pages > 1)
+                        {
+                            int minLimit = ViewBag.CurrentPage - 1 > 0 ? ViewBag.CurrentPage - 1 : ViewBag.CurrentPage;
+                            int maxLimit = ViewBag.Pages > 5 ? 5 : ViewBag.Pages;
+                            <div class="row">
+                                <div class="shop-category column pagination-centered">
+                                    <ul class="pagination">
+                                        @if (ViewBag.CurrentPage > 2)
+                                        {
+                                            <li class="arrow"><a title="Next" rel="next" data-ga-category="Catalog Navigation" data-ga-action="Page Selector Bottom" class="ga-track-link-click" data-ng-click="catalog.update(&#039;/mens-sports-accessories-bags/?page=2&#039;, true, 0); $event.preventDefault();" href="~/search?p=1&cat=@(Request["cat"])&s=@(Request["s"])"><<</a></li>
+                                        }
+                                        @for (int i = minLimit; i <= maxLimit; i++)
+                                        {
+                                            <li class="@(i == ViewBag.CurrentPage ? "current" : "")"><a data-ga-category="Catalog Navigation" data-ga-action="Page Selector Bottom" class="ga-track-link-click" href="~/search?p=@i&cat=@(Request["cat"])&price=@(Request["price"])&s=@(Request["s"])">@i</a></li>
+
+                                        }
+                                        <li class="arrow"><a title="Next" rel="next" data-ga-category="Catalog Navigation" data-ga-action="Page Selector Bottom" class="ga-track-link-click" data-ng-click="catalog.update(&#039;/mens-sports-accessories-bags/?page=2&#039;, true, 0); $event.preventDefault();" href="~/search?p=@ViewBag.Pages&cat=@(Request["cat"])&s=@(Request["s"])">>></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }<!-- /.control-bar -->
+                    </div>
+
+                </div>
+            </div><!-- /.row -->
+        </main><!-- /.site-main -->
+    </div><!-- /.content-area -->
+</div><!-- /.site-content -->
+@section scripts
+{
+    <script>
+        $("#sortselect").change(function () {
+            $("#sortform").submit();
+        });
+    </script>
+}

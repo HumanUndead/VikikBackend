@@ -1,0 +1,42 @@
+﻿@model CMS.DirectoryOutlet
+    <div class="site-content">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <ul class="breadcrumb">
+                    <li><a href="~/">@Resources.Strings.Home</a></li>
+                    <li><a href="~/shops">@Resources.Strings.Shops</a></li>
+                    <li class="active">@Model.Name</li>
+                </ul>
+            </div>
+        </div><!-- /.breadcrumb-wrapper -->
+        <div id="primary" class="content-area">
+            <main class="site-main inner">
+                <div class="container">
+                    <div class="category-items row">
+                        @{ var i = 0; }
+                        @foreach (CMS.Category category in ViewBag.Categories)
+                        {
+                            <div class="category-item col-md-4 col-sm-6">
+                                <div class="category-image wow fadeInUp" data-wow-delay="0.2s">
+                                    <a href="~/shop/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)/@category.ID/@CMS.Helpers.GeneralHelper.CleanForURL(category.Name)">
+                                        <img class="img-responsive" src="~/content/categories/@(category.ThumbURL)_212x253.jpg" alt="@category.Name">
+                                    </a>
+                                </div><!--/.shop-category-image-->
+                                <h4 class="category-title"><a href="~/shop/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)/@category.ID/@CMS.Helpers.GeneralHelper.CleanForURL(category.Name)">@category.Name<span>( @category.ProductCount )</span></a></h4>
+                            </div><!-- /.category-item -->
+                            if ((i + 1) % 3 == 2)
+                            {
+                                <div class="clearfix hidden-md hidden-lg"></div>
+                            }
+                            else if ((i + 1) % 3 == 0)
+                            {
+                                <div class="clearfix visible-md visible-lg"></div>
+                            }
+                            i++;
+                        }
+
+                    </div><!-- /.category-items -->
+                </div>
+            </main>
+        </div><!-- /.content-area -->
+    </div><!-- /.site-content -->

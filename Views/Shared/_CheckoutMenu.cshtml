@@ -1,0 +1,26 @@
+﻿@{
+    CMS.Language CurrentLanguage = ViewBag.CurrentLanguage;
+    string ConnectionString = ViewBag.ConnectionString;
+}
+
+<header class="custom-header">
+
+    <div>
+        <a onclick="window.history.back();" class="f-white">
+            <i class="fa fa-long-arrow-left"></i> 
+            @Resources.Strings.Back
+        </a>
+    </div>
+    <div class="main-logo">
+        <a href="~/" class="f-white">
+            vikik
+        </a>
+    </div>
+    <div class="">
+        <a href="~/contactus" class="f-white">
+            <i class="fa fa-clock-o" aria-hidden="true"></i> 
+            @Resources.Strings.Help
+        </a>
+    </div>
+
+</header>

@@ -1,0 +1,323 @@
+* {font-family: 'Lato', sans-serif;} /* Let's make sure everything uses our lovely font */
+
+/* This is the main container, the total wrapper of the dashboard */	
+	.menucontainer *
+	{
+	     color: #fff;
+	}
+
+/* We remove all default margins, borders and padding that may be applied by the browser */	
+.menu,.menu ul,.menu li,.menu a {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+}
+ 
+/* The first UL, we define the width of our menu */
+.menu {
+    width: 120px;
+}
+ 
+/* The first List Items, these are the main menu items that you see */
+.menu li {
+    position: relative;
+    list-style: none;
+    float: left;
+    margin: 0px 0px 13px 0px;
+
+}
+
+/* The sub menu has to be hidden until you hover to activate it. */
+.menu ul { display: none;  position: absolute;}
+
+/* The first list items anchor classes */
+.menu li a {
+    display: block;
+	width: 94px;
+    height: 94px;
+    margin: 0px 4px 0px 10px;
+    text-decoration: none;
+	text-align: center;
+    word-wrap: none;
+	vertical-align: bottom;
+    font-size: 28px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.6);
+ 
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+/* These are the colours for each menu item, change the colours or add more as you wish */
+.block-1 {background-color: #da542d;}
+.block-2 {background-color: #A200FF;}
+.block-3 {background-color: #00869c;}
+.block-4 {background-color: #8CBF26;}
+.block-5 {background-color: #A05000;}
+.block-6 {background-color: #007700;}
+.block-7 {background-color: #696969;}
+.block-8 {background-color: #339933;}
+.block-9 {background-color: #b91d47;}
+.block-10 {background-color: #5e3bb9;}
+.block-11 {background-color: #7e0000;}
+.block-12 {background-color: #7672c6;}
+.block-13 {background-color: #1c3959;}
+.block-14 {background-color: #d17474;}
+
+/* The text below the icon gets styled here */
+span.subtext {
+	font-size: 13px; 
+	display: block; 
+	padding-top: 12px; 
+	font-weight: 100; 
+	vertical-align: bottom; 
+}
+ 
+/* This activates the background colour when you hover. */
+.menu li:hover > a { background-color: #1F1F1F; }
+
+.menu li a:hover > .fa { 	 
+	animation: swashIn 0.5s; 
+	-moz-animation: swashIn 0.5s; /* Firefox */
+    -webkit-animation: swashIn 0.5s; /* Safari and Chrome */
+    -o-animation: swashIn	 0.5s; /* Opera */  
+}
+ 
+/* Our animation for our sub-menu flyout */
+.menu li:hover > ul {   
+    display: block; 
+    top: -5px; 
+    left: 105px;
+    border-left: 10px solid transparent;
+
+	 animation: flipInY 0.5s; 
+	-moz-animation: flipInY 0.5s; /* Firefox */
+    -webkit-animation: flipInY 0.5s; /* Safari and Chrome */
+    -o-animation: flipInY 0.5s; /* Opera */ 
+    
+    /* Ends the animation at the '100%' mark */
+	animation-fill-mode: forwards; 
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	-o-animation-fill-mode: forwards;
+
+    /* Sets where the origin of the flip is from, the percentages are the X and then Y axis */
+    -webkit-transform-origin: 0% 50%;
+    transform-origin:50% 0%; 
+    -moz-transform-origin: 50% 0%;
+    -o-transform-origin:50% 0%;
+    -ms-transform-origin:50% 0%;
+	}
+
+/* These are some default lining classes, by default the boxes will line up with the top, 
+            these then make each one line up with the bottom, if you wish to do it that way */
+.menu li.btm-align:hover > ul { top: -253px; }
+.menu li.btm-align-fivebyfive:hover > ul { top: -453px; }
+.menu li.btm-align-onebysix > ul { top: -30px;}
+.menu li.btm-align-onebytwo > ul { top: -30px;}
+.menu li.btm-align-fivebytwo:hover > ul { top: -453px; }
+
+/* This is for my demo image, please adjust as needed or remove if not. */
+.myGraph { width: 520px; height: 280px; padding: 10px; -webkit-filter: blur(2px); }
+
+/* When not hovered the graph blurs, hover it to unblur */
+.myGraph:hover {
+	-webkit-filter: blur(0px);
+
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    }
+	
+
+/* Each list item setting for the menu items */
+.menu ul li {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+/* Each list item setting for sub menu item */ 
+.menu li:hover > ul li {
+    height: auto;
+    overflow: visible;
+    padding: 0;
+    right: 0px;
+}
+
+/* Each submenu is a div, that div is styled here */
+ .menu ul li div ul { display: block; }
+ .menu ul li div ul p { 
+ 	font-size: 13px; 
+ 	line-height: 13px;
+ 	padding: 16px; 
+ 	margin: 0px 0px 10px 14px;	
+ 	font-weight: 100; 
+ 	height: 70px;
+ 	width: 80%;
+
+ 	background-color: rgba(219, 219, 219, 0.1);
+ 	border-radius: 10px;
+ 	-moz-border-radius: 10px;
+ 	-webkit-border-radius: 10px;
+ }
+
+/* This is the two by two styling, two boxes wide, two high */
+.menu ul li div.twobytwo {
+    width: 220px;
+    height: 208px;
+    background-color: rgba(41, 41, 41, 0.2);
+
+    padding: 10px 0px 4px 0px;
+    margin: 5px 0px 0px 0px;
+	text-align: center;
+    font-size: 18px;
+ 
+    border: none;
+}
+/* This is the the hover state for two by two styling, two boxes wide, two high */
+.menu ul li div.twobytwo:hover { 
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out; }
+
+/* This is the two by three styling, two boxes wide, three high */
+.menu ul li div.twobythree {
+    width: 225px;
+    height: 319px;
+    background-color: rgba(41, 41, 41, 0.2);
+
+    padding: 15px 0px 4px 0px;
+    margin: 5px 0px 0px 0px;
+	text-align: center;
+    font-size: 18px;
+ 
+    border: none;
+}
+
+/* This is the the hover state for two by three styling, two boxes wide, three high */
+.menu ul li div.twobythree:hover { 
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out; 
+}
+
+/* This is the three by three styling, three boxes wide, three high */
+.menu ul li div.threebythree {
+    width: 335px;
+    height: 324px;
+    background-color: rgba(41, 41, 41, 0.2);
+
+    padding: 15px 0px 4px 0px;
+    margin: 5px 0px 0px 0px;
+	text-align: center;
+    font-size: 18px;
+ 
+    border: none;
+}
+
+/* This is the the hover state for three by three styling, three boxes wide, three high */
+.menu ul li div.threebythree:hover { 
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out; 
+}
+
+/* This is the five by five styling, five boxes wide, five high */
+.menu ul li div.fivebyfive {
+    width: 550px;
+    height: 524px;
+    background-color: rgba(41, 41, 41, 0.2);
+
+    padding: 15px 0px 4px 0px;
+    margin: 5px 0px 0px 0px;
+	text-align: center;
+    font-size: 18px;
+ 
+    border: none;
+}
+
+/* This is the the hover state for five by five styling, five boxes wide, five high */
+.menu ul li div.fivebyfive:hover { 
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out; 
+}
+
+/* This is the one by six styling, one box wide, six high */
+.menu ul li div.onebysix {
+    width: 663px;
+    height: 100px;
+    background-color: rgba(41, 41, 41, 0.2);
+
+    padding: 15px 0px 4px 0px;
+    margin: 5px 0px 0px 0px;
+	text-align: center;
+    font-size: 18px;
+ 
+    border: none;
+}
+
+/* This is the the hover state for one by six styling, one box wide, six high */
+.menu ul li div.onebysix:hover { 
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out; 
+}
+/* This is the one by six styling, one box wide, six high */
+.menu ul li div.onebytwo {
+    width: 220px;
+    height: 100px;
+    background-color: rgba(41, 41, 41, 0.2);
+
+    padding: 15px 0px 4px 0px;
+    margin: 5px 0px 0px 0px;
+	text-align: center;
+    font-size: 18px;
+ 
+    border: none;
+}
+/* This is the the hover state for one by six styling, one box wide, six high */
+.menu ul li div.onebytwo:hover { 
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out; 
+}
+/* This is the one by six styling, one box wide, six high */
+.menu ul li div.fivebytwo {
+    width: 220px;
+    height: 524px;
+    background-color: rgba(41, 41, 41, 0.2);
+
+    padding: 15px 0px 4px 0px;
+    margin: 5px 0px 0px 0px;
+	text-align: center;
+    font-size: 18px;
+ 
+    border: none;
+}
+/* This is the the hover state for one by six styling, one box wide, six high */
+.menu ul li div.fivebytwo:hover { 
+	-webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out; 
+}

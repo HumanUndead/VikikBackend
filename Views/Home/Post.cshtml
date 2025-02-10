@@ -1,0 +1,63 @@
+﻿ @model CMS.Article
+<div class="site-content light-bg">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <ul class="breadcrumb">
+                    <li><a href="~/Index">@Resources.Strings.Home</a></li>
+                    <li><a href="~/Blog">@Resources.Strings.Blog</a></li>
+                    <li class="active">@Model.Name</li>
+                </ul>
+            </div>
+        </div><!-- /.breadcrumb-wrapper -->
+        <div class="container inner-md">
+            <div class="row">
+                <div id="primary" class="content-area col-lg-8 col-md-8 col-sm-12">
+                    <main class="site-main">
+                        <article class="post wow fadeIn" itemscope >
+                            <header class="entry-header">
+                                <div class="media-attachment">
+                                    <img class="img-responsive" src="~/content/articles/@Model.ThumbURL.Replace("\\", "/")_729x411.jpg" alt="" width="729" height="411">
+                                </div>
+                                <h1 class="entry-title newstit" itemprop="name headline">@Model.Name</h1>
+                                <span class="post-meta"> <span class="posted-on">@Model.Date.ToString("MMMM,dd,yyyy")</span></span>
+                            </header>
+                            <div class="entry-content" itemprop="articleBody">
+                                @Html.Raw(Model.Description)
+                            </div>
+                        </article>
+
+                    </main><!-- /.site-main -->
+                </div><!-- /.content-area -->
+
+                <aside id="secondary" class="sidebar-area col-lg-4 col-md-4 col-sm-12">
+                    <div class="sidebar-blog">
+                        <!-- ========================================= BLOG SIDEBAR ========================================= -->
+                        <div class="blog-sidebar-widget">
+                            <div class="widget wow fadeIn widget-list-posts">
+                                <h3>@Resources.Strings.Latest_posts</h3>
+                                <ul>
+                                    @foreach (CMS.Article article in ViewBag.Articles)
+{
+                                    <li class="media clearfix">
+                                        <a class="thumb-holder pull-left" href="~/Post/@article.ID/@article.Typs[0].Name.Replace(" ","_")/@article.Name.Replace(" ","_")">
+                                            <img src="~/content/articles/@article.ThumbURL.Replace("\\", "/")_145x83.jpg"  alt="" width="145" height="83">
+                                        </a>
+                                        <div class="media-body">
+                                            <h5 class="entry-title"><a href="~/Post/@article.ID/@article.Typs[0].Name.Replace(" ","_")/@article.Name.Replace(" ","_")">@article.Name</a></h5>
+                                            <div class="post-meta">@article.Date.ToString("MMMM,dd,yyyy")</div>
+                                        </div>
+                                    </li>
+                                    }
+                                  
+                                </ul>
+                            </div><!-- /.widget -->
+
+
+                        </div><!-- /.blog-sidebar-widget -->
+                        <!-- ========================================= BLOG SIDEBAR : END ========================================= -->
+                    </div>
+                </aside><!-- /.sidebar-area -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </div>
+   

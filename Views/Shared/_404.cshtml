@@ -1,0 +1,45 @@
+﻿<section class="main-contant-wrapper clearfix" data-location="/templates/layouts/layout-both-columns.tpl">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper" class="content-wrapper">
+                    <section id="main">
+                        <section id="content" class="page-content page-cms page-cms-4">
+                            <div class="content-cms-wrapper @(ViewBag.Theme=="ar"?"text-right":"")">
+                                <h1 class="page-heading bottom-indent">@Resources.Strings.Opps!</h1>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12">
+                                        <div class="cms-block">
+                                            <h3 class="page-subheading">@(string.IsNullOrEmpty(ViewBag.Error) ? Resources.Strings.Error404 : ViewBag.Error)</h3>
+                                          
+                                        </div>
+                                    </div>
+                                 
+                                </div>
+                            </div>
+                        </section>
+                        <footer class="page-footer"></footer>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $("body").attr("id", "cms");
+        });
+        $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-fr currency-usd layout-full-width page-cms tax-display-enabled cms-id-4 pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+    </script>
+}

@@ -1,0 +1,200 @@
+﻿@using CMS
+@{
+
+    Layout = "~/Views/Shared/_CheckoutLayout.cshtml";
+    List<Category> categories = ViewBag.ShopCategories;
+    List<Language> langs = ViewBag.Langs;
+    Product product = ViewBag.Product;
+    Dictionary<string, Product> langItems = ViewBag.LangItems;
+    List<Spec> catSpecs = ViewBag.SpecList;
+
+    List<LookupCategory> lookCats = ViewBag.LookUpCats;
+    List<Lookup> lookItems = ViewBag.LookUpItems;
+    List<Brand> brands = ViewBag.ShopBrands == null ? new List<Brand>() : ViewBag.ShopBrands;
+}
+@section head{
+    <link href="~/assets/css/SelectBox.css" rel="stylesheet" />
+}
+<div class="m-s-20">
+    <div class="bag p-s-20 m-t-30">
+        <div class="row ">
+            @if (product != null)
+            {
+                <h1>
+
+                    @product.Name - @product.ID
+
+                </h1>
+            }
+            else
+            {
+                <h1>
+                    @Resources.Strings.Add @Resources.Strings.Item
+                </h1>
+            }
+        </div>
+
+        <form class="row m-b-20" enctype="multipart/form-data" method="post" action="@Url.Action("RedistributionDoAdd","User")">
+            <div class="large-12 small-12">
+                <input type="hidden" name="id" value="@(ViewBag.ProdutID)" />
+                <input type="hidden" name="sp30041" value="@ViewBag.BaseID" />
+                <input type="hidden" name="isNew" value="@(string.IsNullOrEmpty(ViewBag.ProdutID) ? "on" : "")" />
+                <input type="hidden" name="OrderID" value="@(ViewBag.OrderID)" />
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.Category <span class=red-color>*</span>
+                    </label>
+                    <select name="mainCatID" id="mainCategory" class="m-b-30" required>
+                        @foreach (var item in categories.FindAll(x => x.ID == "70166"))
+                        {
+                            <option value="@item.ID" @(product != null && product.CategoryID == item.ID ? "selected" : "")>@item.Name</option>
+                        }
+                    </select>
+                    <label>
+                        @Resources.Strings.SubCategory <span class=red-color>*</span>
+                    </label>
+                    <select name="catID" id="catID" data-chain-to="mainCategory" class="chained m-b-30" required>
+                        <option value="">@Resources.Strings.PleaseSelectCategory</option>
+                        @foreach (var item in categories.FindAll(x => x.ParentID != "60043" && x.ID != "60043" && x.ID != "70163"))
+                        {
+                            <option value="@item.ID" class="@item.ParentID" @(product != null && product.CategoryID == item.ID ? "selected" : "")>@item.Name</option>
+                        }
+                    </select>
+                    <input type="hidden" name="brandID" value="@(product != null ? product.BrandID : "" )" />
+                  
+                    <div class="form-group brand-addNew hide">
+                        <input type="text" name="newBrand" id="newBrand" />
+                    </div>
+                </div>
+                <div class="large-12 small-12">
+                    <ul class="pay-by-tabs nav nav-tabs">
+                        @{
+                            int counter = 1;
+                        }
+                        @foreach (var item in langs)
+                        {
+                            <li>
+                                <a data-toggle="tab" href="#@(item.Prefix)" class=" @(counter == 1 ? "active" : "")">
+                                    @item.Name
+                                </a>
+                            </li>
+                            counter++;
+                        }
+                    </ul>
+                    <div>
+                        <div class="pay-by-tab-content tab-content  m-b-30">
+                            @{
+                                counter = 1;
+                            }
+                            @foreach (var item in langs)
+                            {
+                                var langProd = langItems != null && langItems.Keys.Contains(item.Prefix) ? langItems[item.Prefix] : null;
+                                <div class="tab-pane fade @(counter == 1 ? "active show in" : "")  " id="@item.Prefix">
+                                    <div class="form-group">
+                                        <label>
+                                            @Resources.Strings.Name
+                                        </label>
+                                        <input type="text" name="name@(item.Prefix)" @(counter == 1 ? "required" : "") readonly value="@(langProd != null ? langProd.Name :  "")" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            @Resources.Strings.Description
+                                        </label>
+                                        <textarea type="text" placeholder="@Resources.Strings.Description" @(counter == 1 ? "required" : "") name="description@(item.Prefix)">@(langProd != null ? langProd.Description :  "")</textarea>
+                                    </div>
+                                </div>
+                                counter++;
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.RRPrice <span class=red-color>*</span>
+                    </label>
+                    <input type="number" name="price" oninput="setRRP(this.value)" required value="@(product != null ? product.Price :  1)" min="1" />
+                </div>
+               
+                    <input type="hidden" id="rrp" name="oldPrice"  value="@(product != null && product.OldPrice.HasValue ? product.OldPrice :  0)" />
+               
+               
+                    <input type="hidden" name="SKU" required readonly value="@(product != null ? product.Barcode :  "")" />
+              
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.Quantity <span class=red-color>*</span>
+                    </label>
+                    <input type="number" name="quantity" min="1" readonly value="1" />
+                </div>
+               
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.MainImage <span class=red-color>*</span>
+                    </label>
+                    @if (product != null && !string.IsNullOrEmpty(product.ThumbURL))
+                    {
+                        <img src="~/@(product.FullImagePath)_thumb.png" />
+                    }
+                </div>
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.ExtraImages
+                    </label>
+                    <input type="file" name="images" multiple />
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <button type="submit" class="custom-btn-4 w-100 f-color-white">@(product == null ? Resources.Strings.Add : Resources.Strings.Save)</button>
+        </form>
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/js/jquery.chained.js"></script>
+    <script src="~/assets/js/jquery-ui.js"></script>
+    <script src="~/assets/js/SelectBox.js"></script>
+    <script>
+        $("#catID").chained("#mainCategory");
+        $("#subCatID").chained("#catID");
+        $("#subCatID").hide();
+
+
+        $("#catID").change(function () {
+
+            let options = $('#subCatID option').length;
+            if (options > 1) {
+                $("#subCatID").show();
+            }
+        })
+    </script>
+    <script>
+        var elements = document.querySelectorAll('input,select,textarea');
+        var invalidListener = function () {
+            this.scrollIntoView(false);
+        };
+
+        for (var i = elements.length; i--;)
+            elements[i].addEventListener('invalid', invalidListener);
+    </script>
+    <script>
+        function setRRP(limit) {
+            $("#rrp").attr("min", limit);
+        }
+    </script>
+    <script>
+        function selectChange(action) {
+            if (action == "-1") {
+                $(".brand-addNew").removeClass("hide");
+            }
+            else {
+                $(".brand-addNew").addClass("hide");
+            }
+        }
+    </script>
+}
+
+
+
+

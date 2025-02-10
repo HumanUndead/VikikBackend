@@ -1,0 +1,773 @@
+﻿@using CMS;
+@using vikik.Models
+@{
+    StaticPage Contact = ViewBag.Contact as StaticPage;
+}
+@section styles{
+    <meta property="og:title" content="@Resources.Strings.project_name | @Resources.Strings.ContactUs">
+    <meta property="og:description" content="@Resources.Strings.Description_Page">
+    <meta property="og:image" content="../wsimages/Vikik.jpg">
+    <meta property="og:url" content="../ContactUs">
+    <meta property="twitter:title" content="@Resources.Strings.project_name | @Resources.Strings.ContactUs">
+    <meta property="twitter:description" content="@Resources.Strings.Description_Page">
+    <meta property="twitter:image" content="../wsimages/Vikik.jpg">
+    <style>
+        /*.pos-relative {
+            position: relative !important;
+        }*/
+
+        .map {
+            height: 500px;
+            width: 100%;
+        }
+
+        .map-tools {
+            position: absolute;
+            right: 30px;
+            top: 50px;
+            z-index: 3;
+            width: 348px;
+        }
+
+        .map-filters {
+            background: rgba(255,255,255,.8);
+            background-position: center right 20px;
+            border: 3px solid #B3FFF1;
+            padding-right: 48px;
+        }
+
+            .map-filters input[type="text"] {
+                background: transparent;
+                border: none;
+                font-size: 18px;
+                margin: 0;
+                outline: none;
+                padding: 5px 10px;
+                width: 100%;
+            }
+
+        .map-locations {
+            background-color: #FFF;
+            border: 3px solid #B3FFF1;
+            height: 300px;
+            overflow-y: scroll;
+            position: relative;
+        }
+
+            .map-locations::-webkit-scrollbar {
+                position: absolute;
+                right: 0;
+                width: 7px;
+            }
+
+            .map-locations::-webkit-scrollbar-thumb {
+                background: rgba(0,0,0,.16);
+                border-radius: 14px;
+            }
+
+            .map-locations li {
+                border-bottom: 1px solid #B3FFF1;
+                color: #656565;
+                cursor: pointer;
+                font-size: 15px;
+                line-height: 16px;
+                margin-bottom: 0;
+                padding: 10px;
+                position: relative;
+            }
+
+            .map-locations h6 {
+                color: black;
+                font-size: 15px;
+                margin: 0 0 2px;
+                padding-right: 63px;
+            }
+
+            .map-locations .hours {
+                background-color: #B3FFF1;
+                color: #fff;
+                font-size: 9.75px;
+                font-weight: bold;
+                line-height: 13px;
+                padding: 2px 6px;
+                position: absolute;
+                right: 15px;
+                top: 15px;
+            }
+
+                .map-locations .hours:empty {
+                    display: none;
+                }
+
+                .map-locations .hours.closed {
+                    background: #fff;
+                    border: 1px solid rgba(155, 155, 155, .5);
+                    color: #9B9B9B;
+                }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .map-locations ul li.empty {
+            cursor: auto;
+            display: none;
+        }
+
+        .map-locations li.active {
+            background-color: rgba(116, 150, 247, .12);
+        }
+
+        .map-locations li::before,
+        .map-tags li::before {
+            display: none;
+        }
+
+        .map-tags {
+            background: rgba(255,255,255,.8);
+            border: 3px solid #B3FFF1;
+            border-top: none;
+            margin-bottom: 10px;
+        }
+
+            .map-tags ul {
+                padding: 12px 16px 2px;
+            }
+
+            .map-tags li {
+                background: #B3FFF1;
+                border-radius: 11px;
+                color: lightslategray;
+                cursor: pointer;
+                display: inline-block;
+                font-size: 13px;
+                margin-bottom: 5px;
+                padding: 2px 5px;
+            }
+
+                .map-tags li.active {
+                    background: aqua;
+                    color: black;
+                }
+
+        @@media (max-width:768px) {
+            .map-tools {
+                padding: 0 5%;
+                position: absolute;
+                right: 0;
+                top: 20px;
+                width: 100%;
+            }
+        }
+
+
+        @@media (max-width :800px) {
+            .map {
+                height: 1000px;
+                width: 100%;
+            }
+
+            .map-locations {
+                height: 200px !important;
+            }
+        }
+    </style>
+}
+<section class="main-contant-wrapper clearfix">
+    <div class="page-width top-content">
+        <aside id="notifications">
+            <div class="page-width">
+            </div>
+        </aside>
+        <nav data-depth="4" class="breadcrumb page-width container hidden-md-down">
+            <div class="row h-100">
+                <div class="col-xs-12">
+                    <ol class="p-a-0">
+                        <li>
+                            <a itemprop="item" href="~/index">
+                                <span itemprop="name">@Resources.Strings.Home</span>
+                            </a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li>
+                            <a itemprop="item" href="">
+                                <span itemprop="name">@Resources.Strings.ContactUs</span>
+                            </a>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="hook-content_top hook-container wide"></div>
+    <div class="page-width main-content">
+        <div id="wrapper" class="clearfix container">
+            <div class="row">
+                <div id="content-wrapper-left" class="content-wrapper wide left-column col-xs-12 col-sm-12 col-md-12">
+                    <section id="main" class="m-t-20">
+                        <section id="content" class="page-content card card-block @(ViewBag.Theme=="ar"?"dir-rtl":"")">
+                            <div class="row contact-page">
+                                <section class="contact-form-map col-sm-12 col-md-6 ">
+                                    <div class="row contact-page-footer">
+
+                                        <div class="col-lg-6 col-md-6 col-xs-12">
+                                            <svg class="svgic">
+                                                <use xlink:href="#si-headphones"></use>
+                                            </svg>
+                                            <h6>@Html.Raw(Contact.SubTitle)</h6>
+                                            <p>
+                                                @Html.Raw(Contact.Text)
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-xs-12">
+                                            <svg class="svgic">
+                                                <use xlink:href="#si-info"></use>
+                                            </svg>
+                                            <h6>@Resources.Strings.ContactDetails</h6>
+                                            <p>
+                                                @Resources.Strings.Email : @ViewBag.email
+                                                <br>
+                                                @Resources.Strings.Phone : @ViewBag.phone
+                                                <br>
+                                                @Resources.Strings.fax : @ViewBag.fax
+                                            </p>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class=" col-sm-12 col-md-6">
+                                    <form id="form-contact" action="javascript:SendIssue()" method="post">
+                                        @*<form id="form-contact" action="@Url.Action("SendIssue","Home")" method="post">*@
+                                        <input type="hidden" id="subjectNew" name="subjectNew" value="@Resources.Strings.project_name" />
+                                        <input type="hidden" id="recipient" name="recipient" value="site@vikikfashion.com" /> <header>
+                                            <h3 class="h3">@Resources.Strings.SendMessage</h3>
+                                        </header>
+                                        <section class="form-fields">
+
+                                            <div class="form-group">
+                                                <div class="icon-true relative">
+                                                    <input type="text" name="name" id="name" class="form-control" required placeholder="@Resources.Strings.EnterYourName" />
+                                                    <svg class="svgic input-icon">
+                                                        <use xlink:href="#si-account"></use>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            @*<div class="form-group">
+                                                    <div class="icon-true relative">
+                                                        <input type="text" name="phone" id="phone" class="form-control" required placeholder="@Resources.Strings.EnterYourPhone" />
+                                                        <svg class="svgic input-icon">
+                                                            <use xlink:href="#si-phone"></use>
+                                                        </svg>
+                                                    </div>
+                                                </div>*@
+                                            <div class="form-group">
+                                                <div class="icon-true relative">
+                                                    <input type="email" name="email" id="email" class="form-control" value="example@company.com" required placeholder="Email address" />
+                                                    <svg class="svgic input-icon">
+                                                        <use xlink:href="#si-email"></use>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="icon-true relative">
+                                                    <textarea cols="67" rows="3" name="message" id="message" placeholder="@Resources.Strings.Message"></textarea>
+                                                    <svg class="svgic input-icon">
+                                                        <use xlink:href="#si-pencil"></use>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                            </div>
+                                        </section>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                @*@Html.GoogleCaptcha()
+                                                @Html.InvalidGoogleCaptchaLabel("Captcha is not valid !")*@
+                                            </div>
+                                        </div>
+
+                                        <footer class="form-footer">
+                                            <input type="submit" class="btn btn-primary" onclick="sendContact()" value="@Resources.Strings.Send" />
+                                            <h4 id="result" class="h4"></h4>
+                                        </footer>
+
+
+                                    </form>
+                                </section>
+                            </div>
+
+
+
+
+
+
+
+
+                            <section class="contact-form-map col-sm-12 col-md-12">
+                                <div style="position:relative !important;">
+                                    <div class="map-tools">
+                                        <div class="map-filters">
+                                            <input class="map-text-filter" type="text" placeholder="Search" />
+                                        </div>
+                                        <div class="map-tags">
+                                            <ul>
+                                                <li>Amman</li>
+                                                <li>Zarqa</li>
+                                                <li>Jarash</li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="map-locations">
+                                            <ul>
+                                                <li class="empty">No locations match your search.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div id="map" class="map"></div>
+                                </div>
+                            </section>
+
+
+                        </section>
+
+
+                        <footer class="page-footer"></footer>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hook-content_bottom hook-container wide"></div>
+</section>
+
+@section scripts{
+    @*<script src="~/assets/js/js.js"></script>*@
+    <script>
+        function sendContact() {
+           $.ajax({
+               url: '@Url.Action("SendContact", "Home")',
+               method: "POST",
+               data: $("#form-contact").serialize(),
+               success: function (result) {
+                   document.getElementById("result").innerHTML = result.Message;
+                   $("#result").html("");
+                   $(form).trigger("reset");
+                   setTimeout(function () {
+                       $("#result").html("");
+                       $(form).trigger("reset");
+                   }, 5000)
+               }
+           });
+       }
+
+
+    </script>
+    @*<script>
+            function showNav(targ) {
+                targ = "#" + targ;
+                $(targ).children(".navcollapse").slideDown("slow");
+            }
+
+            window.maplocations = [];
+            window.atmlocations = [];
+
+            window.maplocations = {
+                'main': [new google.maps.LatLng(31.9804732, 35.8354861), "Main Location"],
+                'downtown': [new google.maps.LatLng(31.9774514, 35.8412859), "Location 2"],
+                '3rd': [new google.maps.LatLng(32.5525113, 35.8123901), "Location 3"],
+                '4th': [new google.maps.LatLng(40.088413, 22.358555), "Location 4"],
+                '5th': [new google.maps.LatLng(40.759011, -73.984472), "Location 5"]
+            }
+
+            $('document').ready(function () {
+
+                $('.maploc').click(function () {
+                    var atm = $("#map-canvas").data("atm");
+                    $('.locationinfo').slideUp('fast');
+                    $('.maploc').children('.fa').show();
+
+                    $(this).children('.locationinfo').slideDown('fast');
+                    $(this).children('.fa').hide();
+
+                    var loc = $(this).data("loc");
+                    var zoom = ($(this).data("zoom") ? $(this).data("zoom") : '14');
+                    var locations = (atm == true ? atmlocations : maplocations);
+
+                    window.locmap.setCenter(locations[loc][0]);
+                    window.locmap.setZoom(zoom);
+
+                });
+
+                function initializeMap() {
+
+                    var mapOptions = {
+                        center: { lat: 31.9804732, lng: 35.8354861 },
+                        zoom: 15
+                    };
+
+
+                    var atm = $("#map-canvas").data("atm");
+
+                    var options = (atm == true ? atmOptions : mapOptions);
+
+                    var locations = (atm == true ? atmlocations : maplocations);
+
+                    window.locmap = new google.maps.Map(document.getElementById('map-canvas'), options);
+
+                    var markers = [];
+
+                    for (var item in locations) {
+                        var forb = ["craw0", "vb0", "nwa0", "fs0", "seb0", "ok0"];
+                        var n = forb.indexOf(item);
+
+                        if (n !== -1) {
+                            console.log(item, n);
+                        }
+
+                        if (n == -1) {
+                            markers[0] = new google.maps.Marker({
+                                position: locations[item][0],
+                                map: locmap,
+                                title: locations[item][1]
+                            });
+                        };
+                    }
+                }
+
+                google.maps.event.addDomListener(window, 'load', initializeMap);
+
+            });
+        </script>*@
+
+    @*<script>
+        function FunActive(id) {
+            $(".Mnav li").removeClass("active");
+            $(".Mnav li"+id).addClass("active");
+        }
+            $(document).ready(function () {
+                $("body").attr("id", "contact");
+            });
+            $("body").removeClass("lang-en country-us currency-usd layout-full-width page-index tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load").addClass("lang-en country-fr currency-usd layout-left-column page-contact tax-display-enabled pm-details-layout1 pm-filter-image header-static cp-only-filter product-grid-4 hide-header-icons gs-lazy-load");
+        </script>*@
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGFkRqvjqF3zG1hUrbufLIP9yaCMtG0C0"></script>
+
+    <script>
+        var locations = [
+            {
+                data: {
+                    address: "Khalil As Salem 49-47, Amman",
+                    name: "Tla Al Ali",
+                    tags: ["amman"]
+                },
+                position: {
+                    lat: 31.9991111,
+                    lng: 35.8635891
+                },
+                zoom: 12
+            },
+            {
+                data: {
+                    address: "Unnamed Road, Az-Zarqa",
+                    name: "Zarqa",
+                    tags: ["zarqa"]
+                },
+                position: {
+                    lat: 32.0630278,
+                    lng: 36.0860057
+                },
+                zoom: 12
+            },
+
+            {
+                data: {
+                    address: "Avenue Mall, Salah Al Shaimat St 10, Amman",
+                    name: "Avenue Mall",
+                    tags: ["amman"]
+                },
+                position: {
+                    lat: 31.95725,
+                    lng: 35.8668946
+                },
+                zoom: 12
+            },
+            {
+                data: {
+                    address: "Pr. Rashed St. 185, Amman",
+                    name: "Northern Hashima",
+                    tags: ["amman"]
+                },
+                position: {
+                    lat: 31.9712698,
+                    lng: 35.9510683
+                },
+                zoom: 12
+            },
+            {
+                data: {
+                    address: "Ad-Dustour St 115-103, Amman",
+                    name: "Hay Nazzal",
+                    tags: ["amman"]
+                },
+                position: {
+                    lat: 31.9344978,
+                    lng: 35.9126291
+                },
+                zoom: 20
+            },
+            {
+                data: {
+                    address: "Unnamed Road, Jarash",
+                    name: "Jerash",
+                    tags: ["jarash"]
+                },
+                position: {
+                    lat: 32.2787552,
+                    lng: 35.8939371
+                },
+                zoom: 12
+            }
+        ];
+
+
+        var customMapStyles = [
+            { stylers: [{ hue: "#16a085" }, { saturation: 0 }] },
+            {
+                featureType: "road",
+                elementType: "geometry",
+                stylers: [{ lightness: 100 }, { visibility: "simplified" }]
+            },
+            {
+                featureType: "road",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }]
+            }
+        ];
+
+        (function () {
+            // create a new StyledMapType object, passing it the array of styles.
+            var styledMap = new google.maps.StyledMapType(customMapStyles, {
+                name: "New York Skateparks"
+            });
+
+            // store map locations list wrapper.
+            var mapLocationsEl = $(".map-locations");
+
+            // create a map object, and include the MapTypeId to add to the map type control.
+            var mapOptions = {
+                center: {
+                    lat: 31.9991111,
+                    lng: 35.8635891
+                },
+                mapTypeControl: 0,
+                mapTypeControlOptions: {
+                    mapTypeIds: [google.maps.MapTypeId.ROADMAP, "map_style"]
+                },
+                streetViewControl: 0,
+                zoom: 12,
+                zoomControl: 0
+            };
+
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            // associate the styled map with the MapTypeId and set it to display.
+            map.mapTypes.set("map_style", styledMap);
+            map.setMapTypeId("map_style");
+
+            // store all our location markers.
+            var markers = [];
+
+            // our primary map tools functions.
+            var mapTools = {
+                addMarker: function (location, index) {
+                    var marker = new google.maps.Marker({
+                        id: location.id,
+                        data: location.data,
+                        map: map,
+                        position: location.position,
+                        title: location.data.name
+                    });
+
+                    // create click event listener for each marker.
+                    marker.addListener("click", mapTools.focusOnLocation);
+
+                    // save the marker.
+                    markers.push(marker);
+                },
+                addToList: function (location) {
+                    $("ul", mapLocationsEl).append(
+                        '<li data-id="' +
+                        location.id +
+                        '">' +
+                        "<h6>" +
+                        location.data.name +
+                        "</h6>" +
+                        location.data.address +
+                        "<br />" +
+                        "</li>"
+                    );
+                },
+                filterList: function () {
+                    var filters = {
+                        tags: [],
+                        text: $(".map-text-filter")
+                            .val()
+                            .toLowerCase()
+                    },
+                        visibleMarkers = 0;
+
+                    // add all active tags to array.
+                    $(".map-tags li.active").each(function () {
+                        var val = $(this)
+                            .text()
+                            .toLowerCase();
+                        filters.tags.push(val);
+                    });
+
+                    // check that each marker meets conditions.
+                    markers.forEach(function (marker) {
+                        if (
+                            // marker name or address contains the search string.
+                            (marker.data.name.toLowerCase().indexOf(filters.text) > -1 ||
+                                marker.data.address.toLowerCase().indexOf(filters.text) > -1) &&
+                            // and marker also contains all selected tags.
+                            markerContainsAllTags(marker)
+                        ) {
+                            $('li[data-id="' + marker.id + '"]', mapLocationsEl).show();
+                            marker.setVisible(true);
+                            visibleMarkers++;
+                        } else {
+                            $('li[data-id="' + marker.id + '"]', mapLocationsEl).hide();
+                            marker.setVisible(false);
+                        }
+                    });
+
+                    function markerContainsAllTags(marker) {
+                        var containsAllTags = true;
+
+                        for (var i = 0; i < filters.tags.length; i++) {
+                            if (marker.data.tags.indexOf(filters.tags[i]) === -1) {
+                                containsAllTags = false;
+                                break;
+                            }
+                        }
+
+                        return containsAllTags;
+                    }
+
+                    // show no results message if there are no visible markers.
+                    if (visibleMarkers === 0) {
+                        $(".empty", mapLocationsEl).show();
+                    } else {
+                        $(".empty", mapLocationsEl).hide();
+                    }
+                },
+                focusOnLocation: function () {
+                    var marker = this,
+                        $currentListItem = $('li[data-id="' + marker.id + '"]');
+
+                    // animate (bounce) selecter marker.
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+
+                    // increase zoom.
+                    // map.setZoom(12);
+
+                    // update interactive list active item.
+                    $currentListItem
+                        .addClass("active")
+                        .siblings()
+                        .removeClass("active");
+
+                    // movelist to selected location.
+                    $(mapLocationsEl).animate(
+                        {
+                            scrollTop: $currentListItem.position().top
+                        },
+                        "slow"
+                    );
+
+                    // move to selected location on map.
+                    map.panTo(marker.position);
+
+                    // animate for duration of one bounce (v3.13).
+                    setTimeout(function () {
+                        marker.setAnimation(null);
+                    }, 700);
+                }
+            };
+
+            // add markers for all locations.
+            locations.forEach(function (location, i) {
+                // use index as unique id.
+                location.id = i;
+
+                mapTools.addMarker(locations[i]);
+                mapTools.addToList(locations[i]);
+            });
+
+            // handle interactive list events.
+            $("ul", mapLocationsEl).on("click", "li", function () {
+                var locationId = $(this).data("id");
+
+                google.maps.event.trigger(markers[locationId], "click");
+            });
+
+            // filtering mechanisms.
+            $(".map-text-filter").bind("keydown keyup", function (e) {
+                mapTools.filterList();
+            });
+
+            $(".map-tags li").click(function (e) {
+                $(this)
+                    .toggleClass("active")
+                    .siblings()
+                    .removeClass("active");
+                mapTools.filterList();
+            });
+        })();
+
+    </script>
+
+
+
+    <script>
+        function SendIssue() {
+             var tempData = $("#result").html()
+            $("#result").html("@Resources.Strings.Sending");
+        var form = $("#form-contact");
+        $.ajax({
+            url: "@Url.Action("SendIssue", "Home")",
+            data: form.serialize(),
+            method: "POST",
+            success: function (result) {
+                $("#result").html(result.Message);
+                setTimeout(function (){
+                    $("#result").html(tempData);
+                    $(form).trigger("reset");
+                },5000)
+            }
+        })
+        }
+
+
+    </script>
+    @*<script>
+            var map;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: -34.397, lng: 150.644 },
+                    zoom: 8
+                });
+            }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdXK-CIn-u670poniJwQeNmQosRzMnNMI&callback=initMap"
+                async defer></script>*@
+
+}

@@ -1,0 +1,69 @@
+﻿@model CMS.Product
+@{ 
+    string userCatID = "70166,70168,70167";
+    
+}
+
+<div class="product small-6 medium-4 large-3 columns p-s-0" data-ti-inview data-ti-track-product="TH461SE12CYP" data-index="1">
+    <figure class="pinboard">
+        <span class="image-frame">
+            <a href="~/Catalog/Product/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)"><img src="~/@(Model.FullImagePath)_406x512.jpg" alt="@Model.Name" /></a>
+        </span>
+        <figcaption>
+            <div class="product-icons">
+                <a class="icon icon-quick-view show-for-medium-up" data-ti-modal href="~/Catalog/Product/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)" data-modal-class="quick-view-modal" rel="nofollow">
+                </a>
+            </div>
+            @if (ViewBag.CurrentUser != null)
+            {
+
+                List<CMS.Product> wishList = ViewBag.UserWisthList;
+                bool isInWishlist = wishList != null && wishList.Find(x => x.ID == Model.ID) != null ? true : false;
+                <a class="sticky-heart" href="~/user/wishlist/add/@Model.ID?rt=shop__id=@(Model.CategoryID)_categoryID=@(Request["categoryID"])_price=@(Request["price"])_s=@(Request["s"])_brand=@(Request["brand"])_page=@(Request["page"])">
+                    <i class=" fa @(isInWishlist ? "fa-heart active":"fa-heart-o") wishlist " aria-hidden="true"></i>
+                </a>
+            }
+            <a href="~/Catalog/Product/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)" class="product-details" data-ng-click="tracking.click()">
+                <span class="brand">
+                    @Model.Name
+                </span>
+
+                @if (!string.IsNullOrEmpty(Model.BrandName))
+                {
+                    <span class="name">@Model.BrandName</span>
+                }
+                else
+                {
+                    <span class="name">&nbsp;</span>
+                }
+                @if (Model.OldPrice.HasValue && userCatID.Split(',').ToList().Find(x => x == Model.CategoryID) == null)
+                {
+                    <span class="old-price">
+                        <span><small></small> @Model.FormattedOldPrice</span>
+                    </span>
+                }
+                <span class="price">
+                    <span><small></small> @Model.FormattedPrice</span>
+                </span>
+                @if(Model.OldPrice.HasValue && userCatID.Split(',').ToList().Find(x => x== Model.CategoryID) == null)
+                {
+                    <span class="message marketing" style="color: #F61067">
+                        @Resources.Strings.Sale
+                    </span>
+                }
+                @if(!Model.OldPrice.HasValue && (Model.DateAdded - DateTime.Now).TotalDays < 30)
+                {
+                    <span class="message marketing" style="color: #42ABC8">
+                        @Resources.Strings.New
+                    </span>
+                }
+                @*@if (Model.OldPrice.HasValue)
+                {
+                    <span class="discount">
+                        - @((int)(((double)(Model.OldPrice - (double)Model.Price) * 100) / Model.OldPrice))%
+                    </span>
+                }*@
+            </a>
+        </figcaption>
+    </figure>
+</div>

@@ -1,0 +1,734 @@
+﻿@using CMS
+@using CMS.Managers
+
+@{
+    Layout = "~/Views/Shared/_CheckoutLayout.cshtml";
+    List<Category> categories = ViewBag.AddShopCategories;
+    List<Language> langs = ViewBag.Langs;
+    Product product = ViewBag.Product;
+    Dictionary<string, Product> langItems = ViewBag.LangItems;
+    List<Spec> catSpecs = ViewBag.SpecList;
+    bool IsEditable = ViewBag.Editable;
+    List<LookupCategory> lookCats = ViewBag.LookUpCats;
+    List<Lookup> lookItems = ViewBag.LookUpItems;
+    List<Brand> brands = ViewBag.ShopBrands == null ? new List<Brand>() : ViewBag.ShopBrands;
+    double RRPFactor = ViewBag.RRPFactor;
+    List<ItemSize> sizes = ViewBag.Sizes;
+    List<Product> productSizes = ViewBag.ProductGrouped == null ? new List<Product>() : ViewBag.ProductGrouped;
+    LookupManager lck = ViewBag.LCK;
+    Language CurrentLanguage = ViewBag.Lang;
+}
+@section head{
+    <link href="~/assets/css/SelectBox.css" rel="stylesheet" />
+    <link href="~/assets/css/semantic.css" rel="stylesheet" />
+    <link href="~/assets/css/dropdown.css" rel="stylesheet" />
+}
+<div class="bag p-s-20 m-t-30 m-s-20 p-0">
+    <div class="row m-b-20">
+        @if (product != null)
+        {
+            <h1>
+
+                @product.Name - @product.ID
+
+            </h1>
+        }
+        else
+        {
+            <h1>
+                @Resources.Strings.Add @Resources.Strings.Product
+            </h1>
+        }
+    </div>
+    @if (true)
+    {
+        <form class="row m-b-20" enctype="multipart/form-data" id="productAddForm" method="post" action="@Url.Action("ProductDoAdd","User")">
+            <div class="large-12 small-12">
+                <input type="hidden" name="id" value="@(product != null ? product.ID : "")" />
+                <input type="hidden" name="sizesToRemove" id="sizesToRemove" />
+                <input type="hidden" name="sizesToAdd" id="sizesToAdd" />
+                <input type="hidden" name="current" id="current" value="@(product != null && product.Specs != null && product.Specs.Find(x => x.ID == "20039") != null ? product.Specs.Find(x => x.ID == "20039").Value : "")" />
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.Category <span class=red-color>*</span>
+                    </label>
+                    @if (product == null || string.IsNullOrEmpty(product.ID) || product.ID == "0")
+                    {
+                        <select name="mainCatID" id="mainCategory" class="m-b-30" required>
+                            <option value="">@Resources.Strings.PleaseSelectCategory</option>
+                            @foreach (var item in categories.FindAll(x => x.ParentID == "60043"))
+                            {
+                                <option value="@item.ID" @(product != null && product.CategoryID == item.ID ? "selected" : "")>@item.Name</option>
+                            }
+                        </select>
+                        <label>
+                            @Resources.Strings.SubCategory <span class=red-color>*</span>
+                        </label>
+                        <select name="catID" id="catID" data-chain-to="mainCategory" class="chained m-b-30" required>
+                            <option value="">@Resources.Strings.PleaseSelectCategory</option>
+                            @foreach (var item in categories.FindAll(x => x.ParentID != "60043" && x.ID != "60043" && x.ID != "70163"))
+                            {
+                                <option value="@item.ID" class="@item.ParentID" @(product != null && product.CategoryID == item.ID ? "selected" : "")>@item.Name</option>
+                            }
+                        </select>
+                        <select name="subCatID" id="subCatID" data-chain-to="catID" class="chained">
+                            @foreach (var item in categories.FindAll(x => x.ParentID != "60043" && x.ID != "60043" && x.ID != "70163"))
+                            {
+                                <option value="@item.ID" class="@item.ParentID" @(product != null && product.CategoryID == item.ID ? "selected" : "")>@item.Name</option>
+                            }
+                        </select>
+                        <label>
+                            @Resources.Strings.Brand
+                        </label>
+                        <select name="brandID" id="brandID" oninput="selectChange(this.value)" class="m-b-30">
+                            <option value="">@Resources.Strings.PleaseSelectBrand</option>
+                            <option value="-1">@Resources.Strings.AddNew</option>
+                            @foreach (var item in brands)
+                            {
+                                <option value="@item.ID" @(product != null && product.BrandID == item.ID ? "selected" : "")>@item.Name</option>
+                            }
+                        </select>
+                        <div class="form-group brand-addNew hide">
+                            <input type="text" name="newBrand" id="newBrand" />
+                        </div>
+                    }
+                    else
+                    {
+                        <h3 class="speacail-title-h1 p-t-10">
+                            @product.CategoryName
+                        </h3>
+                    }
+                </div>
+                <div class="large-12 small-12">
+                    <ul class="pay-by-tabs nav nav-tabs">
+                        @{
+                            int counter = 1;
+                        }
+                        @foreach (var item in langs)
+                        {
+                            <li>
+                                <a data-toggle="tab" href="#@(item.Prefix)" class=" @(counter == 1 ? "active" : "")">
+                                    @item.Name
+                                </a>
+                            </li>
+                            counter++;
+                        }
+                    </ul>
+                    <div>
+                        <div class="pay-by-tab-content tab-content  m-b-30">
+                            @{
+                                counter = 1;
+                            }
+                            @foreach (var item in langs)
+                            {
+                                var langProd = langItems != null && langItems.Keys.Contains(item.Prefix) ? langItems[item.Prefix] : null;
+                                <div class="tab-pane fade @(counter == 1 ? "active show in" : "")  " id="@item.Prefix">
+                                    <div class="form-group">
+                                        <label>
+                                            @Resources.Strings.Name @(counter == 1 ? Html.Raw("<span class=red-color>*</span>") : Html.Raw(""))
+                                        </label>
+                                        <input type="text" name="name@(item.Prefix)" @(counter == 1 ? "required" : "") @(counter > 1 ? Html.Raw("placeholder=\"المعلومات التي هنا سوف يتم نسخها من الحقل الإنجليزي ان لم يتم ترجمتها الان\"") : Html.Raw("")) value="@(langProd != null ? langProd.Name :  "")" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            @Resources.Strings.Description @(counter == 1 ? Html.Raw("<span class=red-color>*</span>") : Html.Raw(""))
+                                        </label>
+                                        <textarea type="text"  @(counter > 1 ? Html.Raw("placeholder=\"المعلومات التي هنا سوف يتم نسخها من الحقل الإنجليزي ان لم يتم ترجمتها الان\"") : Html.Raw("")) @(counter == 1 ? "required" : "") name="description@(item.Prefix)">@(langProd != null ? langProd.Description :  "")</textarea>
+                                    </div>
+                                </div>
+                                counter++;
+                            }
+                        </div>
+                    </div>
+                </div>
+                <hr class="hr-1" />
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.BasePrice <span class=red-color>*</span>
+                    </label>
+                    <input type="number" step="0.1" name="sp30042" id="basePrice" required onchange="setRRP(this.value)" value="@(product != null && product.Specs != null && product.Specs.Find(x => x.ID=="30042") != null?  product.Specs.Find(x => x.ID=="30042").Value :  "0")" min="1" />
+                </div>
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.RRPriceBeforeDiscount<span class=red-color>*</span> (@Resources.Strings.MustBeAboveBase)
+                    </label>
+                    <input type="number" step="0.1" onchange="calculateRRP(true,false)" id="rrp" name="oldPrice" class="old-price" min="@(product != null && product.Specs != null && product.Specs.Find(x => x.ID=="30042") != null?  product.Specs.Find(x => x.ID=="30042").Value :  "0")" required value="@(product != null ? product.OldPrice :  1)" />
+                </div>
+                @if (catSpecs.Find(x => x.ID == "20040") != null)
+                {
+                    Spec spec = catSpecs.Find(x => x.ID == "20040");
+                    <div class="form-group">
+                        <label>
+                            @Resources.Strings.Allowed @spec.Name
+                        </label>
+                        <select type="text" class="discount" name="sp@(spec.ID)" onchange="calculateRRP(false,true)">
+                            <option value="0">Please Select Discount Value</option>
+                            @for (double i = 0; i <= .95; i += 0.05)
+                            {
+                                <option value="@i" @(product != null && product.Specs.Find(x => x.ID == spec.ID) != null && Convert.ToDouble(product.Specs.Find(x => x.ID == spec.ID).Value) == i ? "selected" : "")>@(i * 100)%</option>
+                            }
+                        </select>
+                    </div>
+                }
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.Net @Resources.Strings.RRPrice <span class=red-color>*</span>
+                    </label>
+                    <input type="number" name="price" id="price" readonly required value="@(product != null ? product.Price :  1)" />
+                </div>
+                <div class="m-b-10" id="sizesRow">
+                    <div class="flex-row justify-spacearound">
+                        <div class="flex-1 m-r-7">
+                            <label for="defaultSize">
+                                @Resources.Strings.Size <span class=red-color>*</span>
+                            </label>
+                            <select name="defaultSize" id="defaultSize" required>
+                                <option value="">Please Select</option>
+                                @foreach (var item in sizes.OrderBy(x => x.Rank))
+                                {
+                                    <option value="@item.ID" @(product != null && product.Size != null && product.Size.ID == item.ID ? "selected" : "")>@item.Label</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="flex-1 m-r-7">
+                            <label for="defaultSizeQty">
+                                @Resources.Strings.Quantity <span class=red-color>*</span>
+                            </label>
+                            <input name="defaultSizeQty" type="number" id="defaultSizeQty" min="1" class="form-control" value="@(product != null ? product.Quantity : 1)" required />
+                        </div>
+                        <div class="flex-1">
+                            <label>
+                                @Resources.Strings.SKU <span class=red-color>*</span>
+                            </label>
+                            <input type="text" name="defaultSKU" required value="@(product != null ? product.Barcode :  "")" />
+                        </div>
+                    </div>
+                    @{
+                        int counter2 = 1;
+                    }
+                    @foreach (var size in productSizes)
+                    {
+                        <div class="flex-row justify-spacearound">
+                            <div class="flex-1 m-r-7">
+                                <label for="defaultSize">
+                                    @Resources.Strings.Size <span class=red-color>*</span>
+                                </label>
+                                <select name="Size@(size.ID)" class="sizeSelect@(counter2)" id="Size@(size.ID)" required>
+                                    <option value="">Please Select</option>
+                                    @foreach (var item in sizes.OrderBy(x => x.Rank))
+                                    {
+                                        <option value="@item.ID" @(item.ID == size.Size.ID ? "selected" : "")>@item.Label</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="flex-1 m-r-7">
+                                <label for="defaultSizeQty">
+                                    @Resources.Strings.Quantity <span class=red-color>*</span>
+                                </label>
+                                <input name="SizeQty@(size.ID)" type="number" id="SizeQty@(size.ID)" min="1" class="form-control " value="@size.Quantity" required />
+                            </div>
+                            <div class="flex-1 m-r-7 pos-relative">
+                                <label>
+                                    @Resources.Strings.SKU <span class=red-color>*</span>
+                                </label>
+                                <input type="text" name="SizeSKU@(size.ID)" required value="@(size != null ? size.Barcode :  "")" />
+                                <a onclick="deleteProduct('@size.ID','@size.Name',1)" class="fix-btn-pos"><i class="fa fa-trash"></i></a>
+
+                            </div>
+
+                        </div>
+                        counter2 += 1;
+                    }
+                </div>
+                <div class="flex-row m-b-20">
+                    <a class="custom-btn-10 flex-1" onclick="AddNewSize()">
+                        <span>@Resources.Strings.AddAnotherSize</span>
+                        <i class="fa fa-plus fix-icon"></i>
+                    </a>
+                    <div class="flex-1"></div>
+                </div>
+                <div class="form-group hide">
+                    <label>
+                        @Resources.Strings.OverrideShipping
+                    </label>
+                    <input type="number" name="overrideShipping" value="@(product != null &&  product.OverrideShipping != null ? product.OverrideShipping :  0)" />
+                </div>
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.MainImage <span class=red-color>*</span>
+                    </label>
+                    <input type="file" @(product != null && string.IsNullOrEmpty(product.ThumbURL) ? "required" : "") name="image" />
+                    @if (product != null && !string.IsNullOrEmpty(product.ThumbURL))
+                    {
+                        <img src="~/@(product.FullImagePath)_thumb.png" />
+                    }
+                </div>
+                <div class="form-group">
+                    <label>
+                        @Resources.Strings.ExtraImages
+                    </label>
+                    <input type="file" name="images" multiple />
+                    @if (product != null && !string.IsNullOrEmpty(product.Images))
+                    {
+                        foreach (string img in product.ImageList)
+                        {
+                            <div class="small-2">
+                                <img src="~/@(product.FullImagePath + img)_thumb.png" />
+                                <a href="~/user/DeleteImage?img=@(product.ThumbURL + img)&index=@img&objCase=Product&objID=@product.ID&rt=user/AddProduct?id=@product.ID"><i class="fa fa-trash"></i></a>
+                            </div>
+
+                        }
+                    }
+                </div>
+                <div class="form-group">
+                    <a data-toggle="collapse" class="add-accor" href="#specsAcc" data-target="#specsAcc" role="button">
+                        @Resources.Strings.Specs
+                    </a>
+                    <div class="spec-table collapse show" id="specsAcc">
+                        @if (catSpecs.Find(x => x.ID == "20031") != null)
+                        {
+                            Spec spec = catSpecs.Find(x => x.ID == "20031");
+                            if (spec != null)
+                            {
+                                <div class="form-group">
+                                    <label>
+                                        @spec.Name - @Resources.Strings.YoutubeLinkOnly
+                                    </label>
+                                    <input type="text" value="@(product != null && product.Specs.Find(x=> x.ID == spec.ID) != null? product.Specs.Find(x=> x.ID == spec.ID).Value :"N/A")" name="sp@(spec.ID)" />
+                                </div>
+                            }
+                        }
+
+                        @foreach (CMS.Spec spec in catSpecs.FindAll(x => x.ID != "20031" && x.ID != "20040" && x.ID != "20039"))
+                        {
+                            <div class="form-group">
+                                @if (spec.Type == SpecType.Text || spec.Type == SpecType.Available || spec.Type == SpecType.OnOff)
+                                {
+                                    <label>
+                                        @spec.Name @((spec.Required) == true ? Html.Raw("<span class=red-color>*</span>") : Html.Raw(""))
+                                    </label>
+                                }
+                                @switch (spec.Type)
+                                {
+                                    case SpecType.Text:
+                                        spec.Name = !string.IsNullOrEmpty(spec.Name) && spec.Name.Split(' ').Length > 0 ? spec.Name.Split(' ')[0] : spec.Name;
+                                        <select type="text" @(spec.Required == true ?  "required" : "") name="sp@(spec.ID)">
+                                            @{
+                                                LookupCategory currentCat = lookCats.Find(x => x.Name.ToLower().Contains(spec.Name.ToLower()));
+                                                if (currentCat != null)
+                                                {
+                                                    foreach (var lookItem in lookItems.FindAll(x => x.CategoryID == currentCat.ID).ToList().OrderBy(x => x.Rank))
+                                                    {
+                                                        <option value="@(lookItem.Value.Trim(' ') != "-" ? lookItem.Value : "")" @(product != null && product.Specs != null && product.Specs.Find(x => !string.IsNullOrEmpty(lookItem.Value) && x.Value.ToLower().Trim() == lookItem.Value.ToLower().Trim()) != null ? "selected" : "")>
+                                                            @lookItem.Value
+                                                        </option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                        break;
+                                    case SpecType.OnOff:
+                                        <input type="checkbox" style="display:block" name="sp@(spec.ID)" @(product != null && product.Specs.Find(x => x.ID == spec.ID) != null ? product.Specs.Find(x => x.ID == spec.ID).Value == "1" ? "checked" : "" : "") />
+                                        break;
+                                    case SpecType.Available:
+                                        <select required name="sp@(spec.ID)">
+                                            @foreach (var specItem in lck.GetLookUpCategoryItems(spec.Source, CurrentLanguage))
+                                            {
+                                                <option value="@specItem.ID" @(product != null && product.Specs != null && product.Specs.Find(x => x.ID == spec.ID) != null && product.Specs.Find(x => x.ID == spec.ID).Value == specItem.ID.ToString() ? "selected" : "" )>@specItem.Value</option>
+                                            }
+                                        </select>
+                                        break;
+                                }
+                            </div>
+                        }
+                        <div class="form-group">
+                            <div id="errorMessage"></div>
+                            <div class="flex-row mb-flex-column">
+                                <div class="small-12 large-12 m-0 p-0">
+                                    @{
+                                        Spec specialty = catSpecs.Find(x => x.ID == "20039");
+                                        LookupCategory currentCat2 = lookCats.Find(x => x.Name.ToLower().Contains(specialty.Name.ToLower()));
+                                        List<String> valueArray = product != null && product.Specs != null && product.Specs.Find(x => x.ID == specialty.ID) != null && !string.IsNullOrEmpty(product.Specs.Find(x => x.ID == specialty.ID).Value) && product.Specs.Find(x => x.ID == specialty.ID).Value.Split(',').Length > 0 ? product.Specs.Find(x => x.ID == specialty.ID).Value.Split(',').ToList() : new List<string>();
+
+                                    }
+                                    <h2>@Resources.Strings.DoctorSpeciality</h2>
+                                    <select class="small-12 large-12 ui fluid multiple search selection dropdown" multiple required name="sp20039">
+                                        @foreach (var lookItem in lookItems.FindAll(x => x.CategoryID == currentCat2.ID).ToList().OrderBy(x => x.Rank))
+                                        {
+                                            <option value="@lookItem.Value" @(valueArray != null && valueArray.Find(x => x.ToLower().Trim(' ') == lookItem.Value.ToLower().Trim(' ')) != null ? "selected" : "")>
+                                                @lookItem.Value
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <button type="submit" class="hide" id="formSubmitBtn"></button>
+            <a onclick="checkForm()" class="custom-btn-4 w-100 m-b-10 f-color-white">@(product == null ? Resources.Strings.Add : Resources.Strings.Save)</a>
+            <a onclick="cancleModal()" class="custom-btn-8 w-100  f-color-white">@(Resources.Strings.Cancel )</a>
+
+        </form>
+    }
+</div>
+
+<!-- Modal -->
+<div id="deleteModal" class="modal fade cancleModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="large-12 small-12">
+                        <h1 id="message"></h1>
+                        <a class="modal-close modal-close-btn" data-dismiss="modal">
+                            <img src="~/images/close.png" width="20" />
+                        </a>
+                    </div>
+                    <div class="large-12 small-12" id="modal-controls">
+                        <a class="modal-custom-btn-1 f-color-white" onclick="window.history.back();">@Resources.Strings.Yes</a>
+                        <a class="modal-custom-btn-2 modal-close-btn" data-dismiss="modal">@Resources.Strings.Cancel</a>
+                        <form action="~/user/DeleteProduct" method="post" class="" id="deleteForm">
+                            <input type="hidden" name="id" id="productID" value="" />
+                            <input type="hidden" name="action" id="action" value="" />
+                            <input type="hidden" name="rt" id="rt" value="/user/UserShop" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="deleteModal" class="modal fade deleteModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="large-12 small-12">
+                        <h1 id="deleteMessage"></h1>
+                        <a class="modal-close modal-close-btn" data-dismiss="modal">
+                            <img src="~/images/close.png" width="20" />
+                        </a>
+                    </div>
+                    <div class="large-12 small-12" id="modal-controls">
+                        <a class="modal-custom-btn-1 f-color-white" onclick="document.getElementById('deleteForm').submit()">@Resources.Strings.Yes</a>
+                        <a class="modal-custom-btn-2 modal-close-btn" data-dismiss="modal">@Resources.Strings.Cancel</a>
+                        <form action="~/user/DeleteProduct" method="post" class="hide" id="deleteForm">
+                            <input type="hidden" name="id" id="productID" value="" />
+                            <input type="hidden" name="action" id="action" value="" />
+                            <input type="hidden" name="rt" id="rt" value="/user/UserShop" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+
+
+
+    <script src="~/assets/js/jquery.chained.js"></script>
+    <script src="~/assets/js/jquery-ui.js"></script>
+
+    <script src="~/assets/js/semantic.js"></script>
+    <script src="~/assets/js/dropdown.js"></script>
+    <script>
+        $("#catID").chained("#mainCategory");
+        $("#subCatID").chained("#catID");
+        $("#subCatID").hide();
+
+
+        $("#catID").change(function () {
+
+            let options = $('#subCatID option').length;
+            if (options > 1) {
+                $("#subCatID").show();
+            }
+        })
+    </script>
+    <script>
+        var elements = document.querySelectorAll('input,select,textarea');
+        var invalidListener = function () {
+            this.scrollIntoView(false);
+        };
+
+        for (var i = elements.length; i--;)
+            elements[i].addEventListener('invalid', invalidListener);
+    </script>
+    <script>
+        function setRRP(limit) {
+            $("#rrp").attr("min", limit * 1.15);
+            calculateRRP();
+        }
+    </script>
+    <script>
+        function cancleModal() {
+            $("#message").html('@Resources.Strings.AreYouSureYouWantToCancel?')
+            $(".cancleModal").modal({
+                duration: 10,
+                onShow: function () {
+                    $('.modal').appendTo($('body'));
+                }
+            }).modal('show').addClass("show");
+        }
+    </script>
+    <script>
+        function selectChange(action) {
+            if (action == "-1") {
+                $(".brand-addNew").removeClass("hide");
+            }
+            else {
+                $(".brand-addNew").addClass("hide");
+            }
+        }
+    </script>
+    <script>
+        $(".modal-close-btn").on("click", function () {
+            $(".modal").modal("hide");
+        })
+    </script>
+    <script>
+        let rrpFactor = parseFloat('@RRPFactor');
+        function calculateRRP(fixDiscount = true, updatePrice = true) {
+            let price = $("#basePrice");
+            let oldPrice = $(".old-price");
+            let discount = $(".discount");
+            let priceInput = $("#price");
+            if (fixDiscount)
+                fixDiscountList();
+            if (updatePrice) {
+                $(price).val((1 - parseFloat(discount.val())) * parseFloat($(price).val()))
+                $("#rrp").val(parseInt( (rrpFactor * $(price).val()).toFixed(2))).attr("min", $(price).val());
+            }
+            $(priceInput).val(parseInt((1 - parseFloat(discount.val())) * parseFloat(oldPrice.val())))
+            //remove this to restore rrp net rrp
+            $(priceInput).val(parseInt(oldPrice.val()))
+
+        }
+        function fixDiscountList() {
+            let oldPrice = $(".old-price");
+            let discount = $(".discount");
+            let basePrice = $("#basePrice");
+            $(".discount > option").remove();
+
+            for (let i = 0; i <= 1; i +=0.05 ) {
+
+                let discountResult = parseInt((1 - i) * parseFloat(oldPrice.val()))
+
+                if (basePrice.val() <= discountResult) {
+                    let option = document.createElement("option");
+                    $(option).val(i.toFixed(2)).html(parseInt(i.toFixed(2) * 100) + "%").appendTo($(".discount"));
+
+                }
+                else if ( i == 0) {
+                    let option = document.createElement("option");
+                    $(option).val(0).html(parseInt(0 * 100) + "%").appendTo($(".discount"));
+                }
+            }
+        }
+    </script>
+    <script>
+        function checkForm() {
+            let productForm = $("#productAddForm");
+            let secondBox = $("#secondBox");
+            let messgae = $("#errorMessage");
+
+            if (!$(productForm)[0].checkValidity()) {
+                $("#formSubmitBtn")[0].click();
+            }
+            else {
+                $(productForm).submit()
+            }
+        }
+
+    </script>
+    <script>
+        $('.ui.fluid.dropdown').
+            dropdown({
+                maxSelections: 10
+            });
+        function setSizes(action, element) {
+            let selectedOption = $("option[value=" + action + "]")
+            let intAction = parseInt(selectedOption.attr("data-action"))
+
+            if (intAction < 0) {
+                $(".ui.fluid.dropdown select").val($(selectedOption).attr("value"))
+                $(".ui.label").not(".ui.label[data-value=" + action + "]").remove();
+                $('.ui.fluid.dropdown').dropdown({
+                    maxSelections: 1
+                });
+                $('.ui.fluid.dropdown').dropdown('setup select');
+            }
+            else {
+
+                $('.ui.fluid.dropdown').dropdown('setup select');
+                $('.ui.fluid.dropdown').dropdown({
+                    maxSelections: 10
+                });
+                $('.your.element').dropdown('set selected', $(selectedOption).attr("value"));
+            }
+        }
+    </script>
+
+    <script>
+        let Sizes = [];
+        @foreach(var item in sizes.FindAll( x => productSizes != null && productSizes.Find(y => y.Size != null && y.Size.ID ==x.ID) == null))
+        {
+            <text>
+        Sizes.push({
+            "ID": @item.ID,
+            "Label": '@item.Label',
+            "Value": '@item.Value'
+        })
+            </text>
+        }
+        function AddNewSize() {
+            if ($("#defaultSize").val() == "1") {
+                alert("You can't add another size while Not Applicable is selected.")
+                return;
+            }
+            else if ($("#defaultSize").val() == "1002") {
+                alert("You can't add another size while Custom Size is selected.")
+                return;
+            }
+
+            let sizeSelect = document.createElement("select");
+            let sizesRow = $("#sizesRow");
+            let currentCount = parseInt( $('.sizeSelect').length);
+            $(sizeSelect).addClass("sizeSelect").attr("name", "Size" + parseInt(currentCount + 1)).attr("id", "Size" + currentCount + 1);
+            $(sizeSelect).prop('required', true);
+            let flexRow = document.createElement("div");
+            $(flexRow).addClass("flex-row").addClass("justify-spacearound").attr("id","sizeRow" + currentCount).appendTo(sizesRow);
+
+            let holder = document.createElement("div");
+            $(holder).addClass("flex-1").addClass("m-r-7").appendTo(flexRow);
+            let label = document.createElement("label");
+            $(label).attr("Size" + parseInt( currentCount + 1));
+            $(label).html('@Resources.Strings.Size').appendTo(holder);
+            let requiredStar = document.createElement("span");
+            $(requiredStar).addClass("red-color").html("*").appendTo(label);
+
+            $(sizeSelect).appendTo(holder);
+            populateSizeSelect(sizeSelect);
+            //for speed purposes copy and past
+            let sizeQty = document.createElement("input");
+            $(sizeQty).attr("name", "SizeQty" + parseInt(currentCount + 1)).attr("type", "number").attr("id", "SizeQty" + parseInt(currentCount + 1)).addClass("form-control");
+            $(sizeQty).prop('required', true);
+
+            holder = document.createElement("div");
+            $(holder).addClass("flex-1").addClass("m-r-7").appendTo(flexRow);
+            label = document.createElement("label");
+            $(label).attr("SizeQty" + parseInt(currentCount + 1));
+            $(label).html('@Resources.Strings.Quantity').appendTo(holder);
+            requiredStar = document.createElement("span");
+            $(requiredStar).addClass("red-color").html("*").appendTo(label);
+
+            $(sizeQty).appendTo(holder);
+
+            //for speed purposes copy and past
+            let sizeSKU = document.createElement("input");
+            $(sizeSKU).attr("name", "SizeSKU" + parseInt( currentCount + 1)).attr("type","text").attr("id", "SizeSKU" + parseInt(currentCount + 1)).addClass("form-control");
+            $(sizeSKU).prop('required', true);
+
+            holder = document.createElement("div");
+            $(holder).addClass("flex-1").appendTo(flexRow);
+            $(holder).addClass("pos-relative");
+            label = document.createElement("label");
+            $(label).attr("SizeSKU" + parseInt( currentCount + 1));
+            $(label).html('@Resources.Strings.SKU').appendTo(holder);
+            requiredStar = document.createElement("span");
+            $(requiredStar).addClass("red-color").html("*").appendTo(label);
+
+            $(sizeSKU).appendTo(holder);
+
+            let anchor = document.createElement("a");
+            $(anchor).addClass("fix-btn-pos").appendTo(holder);
+            label = document.createElement("i");
+            $(label).addClass("fa").addClass("fa-trash").appendTo(anchor)
+            $(anchor).click(function () {
+                $("#sizeRow" + currentCount).remove()
+            })
+            if (currentCount + 1 >= 1) {
+                let totalCount = "";
+                for (let i = 1; i <= currentCount + 1; i++) {
+                    if (i > 1)
+                        totalCount += ",";
+                totalCount += i;
+
+                }
+
+                $("#sizesToAdd").val(totalCount)
+            }
+
+        }
+
+        function populateSizeSelect(sizeElement) {
+            let AvalibaleSizes = [];
+            let UsedSizes = []
+            UsedSizes.push($("#defaultSize").val());
+            $.each($(".sizeSelect"), function (index,item) {
+                if ($(item).val() != null)
+                    UsedSizes.push($(item).val());
+            });
+
+            $(Sizes).map(function (index, item) {
+                if (!UsedSizes.includes(item.ID + '')) {
+                    AvalibaleSizes.push(item);
+                }
+            })
+            $.each($(".sizeSelect"),function (index,item) {
+
+                $(item).find("option").not(":selected").remove();
+                $(AvalibaleSizes).map((index, sizeItem) => {
+                    if (sizeItem.ID != 1 && sizeItem.ID != 1002) {
+                    let o = document.createElement("option")
+                    $(o).val(sizeItem.ID).html(sizeItem.Label)
+                        $(o).appendTo(item);
+                    }
+                })
+            })
+
+        }
+
+    </script>
+
+    <script>
+        function deleteProduct(productID, productName, action) {
+            if (action == 1) {
+                $("#deleteMessage").html('@Resources.Strings.ProductDeleteSure ' + productName + "?")
+
+            }
+            else {
+                $("#deleteMessage").html('@Resources.Strings.ProductDeActiveSure ' + productName + "?")
+
+            }
+            $("#productID").val(productID)
+            $("#action").val(action)
+            $(".deleteModal").modal({
+                duration: 10,
+                onShow: function () {
+                    $('.modal').appendTo($('body'));
+                }
+            }).modal('show').addClass("show");
+        }
+    </script>
+
+}
+
+
+
+

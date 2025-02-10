@@ -1,0 +1,43 @@
+﻿@model CMS.Product
+<div>
+
+    <div class="product-item">
+
+        <div class="product-image-actions">
+
+            <a href="~/Catalog/Product/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)" class="product-image bkwhite">
+                <img src="~/@(Model.FullImagePath)_635x811.jpg" alt="@Model.Name">
+                @if (Model.OldPrice.HasValue)
+                {
+                    <div class="product-label"><span>@Resources.Strings.Sale</span></div>
+                }
+            </a>
+            <div class="product-item-info text-left">
+                <h5 class="speacail-title-h1">
+                    <a href="~/Catalog/Product/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)" class="speacail-title-h1">@Model.CategoryName</a>
+                </h5>
+                <h3 class="product-title sub-title m-0">
+                    <a class="sub-title-1" href="~/item/@Model.ID/@CMS.Helpers.GeneralHelper.CleanForURL(Model.Name)">@Model.Name</a>
+                </h3>
+                <span class="product-price price">
+                    @if (Model.OldPrice.HasValue)
+                    {
+                        <del><span class="amount">@Model.OldPrice.Value</span></del>
+                    }
+                    <span class="amount speacail-title-h1">@Model.FormattedPrice</span>
+                </span><!-- /.product-price -->
+
+
+            </div>
+
+            <div class="product-actions">
+                <div class="btn-group-product-actions">
+                    <a title="Remove" class="btn  custom-btn-6 text-center btn-action btn-block" href="~/user/wishlist/add/@Model.ID"><i class="fa fa-trash" style="padding-right:10px"></i> @Resources.Strings.Remove</a>
+
+                </div>
+            </div>
+
+        </div><!-- /.product-image -->
+
+    </div><!-- /.product-item -->
+</div>

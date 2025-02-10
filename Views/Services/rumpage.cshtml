@@ -1,0 +1,158 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1" />-->
+    <link href="~/rum/main.css" rel="stylesheet" type="text/css">
+    <script src="~/rum/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="~/rum/exporting.js"></script>
+    <link href="~/rum/highcharts.css" rel="stylesheet" />
+    <script>
+        var osama = [
+            @for (int i = 0; i < ViewBag.Times.Length; i++)
+                        {
+                        <text>
+            [@ViewBag.Times[i], @ViewBag.Closings[i]],
+            </text>
+                }
+        ];
+        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+
+                    // create the chart
+                    Highcharts.stockChart('container', {
+
+                        title: {
+                            style: {
+                                color: '#Fff',
+                        font: 'bold 16px "Trebuchet MS", Verdana, sans-serif'
+                                },
+                    text: 'JOD   @(ViewBag.close)',
+                },
+
+                navigator: {
+                            enabled: false
+                },
+
+                scrollbar: {
+                            enabled: false
+                },
+
+                subtitle: {
+                            text: ''
+                },
+
+                xAxis: {
+                            gapGridLineWidth: 0,
+                    labels: {
+                                style: {
+                                    color: 'white'
+                                    }
+                            },
+                },
+
+                yAxis: {
+                            gapGridLineWidth: 0,
+                    labels: {
+                                style: {
+                                    color: 'white'
+                                    }
+                            },
+                },
+
+                rangeSelector: {
+
+                            selected: 1,
+                    inputEnabled: false
+                },
+
+                series: [{
+                    name: '@Request["sym"].ToUpper()',
+                    type: 'area',
+                    data: osama,
+                    color: 'orange',
+                    gapSize: 5,
+                    tooltip: {
+                                valueDecimals: 2
+                    },
+
+                    fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                                    },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    threshold: null
+                }]
+            });
+        });
+
+    </script>
+    <style>
+        table{
+            font-size:12px;
+            width:100%;
+        }
+        td{
+            background:#fff;
+            padding:0px 3px;
+        }
+        .alternate td {
+            background: #505368;
+            color: #ff9000;
+        }
+        .val
+        {
+            float:right;
+            font-weight:bold;
+        }
+    </style>
+
+
+</head>
+<body>
+
+        <div>
+
+            <div id="container" style="height: 250px;width: 100%;"></div>
+            <table>
+                <tr class="alternate">
+                    <td>Bid Volume<span class="val">@ViewBag.bidvol</span></td>
+                    <td>Offer Volume<span class="val">@ViewBag.offvol</span></td>
+                </tr>
+                <tr class="">
+                    <td>Previous Close<span class="val">@ViewBag.prevclose</span></td>
+                    <td>Today's Open<span class="val">@ViewBag.todayopen</span></td>
+                </tr>
+                <tr class="alternate">
+                    <td>Day's Range<span class="val">@ViewBag.dayrange</span></td>
+                    <td>52 Week Range<span class="val">@(Request["sym"] == "rumm" ? ViewBag.weeksrange.Replace("1.230", "1.07").Replace("0.820","0.70") : ViewBag.weeksrange)</span></td>
+                </tr>
+                <tr class="">
+                    <td>Bid / Ask<span class="val">@ViewBag.bidask</span></td>
+                    <td>Trades<span class="val">@ViewBag.trades</span></td>
+                </tr>
+                <tr class="alternate">
+                    <td>Last Time<span class="val">@ViewBag.lasttime</span></td>
+                    <td>Volume (Shares)<span class="val">@ViewBag.volume</span></td>
+                </tr>
+                <tr class="">
+
+                    <td>Value (JOD)<span class="val">@(Math.Round(Convert.ToDouble(ViewBag.value), 2).ToString().Replace(".00", ""))</span></td>
+                    <td></td>
+                </tr>
+            </table>
+
+        </div>
+
+
+</body>
+</html>

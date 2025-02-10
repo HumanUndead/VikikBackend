@@ -1,0 +1,148 @@
+﻿@model CMS.Cart
+@section head
+{
+}
+<div class="site-content">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="~/">@Resources.Strings.Home</a></li>
+                <li class="active">@Resources.Strings.CartReview</li>
+            </ul>
+        </div>
+    </div><!-- /.breadcrumb-wrapper -->
+    <div id="primary" class="content-area inner-bottom">
+        <form method="post" action="@(Model.Delivery==CMS.DeliveryMethod.PayOnDelivery?Url.Content("~/lists/order/deliverypay"):"https://secure.payfort.com/ncol/test/orderstandard.asp")" name="form1">
+            <input type="hidden" name="ListID" value="@Model.Notes">
+            <input type="hidden" name="PSPID" value="cubicm">
+            <input type="hidden" name="ORDERID" value="@Model.OrderID">
+            <input type="hidden" name="AMOUNT" value="@(Model.Total*100)">
+            <input type="hidden" name="CURRENCY" value="AED">
+            <input type="hidden" name="LANGUAGE" value="en_US">
+            <input type="hidden" name="CN" value="@ViewBag.ClientName">
+            <input type="hidden" name="EMAIL" value="@ViewBag.ClientEmail">
+            <input type="hidden" name="OWNERADDRESS" value="@Model.OrderAddress.Address1">
+            <input type="hidden" name="OWNERTOWN" value="@Model.OrderAddress.City">
+            <input type="hidden" name="OWNERCTY" value="AE">
+            @if (!string.IsNullOrEmpty(Model.OrderAddress.Phone1))
+            {
+                <input type="hidden" name="OWNERTELNO" value="@Model.OrderAddress.Phone1">
+            }
+            @if (!string.IsNullOrEmpty(Model.OrderAddress.Postal))
+            {
+                <input type="hidden" name="OWNERZIP" value="@Model.OrderAddress.Postal">
+            }
+            <input type="hidden" name="SHASIGN" value="@ViewBag.SHA">
+
+            <main class="site-main container inner-top-xs inner-bottom wow fadeInUp" data-wow-delay="0.2s">
+                <div class="table-responsive">
+                    <table class="table table-cart">
+                        <thead>
+                            <tr>
+                                <th class="cart-product">@Resources.Strings.Item</th>
+                                <th class="cart-price">@Resources.Strings.Price</th>
+                                <th class="cart-qty">@Resources.Strings.Quantity</th>
+                                <th class="cart-sub-total">@Resources.Strings.SubTotal</th>
+                                <th class="cart-delete"></th>
+                            </tr>
+                        </thead><!-- /thead -->
+                        <tbody>
+                            @{ var i = 0; }
+                            @foreach (CMS.CartItem prod in Model.Items)
+                            {
+                                <tr class="order-products">
+                                    <td class="order-product">
+                                        <div class="media clearfix">
+                                            <a href="~/item/@prod.ID/@CMS.Helpers.GeneralHelper.CleanForURL(prod.Name)" class='media-left'><img src="~/assets/images/blank.gif" data-echo="@(Url.Content("~/"))content/products/@(prod.ThumbURL)_179x190.jpg" alt="@prod.Name" width="179" height="190"></a>
+                                            <div class="media-body">
+                                                <h4><a href="~/item/@prod.ID/@CMS.Helpers.GeneralHelper.CleanForURL(prod.Name)">@prod.Name</a></h4>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="card_product_price" data-th="Unit Price">@Resources.Strings.Currency @prod.UnitPrice</td>
+                                    <td class="card_product_quantity" data-th="Quantity">
+                                        @prod.Quantity
+                                        &nbsp;
+                                        &nbsp;<a href="#"><i class="icon-trash icon-large"></i> </a>
+                                    </td>
+                                    <td class="card_product_total" data-th="Total">@Resources.Strings.Currency <span id="total@(i)">@prod.TotalPrice</span></td>
+                                </tr>
+                                i++;
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"></div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <div class="row">
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="block-form box-border wow fadeInLeft" data-wow-duration="1s">
+                                <h3><i class="fa fa-truck"></i> @Resources.Strings.ShippingnPayment</h3>
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>@Resources.Strings.BillingAddress</label>
+                                        @Model.OrderAddress.Label
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>@Resources.Strings.PaymentMethod</label>
+                                        @(Resources.Strings.ResourceManager.GetString(Model.Delivery.ToString()))
+                                    </div>
+                                </div>
+
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <div class="row">
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="block-form block-order-total box-border wow fadeInRight" data-wow-duration="1s">
+                                <h3><i class="fa fa-dollar"></i> Total</h3>
+                                <hr>
+                                <ul class="list-unstyled">
+                                    <li>@Resources.Strings.SubTotal: <strong>@Resources.Strings.Currency <span id="subtotal">@Model.TotalWOShipping</span></strong></li>
+                                    <li>@Resources.Strings.Shipping: <strong>@Resources.Strings.Currency <span id="shipping">@Model.ShippingPrice</span></strong></li>
+                                    @if (ViewBag.PreviousBalance > 0)
+                                    {
+                                        <li>
+                                            @Resources.Strings.PreviousBalance:
+                                            <strong>@Resources.Strings.Currency <span id="prevbalance">@ViewBag.PreviousBalance</span></strong>
+                                        </li>
+                                    }
+                                    @if (ViewBag.UsedPoints > 0)
+                                    {
+                                        <li>
+                                            @Resources.Strings.PointsUsed:
+                                            <strong><span id="points">@ViewBag.UsedPoints</span></strong>
+                                            <input type="checkbox" name="usepoints" checked style="display:none" />
+                                        </li>
+                                    }
+                                    <li><hr></li>
+                                    <li>@Resources.Strings.Total: <strong>@Resources.Strings.Currency <span id="total">@ViewBag.Total</span></strong></li>
+                                </ul>
+
+                                <div class="col-xs-12 col-sm-6">
+                                    <a href="~/shops" class="btn-block btn btn-default continue-shopping-button">@Resources.Strings.ContinueShopping</a>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <input type="submit" class="btn-block btn btn-primary proceed-to-checkout" value="@Resources.Strings.Checkout" />
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+                </main>
+        </form>
+    </div>
+            </div>
+    @section scripts
+{
+
+    }

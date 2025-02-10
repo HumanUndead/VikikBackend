@@ -1,0 +1,45 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Admin.master.cs" Inherits="Admin_Admin" %>
+<%@ Register src="controls/AdminMenu.ascx" tagname="AdminMenu" tagprefix="uc1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="head" runat="server">
+    <title><%=Resources.CMS.Client %>: <%=Resources.CMS.AdminPanel %></title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <link rel="shortcut icon" href="images/kslogo.ico" type="image/x-icon" />
+    <asp:ContentPlaceHolder runat="server" ID="cphHead"></asp:ContentPlaceHolder>
+</head>
+<body>
+<form id="form1" runat="server">
+<asp:ScriptManager runat="server" ID="sm"></asp:ScriptManager>
+<div class="wrapper">
+<uc1:AdminMenu ID="AdminMenu1" runat="server" />
+        <div class="content">
+        <div class="maintitle"><img src="images/rhino.png" /> Kensoftware Rhino CMS</div>
+        <div class="toparea">
+        <div class="title l"><asp:ContentPlaceHolder runat="server" ID="cphTitle"></asp:ContentPlaceHolder></div>
+                <div class="welcomediv r">
+                    <div class="lgndiv"><%=Resources.CMS.Welcome %> <b><asp:Literal runat="server" ID="ltlLoginName"></asp:Literal></b> <asp:LinkButton runat="server" ID="lnkLogout" OnClick="lnkLogout_Click"><img src="images/logout.png" alt="<%=Resources.CMS.Logout %>" /></asp:LinkButton></div>
+                </div>
+                <br class="clr" />
+                </div>             
+
+                        <asp:ContentPlaceHolder ID="cphWorkArea" runat="server">
+                        </asp:ContentPlaceHolder>
+                        </div>
+                    
+                
+                <br class="clr" />
+
+
+            <div class="powered r">
+                            <a href="http://www.kensoftware.com" target="_blank">
+                                <%=Resources.CMS.Powered %>
+                                <img id="ksLogo" alt="website development, hosting, CMS systems, asp.net" runat="server"
+                                    src="~/images/kslogo.png" /></a>
+                        </div>
+        </div>
+        
+    </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,336 @@
+﻿@model CMS.Cart
+<div class="site-content">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="~/">@Resources.Strings.Home</a></li>
+                <li class="active">@Resources.Strings.ShoppingCart</li>
+            </ul>
+        </div>
+    </div><!-- /.breadcrumb-wrapper -->
+
+    <div id="primary" class="content-area inner-bottom">
+    <form method="post" action="~/lists/cart/review">
+        <main class="site-main container inner-top-xs inner-bottom wow fadeInUp" data-wow-delay="0.2s">
+            <div class="table-responsive">
+                <table class="table table-cart">
+                    <thead>
+                        <tr>
+                            <th class="cart-product">@Resources.Strings.Item</th>
+                            <th class="cart-price">@Resources.Strings.Price</th>
+                            <th class="cart-qty">@Resources.Strings.Quantity</th>
+                            <th class="cart-sub-total">@Resources.Strings.SubTotal</th>
+                            <th class="cart-delete"></th>
+                        </tr>
+                    </thead><!-- /thead -->
+
+                    <tbody>
+                    @{ var i = 0; }
+                    @foreach (CMS.CartItem prod in Model.Items)
+                    {
+                        <tr class="order-products">
+                            <td class="order-product">
+                                <div class="media clearfix">
+                                    <a href="~/item/@prod.ID/@CMS.Helpers.GeneralHelper.CleanForURL(prod.Name)" class='media-left'><img src="~/assets/images/blank.gif" data-echo="@(Url.Content("~/"))content/products/@(prod.ThumbURL)_179x190.jpg" alt="@prod.Name" width="179" height="190"></a>
+                                    <div class="media-body">
+                                        <h4><a href="~/item/@prod.ID/@CMS.Helpers.GeneralHelper.CleanForURL(prod.Name)">@prod.Name</a></h4>
+
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="cart-price"><span class="price"><span class="amount">@string.Format(Resources.Strings.PriceFormat,prod.UnitPrice)</span></span></td>
+                            <td class="qnt-holder">
+                                <div class="le-quantity">
+                                        <a class="minus" href="#reduce"><span><i class="fa fa-minus"></i></span></a>
+                                        <input readonly="readonly" type="text" value="@prod.Quantity" id="quantity@(i)" name="quantity@(i)" class="qty" />
+                                        <a class="plus" href="#add"><span><i class="fa fa-plus"></i></span></a>
+                                </div>
+                            </td>
+                            <td class="cart-product-subtotal"><span class="price"><span class="amount">@Resources.Strings.Currency <span id="total@(i)">@prod.TotalPrice</span></span></span></td>
+                            <td class="action-items"><a href="~/lists/cart/remove?id=@(prod.Item.UniqueProductID)" title="Cancel" class="action">@Resources.Strings.Remove</a>
+                                <input type="hidden" name="pid@(i)" value="@prod.Item.UniqueProductID" />
+                                <input type="hidden" name="hdnprice@(i)" value="@prod.UnitPrice" id="hdnprice@(i)" />
+                                <input type="hidden" name="hdnweight@(i)" value="@(((CMS.Product)prod.Item).ShippingWeight)" id="hdnweight@(i)" />
+                            </td>
+                        </tr>
+                    }
+                    </tbody><!-- /tbody -->
+                </table><!-- /table -->
+            </div><!-- /.table-responsive -->
+
+            <div class="form-inline form-coupon-cart row" style="display:none;">
+                <div class="col-md-6 col-xs-12 col-sm-9 col-md-push-6 col-sm-push-3">
+                    <input class="form-control" type="text" placeholder="Enter coupon Code">
+                    <button class="btn btn-primary btn-lg btn-apply-coupon" type="submit">@Resources.Strings.Apply</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-9 col-md-push-6 col-xs-12 col-sm-push-3">
+                    <ul class="order-totals cart-order-totals list-unstyled">
+                       <li class="shipping">
+            <label>@Resources.Strings.BillingAddress</label>
+            <div class="value pull-right">
+                <select class="form-control" required id="addresssel" name="address">
+                    <option value="">--- @Resources.Strings.Select ---</option>
+                    @foreach (CMS.Address address in ViewBag.Addresses)
+                    {
+                        <option value="@address.ID" @((Model.OrderAddress != null && Model.OrderAddress.ID == address.ID ? "selected" : "")) data-ship="@(ViewBag.LookupManager.GetLookupItem(Convert.ToInt32(address.City),ViewBag.CurrentLanguage).Value)">@address.Label</option>
+                    }
+                    <option value="-1">@Resources.Strings.AddNew</option>
+                </select>
+            </div>
+</li>
+                        <li class="shipping">
+                            <label>@Resources.Strings.Shipping</label>
+                            <div class="value pull-right"><strong>@Resources.Strings.Currency <span id="shipping">@Model.ShippingPrice</span></strong></div>
+                        </li>
+                        <li>
+
+                                <label>@Resources.Strings.PaymentMethod</label>
+                            <div class="value pull-right">
+                                <select name="shippingtype" class="form-control">
+                                    <option value="1" selected>@Resources.Strings.PayOnDelivery</option>
+                                </select>
+                                </div>
+</li>
+                        @if (ViewBag.PreviousBalance>0)
+                        {
+                        <li class="shipping">
+                            <label>@Resources.Strings.PreviousBalance</label>
+                            <div class="value pull-right"><strong>@Resources.Strings.Currency <span id="prevbalance">@ViewBag.PreviousBalance</span></strong></div>
+                        </li>
+                        }
+                        @if (ViewBag.AvailablePoints > 0)
+                        {
+                            <li class="shipping">
+                                <label>@Resources.Strings.AvailablePoints</label>
+                                <div class="value pull-right"><strong><span id="points">@ViewBag.AvailablePoints = JD @(ViewBag.AvailablePoints/10)</span></strong> <input type="checkbox" name="usepoints" id="usepoints" /> @Resources.Strings.UsePoints</div>
+                            </li>
+                        }
+                        <li class="order-total">
+                            <label>@Resources.Strings.Total</label>
+                            <div class="value pull-right"><span class="price"><strong>@Resources.Strings.Currency <span id="total">@ViewBag.Total</span></strong></span></div>
+                        </li>
+                    </ul>
+                    <div class="form-actions form-cart-actions row">
+                        <div class="col-xs-12 col-sm-6">
+                            <a href="~/shops" class="btn-block btn btn-default continue-shopping-button">@Resources.Strings.ContinueShopping</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="submit" class="btn-block btn btn-primary proceed-to-checkout" value="@Resources.Strings.ProceedToCheckout" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main><!-- /.site-main -->
+        <input type="hidden" name="listid"/>
+        </form>
+    </div><!-- /.content-area -->
+</div><!-- /.site-content -->
+
+<!-- Modal -->
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="addressForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">@Resources.Strings.AddAddress</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="block-form box-border wow fadeInLeft animated" data-wow-duration="1s">
+
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="inputFirstName" class="col-sm-3 control-label">@Resources.Strings.Name:<span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input name="Name" required class="form-control" type="text" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputEMail" class="col-sm-3 control-label">@Resources.Strings.StreetAddress:<span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="Address1" required class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-9 col-sm-offset-3">
+                                    <input type="text" name="Address2" required class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPhone" class="col-sm-3 control-label">@Resources.Strings.Country:</label>
+                                <div class="col-sm-9">
+                                    <select name="country" required class="form-control" id="select-country">
+                                        @foreach (CMS.Lookup look in ViewBag.Country)
+                                        {
+                                            <option value="@look.ID" class="khaledoption">@look.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAdress1" class="col-sm-3 control-label">@Resources.Strings.City: <span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <select name="City" required class="form-control" id="select-city">
+                                        @foreach (CMS.Lookup look in ViewBag.City)
+                                        {
+                                            <option value="@look.ID" class="khaledoption @(look.ParentValue)">@look.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAdress2" class="col-sm-3 control-label">@Resources.Strings.Phone: <span class="text-error">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="Phone1" required class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCity" class="col-sm-3 control-label">@Resources.Strings.AlternatePhone: </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="Phone2" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group" style="display:none;">
+                                <label for="inputCity" class="col-sm-3 control-label">Postal Code: </label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="Postal" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Strings.Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="return saveAddress()">@Resources.Strings.Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section scripts
+{
+<script src="~/assets/js/select2.min.js" type="text/javascript"></script>
+<script src="~/assets/js/ns.js"></script>
+    <script type="text/javascript">
+        $('#usepoints').change(function() {
+            console.log('use points check');
+            updateTotal();
+        });
+        $(".qty").change(function () {
+            var quantity = $(this).val();
+            var maxquantity=$(this).data("maxqty");
+            if(maxquantity<quantity)
+            {
+                quantity=maxquantity;
+                $(this).val(quantity);
+                QtyAlert(quantity);
+            }
+            var index = $(this).attr('id').replace("quantity", "");
+            var price = $("#hdnprice" + index).val();
+            var total = quantity * price;
+            $("#total" + index).text(Math.round(total * 100) / 100);
+            updateTotal();
+        });
+        var updateTotal = function () {
+            updateShipping();
+            var pointsamount=0;
+            if($('#usepoints').is(':checked'))
+                pointsamount=@(ViewBag.AvailablePoints/10);
+            var prevbalance=$('#prevbalance').text();
+            var total = 0;
+            $(".qty").each(function () {
+                var quantity = $(this).val();
+                var index = $(this).attr('id').replace("quantity", "");
+                var price = $("#hdnprice" + index).val();
+                total += quantity * price;
+            });
+            var shipping = parseFloat($('#shipping').text());
+            $("#subtotal").text(Math.round(total * 100) / 100);
+            if(pointsamount>total)
+            {
+                pointsamount=total;
+            }
+            total=total-pointsamount;
+            $("#total").text(Math.round(total * 100) / 100 + shipping - prevbalance);
+        }
+        $('#addresssel').on('change', function () {
+            if($(this).val()=="-1")
+            {
+                $('#addressModal').modal();
+            }
+            else if($(this).val()!="")
+            {
+                updateTotal();
+            }
+        });
+        var updateShipping=function()
+        {
+            /*var rate=$('#addresssel').find(':selected').data("ship");
+            var price=0;
+            var totalWeight=0;
+            $(".qty").each(function () {
+                var quantity = $(this).val();
+                var index = $(this).attr('id').replace("quantity", "");
+                var weight = $("#hdnweight" + index).val();
+                totalWeight += quantity * weight;
+            });
+            totalWeight=Math.ceil(totalWeight);
+            if(totalWeight<=5)
+            {
+                price=@ViewBag.BaseShipping;
+            }
+            else
+            {
+                price=@ViewBag.BaseShipping+(totalWeight-5)*rate;
+            }
+        */
+        var price=3;
+        var totalqty=0;
+        $(".qty").each(function () {
+            var quantity = $(this).val();
+            totalqty+=quantity;
+        });
+        //if(totalqty>=3)
+        //price=0;
+        $('#shipping').text(price);
+        }
+        /* var countries = [];
+    $.each({@Html.Raw(ViewBag.CountriesArray)}, function(k, v) {
+        countries.push({id: k, text: v});
+    });
+        $('#select-country').select2({
+            data: countries,
+                width: 200,
+                placeholder: 'Select country',
+                allowClear: true
+
+        });*/
+        var saveAddress = function () {
+            $.post("@(Url.Content("~/handlers"))/Address/add", $("#addressForm").serializeArray(), function (data) {
+                var response = jQuery.parseJSON(data);
+                var html='<option value="' + response.ID + '" data-ship="' + response.Rate + '">' + response.Name + '</option>';
+                $('#addresssel option:last').before(html);
+                $('#addresssel').val(response.ID);
+                updateTotal();
+            });
+            $('#addressModal').modal('hide');
+            return true;
+        }
+    </script>
+<script src="~/assets/js/jquery.chained.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#select-city").chained("#select-country");
+    });
+    var QtyAlert=function(qty)
+    {
+        $.notify({message:'@(Resources.Strings.MaxAvailableIs) ' + qty },{type:'danger'});
+    }
+</script>
+}

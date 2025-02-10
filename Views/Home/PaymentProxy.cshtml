@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "PaymentProxy";
+}
+<form action="~/RequestPayment" method="post">
+    <input type="number" class="form-control input-form" required name="vpc_Amount" placeholder="@Request["amt"]">
+    <input type="hidden" name="virtualPaymentClientURL" size="63" value="https://migs-mtf.mastercard.com.au/vpcpay" maxlength="250">
+    <input type="hidden" name="vpc_Version" value="1" size="20" maxlength="8">
+    <input type="hidden" name="vpc_Command" value="pay" size="20" maxlength="16">
+    <input type="hidden" name="vpc_AccessCode" value="CFD91F23" size="20" maxlength="8">
+    <input type="hidden" name="vpc_Merchant" value="9800980000" size="20" maxlength="16">
+    <input type="hidden" name="vpc_OrderInfo" value="Service payment @Request["e"]" size="20" maxlength="34">
+    <input type="hidden" name="vpc_Locale" value="en" size="20" maxlength="5">
+    <input type="hidden" name="vpc_ReturnURL" size="63" value="http://@(Request.Url.Host)@(Request.Url.IsDefaultPort?"":":" + Request.Url.Port)/paymentcomplete" maxlength="250">
+    <div class="singin-aksen"></div>
+    <input type="submit" name="SubButL" class="btn btn-default btn-green pull-right" value="Pay" />
+</form>
