@@ -863,7 +863,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cms\CMS\CMS.csproj">
+    <ProjectReference Include="..\..\Visual studio 2019\CMS\CMS.csproj">
       <Project>{87ca5c13-b836-4c83-a301-5b21edf0be45}</Project>
       <Name>CMS</Name>
     </ProjectReference>
