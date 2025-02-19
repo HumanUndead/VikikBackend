@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceAPIs", "..\..\Visu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMSCore", "..\CMSCore\CMSCore.csproj", "{0AB5DC44-A46E-44AF-8FD3-D473855F96E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vikik.DAL", "..\Vikik.DAL\Vikik.DAL.csproj", "{6520B2C2-E175-491A-940A-24D3311F6758}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vikik.DAL", "..\VikikDAL\Vikik.DAL.csproj", "{6520B2C2-E175-491A-940A-24D3311F6758}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vikiktemp", "..\vikiktemp\vikiktemp.csproj", "{788CED0D-9175-427A-82D4-206E5BD4ECF7}"
 EndProject
