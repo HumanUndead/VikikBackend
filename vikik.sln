@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vikik", "vikik.csproj", "{A87DEE8E-D6DC-4880-8163-BB0814C37D08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS", "..\..\Visual studio 2019\CMS\CMS.csproj", "{87CA5C13-B836-4C83-A301-5B21EDF0BE45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS", "..\CMS\CMS.csproj", "{87CA5C13-B836-4C83-A301-5B21EDF0BE45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerceAPIs", "..\..\Visual studio 2019\Tajje\eCommerceAPIs\eCommerceAPIs.csproj", "{F52B9DC2-312C-4709-B4E5-AA6CBDF02D3F}"
 EndProject
