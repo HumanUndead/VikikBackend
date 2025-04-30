@@ -160,6 +160,7 @@
     <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="agenttest.html" />
     <Content Include="assets\css\ar\main-styles.css" />
     <Content Include="assets\css\ar\theme-1584c4133.css" />
     <Content Include="assets\css\ar\theme-f430d4133.css" />
@@ -863,7 +864,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Visual studio 2019\CMS\CMS.csproj">
+    <ProjectReference Include="..\CMS\CMS.csproj">
       <Project>{87ca5c13-b836-4c83-a301-5b21edf0be45}</Project>
       <Name>CMS</Name>
     </ProjectReference>
