@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vikik.AppHost", "vikik.AppH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vikik.ServiceDefaults", "vikik.ServiceDefaults\vikik.ServiceDefaults.csproj", "{643E33AB-F265-BE64-CC9F-1A097D5A3F30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KenAgentDomain", "..\KenAgentDomain\KenAgentDomain.csproj", "{5B421E17-ED8F-4280-B9D7-397787F50910}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		blahblah|Any CPU = blahblah|Any CPU
@@ -177,6 +179,22 @@ Global
 		{643E33AB-F265-BE64-CC9F-1A097D5A3F30}.test|Any CPU.Build.0 = Debug|Any CPU
 		{643E33AB-F265-BE64-CC9F-1A097D5A3F30}.test|x86.ActiveCfg = Debug|Any CPU
 		{643E33AB-F265-BE64-CC9F-1A097D5A3F30}.test|x86.Build.0 = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.blahblah|Any CPU.ActiveCfg = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.blahblah|Any CPU.Build.0 = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.blahblah|x86.ActiveCfg = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.blahblah|x86.Build.0 = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Debug|x86.Build.0 = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Release|x86.ActiveCfg = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.Release|x86.Build.0 = Release|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.test|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.test|Any CPU.Build.0 = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.test|x86.ActiveCfg = Debug|Any CPU
+		{5B421E17-ED8F-4280-B9D7-397787F50910}.test|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
