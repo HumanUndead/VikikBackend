@@ -118,8 +118,8 @@
     </Reference>
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -275,7 +275,6 @@
     <Content Include="assets\themes\alysum\assets\cache\theme-1584c4133.css" />
     <Content Include="assets\themes\alysum\assets\cache\theme-f430d4133.css" />
     <Content Include="assets\themes\alysum\assets\cache\theme-f59f6823.css" />
-    <Content Include="Backup\CMS.sln" />
     <Content Include="Global.asax" />
     <Content Include="Icons\email.png" />
     <Content Include="images\back.png" />
@@ -664,7 +663,6 @@
     <Content Include="Scripts\jquery.chained.min.js" />
     <Content Include="Scripts\MetroMenu\css\animations.css" />
     <Content Include="Scripts\MetroMenu\css\special.css" />
-    <Content Include="UpgradeLog.htm" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -873,7 +871,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CMS\CMS.csproj">
+    <ProjectReference Include="C:\Kensoftware\Visual Studio 2022\CMS\CMS.csproj">
       <Project>{87ca5c13-b836-4c83-a301-5b21edf0be45}</Project>
       <Name>CMS</Name>
     </ProjectReference>

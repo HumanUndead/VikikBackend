@@ -546,7 +546,7 @@ namespace vikik.Controllers
             lang.ID = langID;
             int pagecount;
             ProductManager pMgr = new ProductManager(ConnectionString);
-            List<Product> prods = pMgr.GetProducts(catid, brandid, lang, page, 20, out pagecount, sch, null, null, null, null, null, null, null, false, null, null, null, true);
+            List<Product> prods = pMgr.GetProducts(catid, brandid, lang, page, 20, out pagecount, sch, null, null, null, null, null, null, null, false, null, null, null, null, null, true);
 
             string result = JsonConvert.SerializeObject(prods);
             ViewBag.Result = string.Format("{{\"products\":{0},\"pages\":{1}}}", result, pagecount);

@@ -70,7 +70,8 @@ namespace vikik.Controllers
             var Categories = pMgr.GetCategoryCategories(null, CurrentLanguage);
             foreach (var item in Categories) //optimization point make as tajjie single service to get them all
             {
-                 List<Product> prod = pMgr.GetProducts(item.ID, null, CurrentLanguage, 1, 10, out int dummy, null, null, null, null, null, null, null, null, true, null, null, null, true);
+                 List<Product> prod = pMgr.GetProducts(item.ID, null, CurrentLanguage, 1, 10, out int dummy, null, null, null, null, null, null, null, null, true, null, null, null ,null,null
+                     , true );
 
                 if (prod != null)
                 {
